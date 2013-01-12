@@ -1,0 +1,126 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.HideOutput=0
+Compilator.LogType=0
+DefaultDir=C:\Leif\Commodore\vortex
+DefaultCPIndex=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+Extensions=*.s,*.i
+[Project tree]
+vortex
+	+vortex
+		+ip65
+			-drivers
+				ip65\drivers\a2charconv.s
+				ip65\drivers\a2input.s
+				ip65\drivers\a2kernal.s
+				ip65\drivers\a2print.s
+				ip65\drivers\a2timer.s
+				ip65\drivers\c64_vt100.s
+				ip65\drivers\c64inputs.s
+				ip65\drivers\c64kernal.s
+				ip65\drivers\c64print.s
+				ip65\drivers\c64timer.s
+				ip65\drivers\cbm_disk_access.s
+				ip65\drivers\cs8900a.i
+				ip65\drivers\cs8900a.s
+				ip65\drivers\lan91c96.s
+				ip65\drivers\petscii_charconv.s
+				ip65\drivers\rr-net.s
+				ip65\drivers\uthernet.s
+				ip65\drivers\vic20input.s
+				ip65\drivers\vic20print.s
+				ip65\drivers\vic20-rr-net.s
+				ip65\drivers\vic20timer.s
+				ip65\drivers\w5100.i
+				ip65\drivers\w5100.s
+			-inc
+				ip65\inc\a2keycodes.i
+				ip65\inc\c64keycodes.i
+				ip65\inc\common.i
+				ip65\inc\commonprint.i
+				ip65\inc\config_menu.i
+				ip65\inc\disk_transfer.i
+				ip65\inc\gopher.i
+				ip65\inc\kipper_constants.i
+				ip65\inc\menu.i
+				ip65\inc\net.i
+				ip65\inc\petscii.i
+				ip65\inc\ping.i
+				ip65\inc\printf.i
+				ip65\inc\sidplay.i
+				ip65\inc\telnet.i
+				ip65\inc\version.i
+			-ip65
+				ip65\ip65\arithmetic.s
+				ip65\ip65\arp.s
+				ip65\ip65\cifs.s
+				ip65\ip65\config.s
+				ip65\ip65\copymem.s
+				ip65\ip65\debug.s
+				ip65\ip65\dhcp.s
+				ip65\ip65\dns.s
+				ip65\ip65\dottedquad.s
+				ip65\ip65\eth.s
+				ip65\ip65\function_dispatcher.s
+				ip65\ip65\http.s
+				ip65\ip65\httpd.s
+				ip65\ip65\icmp.s
+				ip65\ip65\ip.s
+				ip65\ip65\ip65.s
+				ip65\ip65\output_buffer.s
+				ip65\ip65\parser.s
+				ip65\ip65\printf.s
+				ip65\ip65\sntp.s
+				ip65\ip65\string_utils.s
+				ip65\ip65\tcp.s
+				ip65\ip65\telnet.s
+				ip65\ip65\tftp.s
+				ip65\ip65\timer.s
+				ip65\ip65\udp.s
+				ip65\ip65\url.s
+				ip65\ip65\xmodem.s
+			-test
+				ip65\test\test_cart_api.s
+				ip65\test\test_cifs.s
+				ip65\test\test_disk_io.s
+				ip65\test\test_get_url.s
+				ip65\test\test_getc.s
+				ip65\test\test_httpd.s
+				ip65\test\test_lancegs.s
+				ip65\test\test_parse_querystring.s
+				ip65\test\test_parser.s
+				ip65\test\test_ping.s
+				ip65\test\test_sntp.s
+				ip65\test\test_tcp.s
+				ip65\test\test_vic20.s
+				ip65\test\test_vt100.s
+				ip65\test\test_wiznet.s
+				ip65\test\test_xmodem.s
+				ip65\test\testdns.s
+				ip65\test\testdottedquad.s
+				ip65\test\testtftp.s
+		joystick.s
+		macros.s
+		vortex.s
+[Open project files]
+0=vortex.s
+1=macros.s
+2=joystick.s
+[Selected Project Files]
+Main=
+Selected=joystick.s
+[vortex.s]
+TopLine=388
+Caret=14,378
+[macros.s]
+TopLine=1
+Caret=18,15
+[joystick.s]
+TopLine=1
+Caret=11,129
