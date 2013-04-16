@@ -1,5 +1,6 @@
 package com.schemafactor.vortexserver.common;
 
+
 public class Constants 
 {
 	public static int TICK_TIME     = 50; // milliseconds

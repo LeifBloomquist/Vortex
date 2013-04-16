@@ -8,19 +8,16 @@ import java.util.Vector;
 public class Universe 
 {
 	private byte[][] universeMapCells = null;   // Matrix of character cells
-	private byte[][] universeMapColor = null;   // Matrix of character colors
+	private byte[][] universeMapAttribs = null;   // Matrix of character colors
 	
 	private long Xsize = -1;               // Pixels
 	private long Ysize = -1;               // Pixels
-	
-	Random generator = new Random();
 	
 	Vector<Point> planetoids = new Vector<Point>();
 	
 	public Universe(int size)
 	{
 		universeMapCells = new byte[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];
-		universeMapColor = new byte[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];
 		
 		Xsize = size*Constants.SCREEN_WIDTH*Constants.PIXELSPERCELL;
 		Ysize = size*Constants.SCREEN_HEIGHT*Constants.PIXELSPERCELL;
@@ -30,7 +27,7 @@ public class Universe
 			Arrays.fill(row, (byte)32);   // Blank space, change this with custom char set
 		}
 		
-		for (byte[] row : universeMapColor)
+		for (byte[] row : universeMapAttribs)
 		{
 			Arrays.fill(row, (byte)Constants.COLOR_BLACK);  
 		}
@@ -39,8 +36,8 @@ public class Universe
 		// Stars
 		for (int t=1; t< 100000; t++)
 		{
-			int randx=generator.nextInt(size*Constants.SCREEN_WIDTH);
-			int randy=generator.nextInt(size*Constants.SCREEN_HEIGHT);
+			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
+			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
 			universePoke(randx, randy, 46, Constants.COLOR_WHITE);	
 		}
@@ -49,8 +46,8 @@ public class Universe
 		// Put some simple planetoids into the universe
 		for (int t=1; t < 5000; t++)
 		{
-			int randx=10+generator.nextInt((size*Constants.SCREEN_WIDTH )-20);
-			int randy=10+generator.nextInt((size*Constants.SCREEN_HEIGHT)-20);			
+			int randx=10+JavaTools.generator.nextInt((size*Constants.SCREEN_WIDTH )-20);
+			int randy=10+JavaTools.generator.nextInt((size*Constants.SCREEN_HEIGHT)-20);			
 			
 			planetoids.add(new Point(randx,randy));
 			
@@ -67,10 +64,10 @@ public class Universe
 			universePoke(randx+1, randy+1, 75, Constants.COLOR_GREY2);
 			
 			// Planets
-			for (int p=1; p < generator.nextInt(15); p++)
+			for (int p=1; p < JavaTools.generator.nextInt(15); p++)
 			{
-				int orbit=2+generator.nextInt(3);
-				double dir=2*Math.PI*generator.nextDouble();
+				int orbit=2+JavaTools.generator.nextInt(3);
+				double dir=2*Math.PI*JavaTools.generator.nextDouble();
 				
 				int diffx=(int) Math.round(orbit*Math.sin(dir));
 				int diffy=(int) Math.round(orbit*Math.cos(dir));
@@ -83,8 +80,8 @@ public class Universe
 		// Experiment - huge asteroid belt
 		for (int a=1; a < 100000; a++)
 		{
-			int orbit=500+generator.nextInt(20);
-			double dir=2*Math.PI*generator.nextDouble();
+			int orbit=500+JavaTools.generator.nextInt(20);
+			double dir=2*Math.PI*JavaTools.generator.nextDouble();
 			
 			int diffx=(int) Math.round(orbit*Math.sin(dir));
 			int diffy=(int) Math.round(orbit*Math.cos(dir));
@@ -96,8 +93,8 @@ public class Universe
 		// Put some standalone asteroids into the universe
 		for (int t=1; t< 10000; t++)
 		{
-			int randx=generator.nextInt(size*Constants.SCREEN_WIDTH);
-			int randy=generator.nextInt(size*Constants.SCREEN_HEIGHT);
+			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
+			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
 			universePoke(randx, randy, 87, Constants.COLOR_GREY1);	
 		}
@@ -105,21 +102,22 @@ public class Universe
 		// Put some powerups into the universe
 		for (int t=1; t< 1000; t++)
 		{
-			int randx=generator.nextInt(size*Constants.SCREEN_WIDTH);
-			int randy=generator.nextInt(size*Constants.SCREEN_HEIGHT);
+			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
+			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
 			universePoke(randx, randy, 90, Constants.COLOR_YELLOW);	
 		}
 		
 		// Put a special marker at the origin
 		universePoke(0, 0, 91, Constants.COLOR_LIGHTRED);
+	
 	}
 	
 	public void update()
 	{
 		for (Point p : planetoids)
 		{
-			universePoke(p.x, p.y, (byte) generator.nextInt(255), Constants.COLOR_LIGHTBLUE);
+			universePoke(p.x, p.y, (byte) JavaTools.generator.nextInt(255), Constants.COLOR_LIGHTBLUE);
 		}
 	}
 	
@@ -128,7 +126,7 @@ public class Universe
 	public void universePoke(int x, int y, int code, byte color)
 	{
 		universeMapCells[x][y]=(byte) (code  & 0xFF);
-		universeMapColor[x][y]=color;		
+		universeMapAttribs[x][y]=color;		
 	}
 	
 	/** Get a full screen's worth of cell data, with wraparound */
@@ -140,7 +138,7 @@ public class Universe
 	/** Get a full screen's worth of color data, with wraparound */
 	public byte[] getScreenColor(long x, long y)
 	{
-		return getScreenArray(x, y, universeMapColor);
+		return getScreenArray(x, y, universeMapAttribs);
 	}
 	
 	/** Helper function for the above */

@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -42,6 +43,9 @@ import javax.swing.table.TableColumn;
  */
 public abstract class JavaTools
 {
+	
+	public static Random generator = new Random();
+	
     static FileLock lck = null; //Putting it here keeps it active for the life of the application
     
     public static boolean isEven(int test) 
@@ -392,4 +396,6 @@ public abstract class JavaTools
     {
    	    return array[(int) (row % array.length)][(int) (col % array[0].length)];
     }
+	
+	
 }

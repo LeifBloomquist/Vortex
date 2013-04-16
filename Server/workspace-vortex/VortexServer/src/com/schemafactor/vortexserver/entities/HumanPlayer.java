@@ -60,21 +60,7 @@ public class HumanPlayer extends Entity
    {
        return myIP;
    } 
-     
-   public void move(Universe universe)
-   {
-       Xpos += (Xspeed / 3.0);  
-       Ypos += (Yspeed / 3.0);
-       
-       // Wrap around
-       if (Xpos < 0) Xpos += universe.getXsize();
-       if (Ypos < 0) Ypos += universe.getYsize();
-       
-       if (Xpos > universe.getXsize()) Xpos -= universe.getXsize();
-       if (Ypos > universe.getYsize()) Ypos -= universe.getYsize();
-   }
-   
- 
+
    /** Return Color */
    public byte getColor()
    {

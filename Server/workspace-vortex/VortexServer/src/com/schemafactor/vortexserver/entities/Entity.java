@@ -5,7 +5,7 @@ import com.schemafactor.vortexserver.common.Universe;
 
 public abstract class Entity 
 {	
-   public enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED};
+   public enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID};
    protected eTypes myType = eTypes.NONE;
 	
    protected String description;   
@@ -13,8 +13,8 @@ public abstract class Entity
    protected double Xpos;      // These are pixels, and refers to the top-left corner of the object (sprite, etc.)
    protected double Ypos;
    
-   protected byte Xspeed = 0;  // These are signed bytes, +/- 100.
-   protected byte Yspeed = 0;
+   protected int Xspeed = 0;  // These are signed bytes, +/- 100.
+   protected int Yspeed = 0;
      
    /** Creates a new instance of Entity */
    public Entity(String description, double startX, double startY, eTypes type)
@@ -25,10 +25,17 @@ public abstract class Entity
 	   this.myType = type;
    }
    
-   public void move()
+   public void move(Universe universe)
    {
-       Xpos += (Xspeed / 100.0);  
-       Ypos += (Yspeed / 100.0);  
+       Xpos += (Xspeed / 3.0);  
+       Ypos += (Yspeed / 3.0);
+       
+       // Wrap around
+       if (Xpos < 0) Xpos += universe.getXsize();
+       if (Ypos < 0) Ypos += universe.getYsize();
+       
+       if (Xpos > universe.getXsize()) Xpos -= universe.getXsize();
+       if (Ypos > universe.getYsize()) Ypos -= universe.getYsize();
    }
    
    /** Return X,Y positions */
@@ -62,12 +69,12 @@ public abstract class Entity
     /** Return X,Y speeds */
    public byte getXspeed()
    {
-       return Xspeed;
+       return (byte)Xspeed;
    }
    
    public byte getYspeed()
    {
-       return Yspeed;
+       return (byte)Yspeed;
    }
 
    public String getDescription() 
@@ -76,5 +83,11 @@ public abstract class Entity
    }
 
    abstract public boolean update(Universe world);   // True means the player should be removed (timeout, destroyed, etc)   
-   abstract  public eTypes getType();
+   
+
+   public eTypes getType() 
+   {
+      return myType;
+   }   
+   
 }
