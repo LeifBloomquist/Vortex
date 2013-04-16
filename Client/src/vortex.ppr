@@ -14,7 +14,7 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
-		+ip65
+		-ip65
 			-drivers
 				ip65\drivers\a2charconv.s
 				ip65\drivers\a2input.s
@@ -110,21 +110,9 @@ vortex
 		vortex.s
 [Open project files]
 0=vortex.s
-1=macros.s
-2=joystick.s
-3=New1.s
 [Selected Project Files]
 Main=
-Selected=New1.s
+Selected=vortex.s
 [vortex.s]
-TopLine=378
-Caret=14,378
-[macros.s]
-TopLine=1
-Caret=18,15
-[joystick.s]
-TopLine=90
-Caret=11,129
-[New1.s]
 TopLine=1
 Caret=1,1
