@@ -31,9 +31,6 @@ public class Main {
         s.scheduleAtFixedRate(ut, 0, Constants.TICK_TIME, TimeUnit.MILLISECONDS );
         
         // Instantiate a UDP listener, and let it take over.
-        UDPListener udp = new UDPListener( 3005, allEntities, world );
-		
-		//NetworkTests.networkTests();
-		
+        UDPListener udp = new UDPListener( 3005, allEntities, world );		
 	}
 }

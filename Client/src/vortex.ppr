@@ -112,15 +112,19 @@ vortex
 0=vortex.s
 1=macros.s
 2=joystick.s
+3=New1.s
 [Selected Project Files]
 Main=
-Selected=joystick.s
+Selected=New1.s
 [vortex.s]
-TopLine=388
+TopLine=378
 Caret=14,378
 [macros.s]
 TopLine=1
 Caret=18,15
 [joystick.s]
-TopLine=1
+TopLine=90
 Caret=11,129
+[New1.s]
+TopLine=1
+Caret=1,1
