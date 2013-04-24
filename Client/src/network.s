@@ -28,9 +28,11 @@
 ; Network Initialization
 
 network_init:
-
+  
+  kernal_print NETWORKMESSAGE
+  
+  init_ip_via_dhcp   
   jsr print_cr
-  init_ip_via_dhcp 
   jsr print_ip_config
   jsr print_cr
   
@@ -63,20 +65,31 @@ network_init:
      
   ldax #LISTEN_PORT
   jsr udp_add_listener
+  
+  jsr waitforkey
+  
+    
+  lda #CG_UCS
+  jsr $FFD2
+  
+  rts
+  
+  
 
 
 ; -------------------------------------------------------------------------
 ; Wait 
-    
+waitforkey:
+   
   ; Wait for key
   kernal_print WAITMESSAGE
     
 gak0:
 	jsr $FFE4  ;GETIN
 	beq gak0
+
   
-  lda #CG_UCS
-  jsr $FFD2
+  rts
 
 ; -------------------------------------------------------------------------
 ; Send the update packet
@@ -140,12 +153,6 @@ copyscreen:
 
   rts
 
-finex:
-  .byte $00
-
-finey:
-  .byte $00  
-
 ; -------------------------------------------------------------------------
 ; Handle Received Color Update Packet
 
@@ -177,6 +184,10 @@ TESTMESSAGE:
   
 WAITMESSAGE:
   .byte "press any key to continue."
+  .byte 0
+  
+NETWORKMESSAGE:
+  .byte 147, CG_LCS, "network init started",13,13  
   .byte 0
 
 BORDERMASK:

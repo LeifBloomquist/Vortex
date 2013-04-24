@@ -107,12 +107,31 @@ vortex
 				ip65\test\testtftp.s
 		joystick.s
 		macros.s
+		screen.s
+		irq.s
 		vortex.s
+		network.s
 [Open project files]
-0=vortex.s
+0=screen.s
+1=irq.s
+2=vortex.s
+3=joystick.s
+4=network.s
 [Selected Project Files]
 Main=
-Selected=vortex.s
+Selected=irq.s
+[screen.s]
+TopLine=1
+Caret=45,45
+[irq.s]
+TopLine=1
+Caret=7,99
 [vortex.s]
+TopLine=52
+Caret=23,65
+[joystick.s]
 TopLine=1
 Caret=1,1
+[network.s]
+TopLine=137
+Caret=20,132

@@ -32,7 +32,7 @@
 
 basicstub:
 	.word @nextline
-	.word 2003
+	.word 2013
 	.byte $9e
 	.byte <(((init / 1000) .mod 10) + $30)
 	.byte <(((init / 100 ) .mod 10) + $30)
@@ -45,8 +45,9 @@ basicstub:
 .code
 
 init:
-  jsr screen_init
   jsr network_init
+  jsr screen_init
+  jsr sprites_init  
   jsr irq_init
   
 ; -------------------------------------------------------------------------
@@ -61,6 +62,7 @@ loop:
 
   .include "joystick.s"
   .include "screen.s"
+  .include "sprites.s"  
   .include "irq.s"
   .include "network.s"  
 
