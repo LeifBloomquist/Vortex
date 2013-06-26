@@ -66,4 +66,13 @@ loop:
   .include "irq.s"
   .include "network.s"  
 
+; -------------------------------------------------------------------------
+; Binary data
+
+.SEGMENT "CHARSET"
+   .incbin "..\..\Server\data\chars.raw" 
+
+.SEGMENT "SPRITES"
+   .incbin "..\..\Server\data\Sprites.raw"
+  
 ; EOF!

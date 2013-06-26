@@ -14,7 +14,9 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
-		-ip65
+		+ip65
+			+cfg
+				ip65\cfg\c64prg-vortex.cfg
 			-drivers
 				ip65\drivers\a2charconv.s
 				ip65\drivers\a2input.s
@@ -107,31 +109,45 @@ vortex
 				ip65\test\testtftp.s
 		joystick.s
 		macros.s
-		screen.s
 		irq.s
-		vortex.s
 		network.s
+		sprites.s
+		screen.s
+		make.cmd
+		vortex.s
 [Open project files]
-0=screen.s
-1=irq.s
-2=vortex.s
-3=joystick.s
-4=network.s
+0=sprites.s
+1=network.s
+2=screen.s
+3=make.cmd
+4=ip65\cfg\c64prg-vortex.cfg
+5=vortex.map
+6=vortex.s
+7=scraps.s
 [Selected Project Files]
 Main=
-Selected=irq.s
-[screen.s]
+Selected=screen.s
+[sprites.s]
 TopLine=1
-Caret=45,45
-[irq.s]
-TopLine=1
-Caret=7,99
-[vortex.s]
-TopLine=52
-Caret=23,65
-[joystick.s]
-TopLine=1
-Caret=1,1
+Caret=9,5
 [network.s]
-TopLine=137
-Caret=20,132
+TopLine=154
+Caret=1,155
+[screen.s]
+TopLine=88
+Caret=3,127
+[make.cmd]
+TopLine=3
+Caret=1,7
+[ip65\cfg\c64prg-vortex.cfg]
+TopLine=1
+Caret=5,30
+[vortex.map]
+TopLine=8
+Caret=10,8
+[vortex.s]
+TopLine=1
+Caret=21,68
+[scraps.s]
+TopLine=38
+Caret=1,71
