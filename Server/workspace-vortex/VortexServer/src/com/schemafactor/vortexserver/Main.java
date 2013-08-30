@@ -19,7 +19,7 @@ public class Main {
 	public static void main(String[] args) 
 	{
 	    JavaTools.printlnTime("-----------------------------------------------");
-	    JavaTools.printlnTime("Vortex Server Version 0.002");
+	    JavaTools.printlnTime("Vortex Server Version 0.003");
 	        
 	    // Create the universe.
 		Universe world = new Universe(100);
@@ -33,7 +33,7 @@ public class Main {
         	allEntities.add(new Asteroid());
         }
         
-        allEntities.addAll(new )
+        //allEntities.addAll(new )
         
         
         // Start the thread that updates everything at a fixed interval

@@ -1,5 +1,4 @@
 @cls
-@del *.prg
 @del *.o
 @del *.prg
 

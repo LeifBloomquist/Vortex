@@ -115,6 +115,8 @@ public class HumanPlayer extends Entity
 	   // Move within the world
 	   move(universe);
 	   
+	   // Send data packet to the client
+	   
 	   if ((lastX != getXcell()) || (lastY != getYcell()))   // We have moved to a new cell, C64 should switch screens to avoid flickering  
 	   {
 	      if (screen==0)

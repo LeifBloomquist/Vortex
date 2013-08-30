@@ -27,8 +27,8 @@ public abstract class Entity
    
    public void move(Universe universe)
    {
-       Xpos += (Xspeed / 3.0);  
-       Ypos += (Yspeed / 3.0);
+       Xpos += Xspeed;  
+       Ypos += Yspeed;
        
        // Wrap around
        if (Xpos < 0) Xpos += universe.getXsize();

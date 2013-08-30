@@ -26,13 +26,11 @@ import com.schemafactor.vortexserver.entities.HumanPlayer;
 public class UDPListener
 {
     private Vector<Entity> allEntities = null;
-    private Universe world = null;
     
     /** Creates a new instance of UDPListener */
-    public UDPListener(int port, Vector<Entity> allUsers, Universe world)
+    public UDPListener(int port, Vector<Entity> allEntities)
     {
-        this.allEntities = allUsers;  // Keep a reference to the users list
-        this.world = world;
+        this.allEntities = allEntities;  // Keep a reference to the users list
 
         try
         {
