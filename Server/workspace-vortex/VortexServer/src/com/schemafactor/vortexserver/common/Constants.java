@@ -30,4 +30,8 @@ public class Constants
 	
 	public static byte PACKET_SCREEN    = 100;
 	public static byte PACKET_COLOR     = 101;
+	
+	public static int CLIENT_YPOS       = 100;
+	public static int CLIENT_XPOS       = 160;
+	
 }

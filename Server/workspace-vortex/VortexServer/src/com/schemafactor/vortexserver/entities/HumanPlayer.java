@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.Universe;
@@ -11,37 +12,29 @@ import com.schemafactor.vortexserver.common.JavaTools;
 
 
 public class HumanPlayer extends Entity
-{	
-	
-   private InetAddress myIP;       // User IP Address
+{		
+   private InetAddress userIP;       // User IP Address
    
    private byte shipColor;
    private byte spriteNum; 
    
-   private int timeoutCounter=0;    
-   
-   private boolean toggle = false;  // Used to alternate color/screen update packets
-   
-   private int screen = 0;   // Which screen the client should show
-   private long lastX=-1;
-   private long lastY=-1;
-   
+   private int timeoutCounter=0;  
   
    /** Creates a new instance of RaceCar */
    public HumanPlayer(DatagramPacket packet)
    {
        super("Human Player from " + packet.getAddress(), 100, 100, Entity.eTypes.HUMAN_PLAYER);
        
-       myIP = packet.getAddress();
+       userIP = packet.getAddress();
        receiveUpdate(packet.getData());
    }
    
-   public void sendUpdate(byte[] message)
+   public void sendUpdate(byte[] data)
    {       
        try
        {            
            // Initialize a datagram packet with data and address
-           DatagramPacket packet = new DatagramPacket(message, message.length, myIP, 3000); 
+           DatagramPacket packet = new DatagramPacket(data, data.length, userIP, 3000); 
 
            // Create a datagram socket, send the packet through it, close it
            DatagramSocket dsocket = new DatagramSocket();
@@ -58,7 +51,7 @@ public class HumanPlayer extends Entity
    /** Return the InetAddress, for comparisons */
    public InetAddress getAddress()
    {
-       return myIP;
+       return userIP;
    } 
 
    /** Return Color */
@@ -76,7 +69,7 @@ public class HumanPlayer extends Entity
    // Increment the timeout - called by UpdaterThread
    public void incTimeout()
    {
-	   if (timeoutCounter < 1000000) timeoutCounter += Constants.TICK_TIME;
+	   if (timeoutCounter < 10000) timeoutCounter += Constants.TICK_TIME;
    }
    
    // Check the timeout
@@ -89,79 +82,95 @@ public class HumanPlayer extends Entity
    /** Update me with new data from client */
    public void receiveUpdate(byte[] data)
    {
-	   Xspeed = data[0];   // Signed
-	   Yspeed = data[1];
-	   
-//       playerNum  = data[0];  
-//       Xpos       = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
-//       Ypos       = (0xFF & data[3]) + (0xFF & data[4])*256;
-//       XspeedLow  = data[5];
-//       XspeedHigh = data[6];
-//       YspeedLow  = data[7];
-//       YspeedHigh = data[8];
-//       carColor   = data[9];
-//       spriteNum  = data[10];        
-//       
+	   switch (data[0])   // Packet type
+	   {
+	   		case 0:  // Player name and Announce
+	   			
+	   	    break;
+	   	    
+	   		case 2:  // Client ready
+	   			
+	   		break;
+	   		
+	   		case 3:  // Client update
+	          Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
+	          Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
+	   		  Xspeed  = (data[5] / 100d);
+	   		  Yspeed  = (data[6] / 100d);	   		   
+	   		break;
+	   		
+	   		default:
+	   			JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
+	   			return;
+	   		//break;
+	   }
+	   		 
        // Reset timeout
        timeoutCounter = 0;
-//       
-//      // System.out.println("Player " + myIP.toString() + " location: " + Xpos + " " + Ypos);     
+       
+       JavaTools.printlnTime("Player " + userIP.toString() + " location: " + Xpos + " " + Ypos);     
    } 
    
 
    @Override
-   public boolean update(Universe universe)
+   public boolean update(Universe universe, Vector<Entity> allEntities)
    {   
-	   // Move within the world
-	   move(universe);
+	   // Don't call for for human players - Position is controlled by client.
+	   // move(universe);
 	   
-	   // Send data packet to the client
+	   // Send data packet to the client	   	   
+	   byte[] message = new byte[940];  
+	   message[0] = (byte) 140;  // Packet type, game update.
+	   message[1] = 0; // Unused
+	   message[2] = getScroll(Xpos);  // Fine X
+	   message[3] = getScroll(Ypos);  // Fine Y 		  
+	   message[4] = 0; // Unused - Screen # if needed
+	   message[5] = 0; // Unused - Spare
+	   	   
+	   int offset = 6;
 	   
-	   if ((lastX != getXcell()) || (lastY != getYcell()))   // We have moved to a new cell, C64 should switch screens to avoid flickering  
-	   {
-	      if (screen==0)
-	      {
-	    	  screen=1;
-	      }
-	      else
-	      {
-	    	  screen=0;
-	      }
+	   // !!! Quick assumption for testing, that there will never be more than 7 entities.
+	   
+	   for (Entity e : allEntities)
+	   {		   
+		   if (this == e) continue;  // Don't update with myself
+		   
+		   // TODO, this needs serious wrapping handling.  Make this a function.
+		   
+		   // Determine distance between this player and other entities    These assume player is centered.
+		   long ydist = (long)(this.getYpos() - e.getYpos());           
+           if (ydist < -Constants.CLIENT_YPOS)  continue;  // Too high
+           if (ydist >  Constants.CLIENT_YPOS)  continue;  // Too low
+		   
+           long xdist = (long)(this.getXpos() - e.getXpos());           
+           if (xdist < -Constants.CLIENT_XPOS)  continue;  // Too far to the left
+           if (xdist >  Constants.CLIENT_XPOS)  continue;  // Too far to the right
+		   
+           // Other entity is visible!
+           int yrel = (int)(ydist + Constants.CLIENT_YPOS);
+           int xrel = (int)(xdist + Constants.CLIENT_XPOS);           
+           
+           message[offset+0] = JavaTools.getLowByte(xrel);  
+           message[offset+1] = JavaTools.getHighByte(xrel);
+           message[offset+2] = JavaTools.getLowByte(yrel);  
+           message[offset+3] = JavaTools.getHighByte(yrel);  // Not used by C64
+           message[offset+4] = e.getXspeed();
+           message[offset+5] = e.getYspeed();
+           message[offset+6] = 0;  // Sprite color
+           message[offset+7] = 0;  // Sprite number
+           message[offset+8] = 0;  // Spare 1
+           message[offset+9] = 0;  // Spare 2
+           
+           offset += 10;   
 	   }
 	   
+	   // And now, the first 20 lines (=800 bytes) of the screen.	   
+	   System.arraycopy(universe.getScreen(getXcell(), getYcell()), 0, message, 140, 20*40);
+	   
+	   // Send the packet.
+	   sendUpdate(message);		   
 		   
-	   lastX = getXcell();
-	   lastY = getYcell();
-	   
-	   byte[] message = null;
-	   
-	   // Update Client	   
-	  // if (toggle)
-	  // {
-		   // Screen
-		   message = new byte[4 + Constants.SCREEN_SIZE];  
-		   message[0] = Constants.PACKET_SCREEN;
-		   message[1] = getScroll(Xpos);  // Fine X
-		   message[2] = getScroll(Ypos);  // Fine Y 		  
-		   message[3] = (byte) screen;
-		   System.arraycopy(universe.getScreen(getXcell(), getYcell()), 0, message, 4,  Constants.SCREEN_SIZE);
-		   
-		   sendUpdate(message);
-		   
-		   JavaTools.printlnTime("X pos=" + Math.floor(Xpos) + " X Scroll="+ message[1] +"   X Cell="+getXcell());
-//	   }
-//	   else
-//	   {
-//		   // Color
-//		   message = new byte[1 + Constants.SCREEN_SIZE];
-//		   message[0] = Constants.PACKET_COLOR;
-//		   System.arraycopy(universe.getScreenColor(getXcell(), getYcell()), 0, message, 1,  Constants.SCREEN_SIZE);		   
-//		   sendUpdate(message);
-//	   }
-	   
-	   toggle = !toggle;
-	   
-	   // Increment and Timeout
+	   // Increment and Timeout.  This is reset in receiveUpdate() above.
 	   incTimeout();
 	   return checkTimeout();
    }   

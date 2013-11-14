@@ -1,13 +1,10 @@
 package com.schemafactor.vortexserver.entities;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.Arrays;
+import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
-import com.schemafactor.vortexserver.common.Universe;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.common.Universe;
 
 
 public class Asteroid extends Entity
@@ -18,10 +15,10 @@ public class Asteroid extends Entity
    /** Creates a new instance of Asteroid */
    public Asteroid()
    {
-       super("Asteroid", 1000, 1000, Entity.eTypes.ASTEROID);  
+       super("Asteroid", 1000+JavaTools.generator.nextInt(1000), 1000+JavaTools.generator.nextInt(1000), Entity.eTypes.ASTEROID);  
        
-       Xspeed = -5 + JavaTools.generator.nextInt(11);
-       Yspeed = -5 + JavaTools.generator.nextInt(11);
+       Xspeed = 0; //-0.05 + JavaTools.generator.nextInt(11);
+       Yspeed = 0; //-5 + JavaTools.generator.nextInt(11);
    }
        
    /** Return Color */
@@ -34,14 +31,13 @@ public class Asteroid extends Entity
    public byte getSprite()
    {
        return (byte)(spriteBase+spriteNum);
-   }
-      
+   }      
 
-   @Override
-   public boolean update(Universe universe)
-   {   
-	   // Move within the world
+	@Override
+	public boolean update(Universe universe, Vector<Entity> allEntities) 
+	{
+	   // Move within the universe
 	   move(universe);
 	   return false;
-   }   
+	}   
 }

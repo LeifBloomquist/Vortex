@@ -1,14 +1,9 @@
 package com.schemafactor.vortexserver.entities;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.Arrays;
+import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.Universe;
-import com.schemafactor.vortexserver.common.JavaTools;
-
 
 public class ServerControlled extends Entity
 {	
@@ -29,15 +24,13 @@ public class ServerControlled extends Entity
    /** Return Sprite# */
    public byte getSprite()
    {
-       return (byte)(spriteNum);
+       return spriteNum;
    }
-      
 
-   @Override
-   public boolean update(Universe universe)
-   {   
+@Override
+public boolean update(Universe universe, Vector<Entity> allEntities) {
 	   // Move within the world
 	   move(universe);
 	   return false;
-   }   
+}   
 }

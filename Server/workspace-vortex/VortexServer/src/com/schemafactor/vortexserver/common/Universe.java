@@ -18,6 +18,7 @@ public class Universe
 	public Universe(int size)
 	{
 		universeMapCells = new byte[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];
+		universeMapAttribs = new byte[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];
 		
 		Xsize = size*Constants.SCREEN_WIDTH*Constants.PIXELSPERCELL;
 		Ysize = size*Constants.SCREEN_HEIGHT*Constants.PIXELSPERCELL;

@@ -22,7 +22,7 @@ public class Main {
 	    JavaTools.printlnTime("Vortex Server Version 0.003");
 	        
 	    // Create the universe.
-		Universe world = new Universe(100);
+		Universe universe = new Universe(100);
 		
 		 // Vector of all users.
         Vector<Entity> allEntities = new Vector<Entity> ();
@@ -33,15 +33,14 @@ public class Main {
         	allEntities.add(new Asteroid());
         }
         
-        //allEntities.addAll(new )
-        
+        //allEntities.addAll(arg0)
         
         // Start the thread that updates everything at a fixed interval
-        UpdaterThread ut = new UpdaterThread(allEntities, world);
+        UpdaterThread ut = new UpdaterThread(allEntities, universe);
         ScheduledThreadPoolExecutor s = new ScheduledThreadPoolExecutor(1);
         s.scheduleAtFixedRate(ut, 0, Constants.TICK_TIME, TimeUnit.MILLISECONDS );
         
         // Instantiate a UDP listener, and let it take over.
-        UDPListener udp = new UDPListener( 3005, allEntities, world );		
+        UDPListener udp = new UDPListener( 3005, allEntities );		
 	}
 }

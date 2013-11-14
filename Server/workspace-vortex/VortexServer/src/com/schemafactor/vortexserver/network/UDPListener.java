@@ -46,6 +46,8 @@ public class UDPListener
                 socket.receive(packet);  // This blocks!                
                 handlePacket(packet);    // Handle it              
             }
+            
+            //socket.close();
         }
         catch (SocketException ex)
         {

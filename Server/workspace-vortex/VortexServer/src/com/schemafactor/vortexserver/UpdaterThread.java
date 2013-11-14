@@ -48,7 +48,7 @@ public class UpdaterThread implements Runnable
         	{
         		Entity who = i.next(); // must be called before you can call i.remove()
         	  
-        		if (who.update(universe))
+        		if (who.update(universe, allEntities))
            	 	{
                     JavaTools.printlnTime("Removing entity " + who.getDescription() );
                     i.remove();

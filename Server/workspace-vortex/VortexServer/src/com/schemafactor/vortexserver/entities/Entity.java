@@ -1,5 +1,7 @@
 package com.schemafactor.vortexserver.entities;
 
+import java.util.Vector;
+
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.Universe;
 
@@ -13,8 +15,8 @@ public abstract class Entity
    protected double Xpos;      // These are pixels, and refers to the top-left corner of the object (sprite, etc.)
    protected double Ypos;
    
-   protected int Xspeed = 0;  // These are signed bytes, +/- 100.
-   protected int Yspeed = 0;
+   protected double Xspeed = 0; 
+   protected double Yspeed = 0;
      
    /** Creates a new instance of Entity */
    public Entity(String description, double startX, double startY, eTypes type)
@@ -66,15 +68,15 @@ public abstract class Entity
 	  return (byte) (Constants.PIXELSPERCELL - (Math.floor(xory) % Constants.PIXELSPERCELL) -1);
    }
    
-    /** Return X,Y speeds */
+    /** Return X,Y speeds as bytes */
    public byte getXspeed()
    {
-       return (byte)Xspeed;
+       return (byte)(Xspeed*100d);
    }
    
    public byte getYspeed()
    {
-       return (byte)Yspeed;
+       return (byte)(Yspeed*100d);
    }
 
    public String getDescription() 
@@ -82,7 +84,7 @@ public abstract class Entity
        return description;
    }
 
-   abstract public boolean update(Universe world);   // True means the player should be removed (timeout, destroyed, etc)   
+   abstract public boolean update(Universe world, Vector<Entity> allEntities);   // True means the player should be removed (timeout, destroyed, etc)   
    
 
    public eTypes getType() 

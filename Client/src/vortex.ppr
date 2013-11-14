@@ -118,12 +118,16 @@ vortex
 [Open project files]
 0=ip65\cfg\c64prg-vortex.cfg
 1=make.cmd
+2=network.s
 [Selected Project Files]
 Main=
-Selected=ip65\cfg\c64prg-vortex.cfg
+Selected=network.s
 [ip65\cfg\c64prg-vortex.cfg]
 TopLine=1
 Caret=64,31
 [make.cmd]
 TopLine=1
 Caret=23,8
+[network.s]
+TopLine=166
+Caret=13,42
