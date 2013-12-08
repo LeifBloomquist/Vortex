@@ -111,18 +111,56 @@ sendupdate:
 gotpacket:
   lda udp_inp_data+0
 
-  cmp #PACKET_SCREEN     ; Screen Update
-  beq screenpacket
-  
-  cmp #PACKET_COLOR      ; Color Data
-  beq colorpacket
-  
-  ; Unknown, ignore.
+  cmp #140
+  beq gameupdate
   rts
+
+
+;--------------------------------------------------------------------------
+; Handle sprite position updates
+;In:
+; .A: the sprite to update the position of
+;
+gameupdate:
+   ldy #$00
+   ldx #$00
+updatesprites:
+   ; x-coordinate
+   lda udp_inp_data+1,x
+   sta $d000,x
+   lda udp_inp_data+2,x
+   lda bittab,y
+   ora $d010
+   sta $d010
+   ; y-coordinate
+   lda udp_inp_data+2,x
+   sta $d001,x
+   ; color
+   lda udp_inp_data+4,x
+   sta $d025,y
+   ; sprite #
+   lda udp_inp_data+5
+   sta SCREEN_BASE+$3f8,y
+
+   txa
+   clc
+   adc #10
+   tax
+
+   iny 
+   cpy #$07
+   bcc updatesprites
+
+; update scroll
+  lda udp_inp_data+2
+  ora $d016
+  sta $d016
+  lda udp_inp_data+3
+  ora $d011
+  sta $d011
 
 ; -------------------------------------------------------------------------
 ; Handle Received Screen Update Packet
-
 screenpacket:  
   lda udp_inp_data+1
   sta finex
@@ -133,15 +171,12 @@ screenpacket:
   
   lda #$01
   sta screenreceived   ; Flag for next IRQ frame
-  rts
 
 ; -------------------------------------------------------------------------
 ; Copy screen data from UDP buffer to screen
-
 copyscreen:
   BORDER #$07
-
-  jsr finexy
+  ;jsr finexy
 
   ldax #SCREEN_BASE
   stax copy_dest  
@@ -149,8 +184,6 @@ copyscreen:
   stax copy_src 
   ldax #800 ;#1000   ; Decimal 
   jsr copymem  
-
-
   rts
 
 ; -------------------------------------------------------------------------
@@ -196,3 +229,6 @@ BORDERMASK:
 ; Packet Types
 PACKET_SCREEN = 100
 PACKET_COLOR  = 101
+
+bittab:
+.byte $80,$40,$20,$10,$08,$04,$02,$01
