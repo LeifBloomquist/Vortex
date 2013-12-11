@@ -3,7 +3,7 @@ package com.schemafactor.vortexserver.entities;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
-import com.schemafactor.vortexserver.common.Universe;
+import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class Entity 
 {	

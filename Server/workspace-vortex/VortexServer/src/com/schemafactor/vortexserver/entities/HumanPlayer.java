@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
-import com.schemafactor.vortexserver.common.Universe;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.universe.Universe;
 
 
 public class HumanPlayer extends Entity
@@ -20,7 +20,7 @@ public class HumanPlayer extends Entity
    
    private int timeoutCounter=0;  
   
-   /** Creates a new instance of RaceCar */
+   /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet)
    {
        super("Human Player from " + packet.getAddress(), 100, 100, Entity.eTypes.HUMAN_PLAYER);
@@ -173,12 +173,5 @@ public class HumanPlayer extends Entity
 	   // Increment and Timeout.  This is reset in receiveUpdate() above.
 	   incTimeout();
 	   return checkTimeout();
-   }   
-   
-   @Override
-   public eTypes getType() 
-   {
-      return myType;
-   }   
-   
+   }      
 }

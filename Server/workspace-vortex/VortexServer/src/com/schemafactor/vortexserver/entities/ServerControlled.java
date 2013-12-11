@@ -3,7 +3,7 @@ package com.schemafactor.vortexserver.entities;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
-import com.schemafactor.vortexserver.common.Universe;
+import com.schemafactor.vortexserver.universe.Universe;
 
 public class ServerControlled extends Entity
 {	
@@ -27,10 +27,11 @@ public class ServerControlled extends Entity
        return spriteNum;
    }
 
-@Override
-public boolean update(Universe universe, Vector<Entity> allEntities) {
-	   // Move within the world
-	   move(universe);
-	   return false;
-}   
+	@Override
+	public boolean update(Universe universe, Vector<Entity> allEntities) 
+	{
+		   // Move within the world
+		   move(universe);
+		   return false;
+	}   
 }

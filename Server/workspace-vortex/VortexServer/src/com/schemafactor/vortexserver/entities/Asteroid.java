@@ -4,13 +4,13 @@ import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
-import com.schemafactor.vortexserver.common.Universe;
+import com.schemafactor.vortexserver.universe.Universe;
 
 
 public class Asteroid extends Entity
 {	
-   private byte spriteBase;
-   private byte spriteNum;   // 0 to 32 
+   private byte spriteBase = 0; // TODO
+   private byte spriteNum  = 0;   // 0 to 32 
    
    /** Creates a new instance of Asteroid */
    public Asteroid()

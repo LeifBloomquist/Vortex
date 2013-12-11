@@ -392,7 +392,7 @@ public abstract class JavaTools
 	/**
 	 *  Allow array reads to wrap around (positive only)
 	 */
-	public static byte getArrayWrap(byte[][]array, long row, long col)
+	public static Object getArrayWrap(Object[][] array, long row, long col)
     {
    	    return array[(int) (row % array.length)][(int) (col % array[0].length)];
     }

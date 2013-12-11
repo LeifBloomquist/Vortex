@@ -1,14 +1,16 @@
-package com.schemafactor.vortexserver.common;
+package com.schemafactor.vortexserver.universe;
 
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Vector;
 
+import com.schemafactor.vortexserver.common.Constants;
+import com.schemafactor.vortexserver.common.JavaTools;
+
 public class Universe 
 {
-	private byte[][] universeMapCells = null;   // Matrix of character cells
-	private byte[][] universeMapAttribs = null;   // Matrix of character colors
+	private Cell[][] universeMapCells = null;   // Matrix of cells
 	
 	private long Xsize = -1;               // Pixels
 	private long Ysize = -1;               // Pixels
@@ -17,22 +19,10 @@ public class Universe
 	
 	public Universe(int size)
 	{
-		universeMapCells = new byte[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];
-		universeMapAttribs = new byte[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];
+		universeMapCells = new Cell[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];		
 		
 		Xsize = size*Constants.SCREEN_WIDTH*Constants.PIXELSPERCELL;
 		Ysize = size*Constants.SCREEN_HEIGHT*Constants.PIXELSPERCELL;
-		
-		for (byte[] row : universeMapCells)
-		{
-			Arrays.fill(row, (byte)32);   // Blank space, change this with custom char set
-		}
-		
-		for (byte[] row : universeMapAttribs)
-		{
-			Arrays.fill(row, (byte)Constants.COLOR_BLACK);  
-		}
-		
 		
 		// Stars
 		for (int t=1; t< 100000; t++)
@@ -40,7 +30,7 @@ public class Universe
 			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
 			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
-			universePoke(randx, randy, 46, Constants.COLOR_WHITE);	
+			universeMapCells[randx][randy].setAttributes(46, Constants.COLOR_WHITE, Cell.Types.Background);	
 		}
 		
 		
@@ -52,17 +42,17 @@ public class Universe
 			
 			planetoids.add(new Point(randx,randy));
 			
-			universePoke(randx-1, randy-1, 85, Constants.COLOR_GREY2);
-			universePoke(randx+0, randy-1, 68, Constants.COLOR_GREY2);
-			universePoke(randx+1, randy-1, 73, Constants.COLOR_GREY2);
+			universeMapCells[randx-1][randy-1].setAttributes(85, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy-1].setAttributes(68, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy-1].setAttributes(73, Constants.COLOR_GREY2, Cell.Types.Destructable);
 			
-			universePoke(randx-1, randy+0, 71, Constants.COLOR_GREY2);
-			universePoke(randx+0, randy+0, (byte) (t % 255), Constants.COLOR_LIGHTBLUE);
-			universePoke(randx+1, randy+0, 72, Constants.COLOR_GREY2);		
+			universeMapCells[randx-1][randy+0].setAttributes(71, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy+0].setAttributes((byte) (t % 255), Constants.COLOR_LIGHTBLUE, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy+0].setAttributes(72, Constants.COLOR_GREY2, Cell.Types.Destructable);		
 			
-			universePoke(randx-1, randy+1, 74, Constants.COLOR_GREY2);
-			universePoke(randx+0, randy+1, 70, Constants.COLOR_GREY2);
-			universePoke(randx+1, randy+1, 75, Constants.COLOR_GREY2);
+			universeMapCells[randx-1][randy+1].setAttributes(74, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy+1].setAttributes(70, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy+1].setAttributes(75, Constants.COLOR_GREY2, Cell.Types.Destructable);
 			
 			// Planets
 			for (int p=1; p < JavaTools.generator.nextInt(15); p++)
@@ -73,7 +63,7 @@ public class Universe
 				int diffx=(int) Math.round(orbit*Math.sin(dir));
 				int diffy=(int) Math.round(orbit*Math.cos(dir));
 				
-				universePoke(randx+diffx, randy+diffy, 81, Constants.COLOR_BLUE);	
+				universeMapCells[randx+diffx][randy+diffy].setAttributes(81, Constants.COLOR_BLUE, Cell.Types.Destructable);	
 			}
 		}
 		
@@ -87,7 +77,7 @@ public class Universe
 			int diffx=(int) Math.round(orbit*Math.sin(dir));
 			int diffy=(int) Math.round(orbit*Math.cos(dir));
 			
-			universePoke(1000+diffx, 1000+diffy, 42, Constants.COLOR_BROWN);	
+			universeMapCells[1000+diffx][1000+diffy].setAttributes(42, Constants.COLOR_BROWN, Cell.Types.Destructable);	
 		}		
 		
 		
@@ -97,7 +87,7 @@ public class Universe
 			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
 			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
-			universePoke(randx, randy, 87, Constants.COLOR_GREY1);	
+			universeMapCells[randx][randy].setAttributes(87, Constants.COLOR_GREY1, Cell.Types.Destructable);	
 		}
 		
 		// Put some powerups into the universe
@@ -106,11 +96,11 @@ public class Universe
 			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
 			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
-			universePoke(randx, randy, 90, Constants.COLOR_YELLOW);	
+			universeMapCells[randx][randy].setAttributes(90, Constants.COLOR_YELLOW, Cell.Types.Background);	
 		}
 		
 		// Put a special marker at the origin
-		universePoke(0, 0, 91, Constants.COLOR_LIGHTRED);
+		universeMapCells[0][0].setAttributes(91, Constants.COLOR_LIGHTRED, Cell.Types.Background);
 	
 	}
 	
@@ -118,16 +108,8 @@ public class Universe
 	{
 		for (Point p : planetoids)
 		{
-			universePoke(p.x, p.y, (byte) JavaTools.generator.nextInt(255), Constants.COLOR_LIGHTBLUE);
+			universeMapCells[p.x][p.y].setAttributes(JavaTools.generator.nextInt(255), Constants.COLOR_LIGHTBLUE, Cell.Types.Infrastructure);
 		}
-	}
-	
-	
-	/** Set the character cell and color values in one shot */
-	public void universePoke(int x, int y, int code, byte color)
-	{
-		universeMapCells[x][y]=(byte) (code  & 0xFF);
-		universeMapAttribs[x][y]=color;		
 	}
 	
 	/** Get a full screen's worth of cell data, with wraparound */
@@ -136,14 +118,8 @@ public class Universe
 		return getScreenArray(x, y, universeMapCells);
 	}
 	
-	/** Get a full screen's worth of color data, with wraparound */
-	public byte[] getScreenColor(long x, long y)
-	{
-		return getScreenArray(x, y, universeMapAttribs);
-	}
-	
 	/** Helper function for the above */
-	private byte[] getScreenArray(long x, long y, byte[][] array)
+	private byte[] getScreenArray(long x, long y, Cell[][] array)
 	{
 		byte[] screen = new byte[Constants.SCREEN_SIZE];
 		
@@ -154,7 +130,8 @@ public class Universe
 		{
             for (int xx=0; xx < Constants.SCREEN_WIDTH; xx++)
 			{			
-			   screen[index] = JavaTools.getArrayWrap(array, x+xx, y+yy);
+			   Cell c = (Cell)JavaTools.getArrayWrap(array, x+xx, y+yy);
+			   screen[index] = c.getCharCode();
 			   index++;
 			}
 		}

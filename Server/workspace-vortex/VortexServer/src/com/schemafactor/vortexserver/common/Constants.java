@@ -3,14 +3,16 @@ package com.schemafactor.vortexserver.common;
 
 public class Constants 
 {
-	public static int TICK_TIME     = 50; // milliseconds
+	// Game-specific constants
+	public static int TICK_TIME         = 50; // milliseconds
 	
-	public static int SCREEN_WIDTH  = 40;
-	public static int SCREEN_HEIGHT = 25;
-	public static int SCREEN_SIZE   = SCREEN_WIDTH*SCREEN_HEIGHT;
-
-	public static int PIXELSPERCELL    = 8;   
+	// Screen constants
+	public static int SCREEN_WIDTH      = 40;
+	public static int SCREEN_HEIGHT     = 25;
+	public static int SCREEN_SIZE       = SCREEN_WIDTH*SCREEN_HEIGHT;
+	public static int PIXELSPERCELL     = 8;   
 	
+	// C64 colors
 	public static byte COLOR_BLACK      = 0;
 	public static byte COLOR_WHITE      = 1;
 	public static byte COLOR_RED        = 2;
@@ -28,9 +30,11 @@ public class Constants
 	public static byte COLOR_LIGHTBLUE  = 14;
 	public static byte COLOR_GREY3      = 15;
 	
+	// packet types
 	public static byte PACKET_SCREEN    = 100;
 	public static byte PACKET_COLOR     = 101;
 	
+	// Position on screen
 	public static int CLIENT_YPOS       = 100;
 	public static int CLIENT_XPOS       = 160;
 	

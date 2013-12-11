@@ -15,10 +15,10 @@ import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Vector;
 
-import com.schemafactor.vortexserver.common.Universe;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
 import com.schemafactor.vortexserver.entities.HumanPlayer;
+import com.schemafactor.vortexserver.universe.Universe;
 
 /**
  * @author LBLOOMQU
@@ -86,11 +86,11 @@ public class UDPListener
             {
             	if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
             	{
-            		HumanPlayer he = (HumanPlayer)e;
+            		HumanPlayer hp = (HumanPlayer)e;
             		
-            		if ( he.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
+            		if ( hp.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
                     {
-            			he.receiveUpdate(packetBytes);
+            			hp.receiveUpdate(packetBytes);
                         return;
                     }            		
             	}                

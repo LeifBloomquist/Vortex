@@ -9,12 +9,12 @@ package com.schemafactor.vortexserver;
 import java.util.Iterator;
 import java.util.Vector;
 
-import com.schemafactor.vortexserver.common.Universe;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
+import com.schemafactor.vortexserver.universe.Universe;
 
 /**
- * @author LBLOOMQU
+ * @author Leif Bloomquist
  */
 public class UpdaterThread implements Runnable
 {   
@@ -57,7 +57,6 @@ public class UpdaterThread implements Runnable
          }
         
         long estimatedTime = System.nanoTime() - startTime;    	
-    	//JavaTools.printlnTime( "Update time [us]: " + estimatedTime/1000);
-        
+    	//JavaTools.printlnTime( "Update time [us]: " + estimatedTime/1000);       
     }
 }
