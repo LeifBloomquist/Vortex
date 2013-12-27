@@ -1,7 +1,7 @@
 Modules list:
 -------------
 vortex.o:
-    CODE              Offs = 000000   Size = 0005A7
+    CODE              Offs = 000000   Size = 0005C3
     RODATA            Offs = 000000   Size = 0000DE
     BSS               Offs = 000000   Size = 000007
     DATA              Offs = 000000   Size = 000000
@@ -11,7 +11,7 @@ vortex.o:
     CHARSET           Offs = 000000   Size = 0007F8
     SPRITES           Offs = 000000   Size = 002000
 ip65/ip65/ip65.lib(copymem.o):
-    CODE              Offs = 0005A7   Size = 000027
+    CODE              Offs = 0005C3   Size = 000027
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000007   Size = 000001
     DATA              Offs = 000000   Size = 000000
@@ -19,7 +19,7 @@ ip65/ip65/ip65.lib(copymem.o):
     NULL              Offs = 000000   Size = 000000
     IP65ZP            Offs = 000000   Size = 000004
 ip65/ip65/ip65.lib(config.o):
-    CODE              Offs = 0005CE   Size = 00001D
+    CODE              Offs = 0005EA   Size = 00001D
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000008   Size = 00001F
     DATA              Offs = 000000   Size = 000000
@@ -27,21 +27,21 @@ ip65/ip65/ip65.lib(config.o):
     NULL              Offs = 000000   Size = 000000
     IP65_DEFAULTS     Offs = 000000   Size = 00001F
 ip65/ip65/ip65.lib(timer.o):
-    CODE              Offs = 0005EB   Size = 000018
+    CODE              Offs = 000607   Size = 000018
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000027   Size = 000002
     DATA              Offs = 000000   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/ip65/ip65.lib(eth.o):
-    CODE              Offs = 000603   Size = 000020
+    CODE              Offs = 00061F   Size = 000020
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000029   Size = 000BE0
     DATA              Offs = 000000   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/ip65/ip65.lib(arp.o):
-    CODE              Offs = 000623   Size = 000202
+    CODE              Offs = 00063F   Size = 000202
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000C09   Size = 000066
     DATA              Offs = 000000   Size = 000000
@@ -49,28 +49,28 @@ ip65/ip65/ip65.lib(arp.o):
     NULL              Offs = 000000   Size = 000000
     IP65ZP            Offs = 000004   Size = 000002
 ip65/ip65/ip65.lib(ip65.o):
-    CODE              Offs = 000825   Size = 00005D
+    CODE              Offs = 000841   Size = 00005D
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000C6F   Size = 000004
     DATA              Offs = 000000   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/ip65/ip65.lib(dhcp.o):
-    CODE              Offs = 000882   Size = 00028A
+    CODE              Offs = 00089E   Size = 00028A
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000C73   Size = 000005
     DATA              Offs = 000000   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/ip65/ip65.lib(output_buffer.o):
-    CODE              Offs = 000B0C   Size = 000000
+    CODE              Offs = 000B28   Size = 000000
     RODATA            Offs = 0000DE   Size = 000000
     BSS               Offs = 000C78   Size = 000208
     DATA              Offs = 000000   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/ip65/ip65.lib(tftp.o):
-    CODE              Offs = 000B0C   Size = 00038E
+    CODE              Offs = 000B28   Size = 00038E
     RODATA            Offs = 0000DE   Size = 000006
     BSS               Offs = 000E80   Size = 000020
     DATA              Offs = 000000   Size = 000004
@@ -78,7 +78,7 @@ ip65/ip65/ip65.lib(tftp.o):
     NULL              Offs = 000000   Size = 000000
     IP65ZP            Offs = 000006   Size = 000002
 ip65/ip65/ip65.lib(ip.o):
-    CODE              Offs = 000E9A   Size = 0001FF
+    CODE              Offs = 000EB6   Size = 0001FF
     RODATA            Offs = 0000E4   Size = 000000
     BSS               Offs = 000EA0   Size = 00000C
     DATA              Offs = 000004   Size = 000000
@@ -86,7 +86,7 @@ ip65/ip65/ip65.lib(ip.o):
     NULL              Offs = 000000   Size = 000000
     IP65ZP            Offs = 000008   Size = 000002
 ip65/ip65/ip65.lib(icmp.o):
-    CODE              Offs = 001099   Size = 000230
+    CODE              Offs = 0010B5   Size = 000230
     RODATA            Offs = 0000E4   Size = 000000
     BSS               Offs = 000EAC   Size = 000009
     DATA              Offs = 000004   Size = 000003
@@ -94,49 +94,49 @@ ip65/ip65/ip65.lib(icmp.o):
     NULL              Offs = 000000   Size = 000000
     TCP_VARS          Offs = 000000   Size = 000008
 ip65/ip65/ip65.lib(udp.o):
-    CODE              Offs = 0012C9   Size = 000177
+    CODE              Offs = 0012E5   Size = 000177
     RODATA            Offs = 0000E4   Size = 000000
     BSS               Offs = 000EB5   Size = 00001F
     DATA              Offs = 000007   Size = 000003
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/drivers/c64rrnet.lib(c64print.o):
-    CODE              Offs = 001440   Size = 000058
+    CODE              Offs = 00145C   Size = 000058
     RODATA            Offs = 0000E4   Size = 000000
     BSS               Offs = 000ED4   Size = 000001
     DATA              Offs = 00000A   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/drivers/c64rrnet.lib(rr-net.o):
-    CODE              Offs = 001498   Size = 000009
+    CODE              Offs = 0014B4   Size = 000009
     RODATA            Offs = 0000E4   Size = 000009
     BSS               Offs = 000ED5   Size = 000000
     DATA              Offs = 00000A   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/drivers/c64rrnet.lib(c64timer.o):
-    CODE              Offs = 0014A1   Size = 00003F
+    CODE              Offs = 0014BD   Size = 00003F
     RODATA            Offs = 0000ED   Size = 000000
     BSS               Offs = 000ED5   Size = 000000
     DATA              Offs = 00000A   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/drivers/c64rrnet.lib(c64inputs.o):
-    CODE              Offs = 0014E0   Size = 0000DA
+    CODE              Offs = 0014FC   Size = 0000DA
     RODATA            Offs = 0000ED   Size = 000000
     BSS               Offs = 000ED5   Size = 00002D
     DATA              Offs = 00000A   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/drivers/c64rrnet.lib(petscii_charconv.o):
-    CODE              Offs = 0015BA   Size = 00000A
+    CODE              Offs = 0015D6   Size = 00000A
     RODATA            Offs = 0000ED   Size = 000200
     BSS               Offs = 000F02   Size = 000000
     DATA              Offs = 00000A   Size = 000000
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
 ip65/drivers/c64rrnet.lib(cs8900a.o):
-    CODE              Offs = 0015C4   Size = 000151
+    CODE              Offs = 0015E0   Size = 000151
     RODATA            Offs = 0002ED   Size = 000000
     BSS               Offs = 000F02   Size = 000000
     DATA              Offs = 00000A   Size = 000000
@@ -153,12 +153,12 @@ NULL                  000000  000000  000000
 ZEROPAGE              000002  000002  000000
 IP65ZP                00005F  00006A  00000C
 STARTUP               0007FF  00080C  00000E
-CODE                  00080D  001F21  001715
-DATA                  001F22  001F2B  00000A
-RODATA                001F2C  002218  0002ED
-IP65_DEFAULTS         002219  002237  00001F
-BSS                   002238  003139  000F02
-TCP_VARS              00313A  003141  000008
+CODE                  00080D  001F3D  001731
+DATA                  001F3E  001F47  00000A
+RODATA                001F48  002234  0002ED
+IP65_DEFAULTS         002235  002253  00001F
+BSS                   002254  003155  000F02
+TCP_VARS              003156  00315D  000008
 CHARSET               004000  0047F7  0007F8
 SPRITES               004C00  006BFF  002000
 
@@ -166,94 +166,94 @@ SPRITES               004C00  006BFF  002000
 Exports list:
 -------------
 __CODE_LOAD__             00080D  LA    __CODE_RUN__              00080D  LA    
-__CODE_SIZE__             001715  EA    __DATA_LOAD__             001F22  LA    
-__DATA_RUN__              001F22  LA    __DATA_SIZE__             00000A  EA    
-__IP65_DEFAULTS_LOAD__    002219  LA    __IP65_DEFAULTS_RUN__     002219  LA    
-__IP65_DEFAULTS_SIZE__    00001F  EA    __RODATA_LOAD__           001F2C  LA    
-__RODATA_RUN__            001F2C  LA    __RODATA_SIZE__           0002ED  EA    
+__CODE_SIZE__             001731  EA    __DATA_LOAD__             001F3E  LA    
+__DATA_RUN__              001F3E  LA    __DATA_SIZE__             00000A  EA    
+__IP65_DEFAULTS_LOAD__    002235  LA    __IP65_DEFAULTS_RUN__     002235  LA    
+__IP65_DEFAULTS_SIZE__    00001F  EA    __RODATA_LOAD__           001F48  LA    
+__RODATA_RUN__            001F48  LA    __RODATA_SIZE__           0002ED  EA    
 __STARTUP_LOAD__          0007FF  LA    __STARTUP_RUN__           0007FF  LA    
 __STARTUP_SIZE__          00000E  EA    ac_size                   000008  EZ    
-arp_add                   000FBC  LA    arp_cache                 002E4C  LA    
-arp_calculate_gateway_mask 000E3A RLA    arp_init                  000E30 RLA    
-arp_ip                    002E48 RLA    arp_lookup                000E5F RLA    
-arp_mac                   002E42 RLA    arp_process               000F3E RLA    
-ascii_to_native           001DCC RLA    beep                      001C57  LA    
-cfg_default_drive         00225E  LA    cfg_dns                   002252 RLA    
-cfg_gateway               00224E RLA    cfg_get_configuration_ptr 000DDB RLA    
-cfg_init                  000DE1 RLA    cfg_ip                    002246 RLA    
-cfg_mac                   002240 RLA    cfg_mac_default           002219  LA    
-cfg_netmask               00224A RLA    cfg_size                  000020  EA    
-cfg_tftp_server           00225A RLA    check_for_abort_key       001CFC RLA    
-cls                       001C52  LA    copy_dest                 000061 RLZ    
-copy_src                  00005F RLZ    copymem                   000DB4 RLA    
-cs_init                   001CA5 RLA    cs_packet_data            00DE04 REA    
+arp_add                   000FD8  LA    arp_cache                 002E68  LA    
+arp_calculate_gateway_mask 000E56 RLA    arp_init                  000E4C RLA    
+arp_ip                    002E64 RLA    arp_lookup                000E7B RLA    
+arp_mac                   002E5E RLA    arp_process               000F5A RLA    
+ascii_to_native           001DE8 RLA    beep                      001C73  LA    
+cfg_default_drive         00227A  LA    cfg_dns                   00226E RLA    
+cfg_gateway               00226A RLA    cfg_get_configuration_ptr 000DF7 RLA    
+cfg_init                  000DFD RLA    cfg_ip                    002262 RLA    
+cfg_mac                   00225C RLA    cfg_mac_default           002235  LA    
+cfg_netmask               002266 RLA    cfg_size                  000020  EA    
+cfg_tftp_server           002276 RLA    check_for_abort_key       001D18 RLA    
+cls                       001C6E  LA    copy_dest                 000061 RLZ    
+copy_src                  00005F RLZ    copymem                   000DD0 RLA    
+cs_init                   001CC1 RLA    cs_packet_data            00DE04 REA    
 cs_packet_page            00DE02 REA    cs_rxtx_data              00DE08 REA    
 cs_tx_cmd                 00DE0C REA    cs_tx_len                 00DE0E REA    
-dhcp_init                 00108F RLA    dhcp_msg                  001FB4  LA    
-dhcp_server               002256 RLA    dhcp_state                002EAB  LA    
-dns_server_msg            001F87  LA    eth_data                  00000E REZ    
-eth_dest                  000000 REZ    eth_driver_io_base        002017 RLA    
-eth_driver_name           002010 RLA    eth_init                  001DD1 RLA    
-eth_inp                   002263 RLA    eth_inp_len               002261 RLA    
-eth_outp                  002853 RLA    eth_outp_len              002851 RLA    
+dhcp_init                 0010AB RLA    dhcp_msg                  001FD0  LA    
+dhcp_server               002272 RLA    dhcp_state                002EC7  LA    
+dns_server_msg            001FA3  LA    eth_data                  00000E REZ    
+eth_dest                  000000 REZ    eth_driver_io_base        002033 RLA    
+eth_driver_name           00202C RLA    eth_init                  001DED RLA    
+eth_inp                   00227F RLA    eth_inp_len               00227D RLA    
+eth_outp                  00286F RLA    eth_outp_len              00286D RLA    
 eth_proto_arp             000006 REZ    eth_proto_ip              000000 REZ    
-eth_rx                    001E2A RLA    eth_set_broadcast_dest    000E10 RLA    
-eth_set_my_mac_src        000E1B RLA    eth_set_proto             000E27 RLA    
-eth_src                   000006 REZ    eth_tx                    001E8B RLA    
-eth_type                  00000C  EZ    failed_msg                001FC8  LA    
-filter_dns                001DA0  LA    filter_ip                 001DBB  LA    
-filter_number             001DBC  LA    filter_text               001D91  LA    
-filter_url                001D99  LA    gateway_msg               001F78  LA    
-get_filtered_input        001D11  LA    get_key                   001CED  LA    
-get_key_if_available      00F142  EA    get_key_ip65              001CF3  LA    
-icmp_add_listener         001952  LA    icmp_callback             0030E4  LA    
+eth_rx                    001E46 RLA    eth_set_broadcast_dest    000E2C RLA    
+eth_set_my_mac_src        000E37 RLA    eth_set_proto             000E43 RLA    
+eth_src                   000006 REZ    eth_tx                    001EA7 RLA    
+eth_type                  00000C  EZ    failed_msg                001FE4  LA    
+filter_dns                001DBC  LA    filter_ip                 001DD7  LA    
+filter_number             001DD8  LA    filter_text               001DAD  LA    
+filter_url                001DB5  LA    gateway_msg               001F94  LA    
+get_filtered_input        001D2D  LA    get_key                   001D09  LA    
+get_key_if_available      00F142  EA    get_key_ip65              001D0F  LA    
+icmp_add_listener         00196E  LA    icmp_callback             003100  LA    
 icmp_cksum                000002  EZ    icmp_code                 000001  EZ    
-icmp_data                 000004  EZ    icmp_echo_ip              00313A  LA    
-icmp_init                 0018A6 RLA    icmp_inp                  002285  EA    
-icmp_outp                 002875  EA    icmp_ping                 001A23  LA    
-icmp_process              0018AC RLA    icmp_remove_listener      00197E  LA    
-icmp_send_echo            0019B3  LA    icmp_type                 000000  EZ    
-init_msg                  001FB9  LA    ip65_ctr                  002EA7  LA    
-ip65_ctr_arp              002EA8  LA    ip65_ctr_ip               002EA9  LA    
-ip65_error                002EAA RLA    ip65_init                 001054 RLA    
-ip65_process              00106D RLA    ip65_random_word          001032  LA    
-ip_address_msg            001F5A  LA    ip_broadcast              0030DC RLA    
-ip_calc_cksum             001802 RLA    ip_cksum_ptr              000067 RLZ    
-ip_create_packet          00176E RLA    ip_data                   000014 REZ    
+icmp_data                 000004  EZ    icmp_echo_ip              003156  LA    
+icmp_init                 0018C2 RLA    icmp_inp                  0022A1  EA    
+icmp_outp                 002891  EA    icmp_ping                 001A3F  LA    
+icmp_process              0018C8 RLA    icmp_remove_listener      00199A  LA    
+icmp_send_echo            0019CF  LA    icmp_type                 000000  EZ    
+init_msg                  001FD5  LA    ip65_ctr                  002EC3  LA    
+ip65_ctr_arp              002EC4  LA    ip65_ctr_ip               002EC5  LA    
+ip65_error                002EC6 RLA    ip65_init                 001070 RLA    
+ip65_process              001089 RLA    ip65_random_word          00104E  LA    
+ip_address_msg            001F76  LA    ip_broadcast              0030F8 RLA    
+ip_calc_cksum             00181E RLA    ip_cksum_ptr              000067 RLZ    
+ip_create_packet          00178A RLA    ip_data                   000014 REZ    
 ip_dest                   000010 REZ    ip_frag                   000006  EZ    
 ip_header_cksum           00000A REZ    ip_id                     000004 REZ    
-ip_init                   0016A7 RLA    ip_inp                    002271 REA    
-ip_len                    000002 REZ    ip_outp                   002861 REA    
-ip_process                0016BC RLA    ip_proto                  000009 REZ    
+ip_init                   0016C3 RLA    ip_inp                    00228D REA    
+ip_len                    000002 REZ    ip_outp                   00287D REA    
+ip_process                0016D8 RLA    ip_proto                  000009 REZ    
 ip_proto_icmp             000001 REZ    ip_proto_tcp              000006  EZ    
-ip_proto_udp              000011 REZ    ip_send                   00179B RLA    
+ip_proto_udp              000011 REZ    ip_send                   0017B7 RLA    
 ip_src                    00000C REZ    ip_tos                    000001  EZ    
 ip_ttl                    000008  EZ    ip_ver_ihl                000000  EZ    
-mac_address_msg           001F4B  LA    native_to_ascii           001DC7  LA    
-netmask_msg               001F69  LA    ok_msg                    001FCF  LA    
-output_buffer             002EB0 RLA    press_a_key_to_continue   001FF1  LA    
+mac_address_msg           001F67  LA    native_to_ascii           001DE3  LA    
+netmask_msg               001F85  LA    ok_msg                    001FEB  LA    
+output_buffer             002ECC RLA    press_a_key_to_continue   00200D  LA    
 print                     0008A9  LA    print_a                   00FFD2 REA    
-print_a_inverse           001C96  LA    print_ascii_as_native     0008BF  LA    
-print_cr                  001C4D RLA    print_dotted_quad         0008D8  LA    
+print_a_inverse           001CB2  LA    print_ascii_as_native     0008BF  LA    
+print_cr                  001C69 RLA    print_dotted_quad         0008D8  LA    
 print_errorcode           0009A5  LA    print_hex                 00098C  LA    
 print_integer             000915  LA    print_ip_config           00080D  LA    
 screen_current_col        0000D3  EZ    screen_current_row        0000D6  EZ    
-tftp_callback_vector      001F22  LA    tftp_clear_callbacks      00169B RLA    
-tftp_data_block_length    0030BF  LA    tftp_download             00133B RLA    
-tftp_filename             000065 RLZ    tftp_filesize             0030D4  LA    
-tftp_ip                   0030BB RLA    tftp_load_address         0030B9 RLA    
-tftp_server_msg           001FA5  LA    tftp_set_callback_vector  001691  LA    
-tftp_upload               001334  LA    tftp_upload_from_memory   001319  LA    
-timer_init                001CAE RLA    timer_read                001CE1 RLA    
-timer_seconds             001CDD  LA    timer_timeout             000DF8 RLA    
-udp_add_listener          001B09 RLA    udp_callback              0030ED RLA    
+tftp_callback_vector      001F3E  LA    tftp_clear_callbacks      0016B7 RLA    
+tftp_data_block_length    0030DB  LA    tftp_download             001357 RLA    
+tftp_filename             000065 RLZ    tftp_filesize             0030F0  LA    
+tftp_ip                   0030D7 RLA    tftp_load_address         0030D5 RLA    
+tftp_server_msg           001FC1  LA    tftp_set_callback_vector  0016AD  LA    
+tftp_upload               001350  LA    tftp_upload_from_memory   001335  LA    
+timer_init                001CCA RLA    timer_read                001CFD RLA    
+timer_seconds             001CF9  LA    timer_timeout             000E14 RLA    
+udp_add_listener          001B25 RLA    udp_callback              003109 RLA    
 udp_cksum                 000006  EZ    udp_data                  000008 REZ    
-udp_dest_port             000002  EZ    udp_init                  001AD6 RLA    
-udp_inp                   002285 REA    udp_len                   000004  EZ    
-udp_outp                  002875  EA    udp_process               001ADC RLA    
-udp_remove_listener       001B50 RLA    udp_send                  001B9C RLA    
-udp_send_dest             0030EF RLA    udp_send_dest_port        0030F5 RLA    
-udp_send_len              0030F7 RLA    udp_send_src_port         0030F3 RLA    
+udp_dest_port             000002  EZ    udp_init                  001AF2 RLA    
+udp_inp                   0022A1 REA    udp_len                   000004  EZ    
+udp_outp                  002891  EA    udp_process               001AF8 RLA    
+udp_remove_listener       001B6C RLA    udp_send                  001BB8 RLA    
+udp_send_dest             00310B RLA    udp_send_dest_port        003111 RLA    
+udp_send_len              003113 RLA    udp_send_src_port         00310F RLA    
 udp_src_port              000000 REZ    
 
 
@@ -328,7 +328,7 @@ copy_dest (copymem.o):
     udp.o                     udp.s(52)
     tftp.o                    tftp.s(50)
     config.o                  config.s(21)
-    vortex.o                  network.s(31)
+    vortex.o                  network.s(42)
 copy_src (copymem.o):
     c64inputs.o               c64inputs.s(11)
     udp.o                     udp.s(51)
@@ -340,7 +340,7 @@ copymem (copymem.o):
     udp.o                     udp.s(50)
     tftp.o                    tftp.s(48)
     config.o                  config.s(19)
-    vortex.o                  network.s(29)
+    vortex.o                  network.s(40)
 cs_init (rr-net.o):
     cs8900a.o                 cs8900a.s(28)
 cs_packet_data (rr-net.o):
@@ -537,17 +537,17 @@ screen_current_col (c64print.o):
 screen_current_row (c64print.o):
 tftp_callback_vector (tftp.o):
 tftp_clear_callbacks (tftp.o):
-    vortex.o                  network.s(27)
+    vortex.o                  network.s(38)
 tftp_data_block_length (tftp.o):
 tftp_download (tftp.o):
-    vortex.o                  network.s(22)
+    vortex.o                  network.s(33)
 tftp_filename (tftp.o):
-    vortex.o                  network.s(24)
+    vortex.o                  network.s(35)
 tftp_filesize (tftp.o):
 tftp_ip (tftp.o):
-    vortex.o                  network.s(25)
+    vortex.o                  network.s(36)
 tftp_load_address (tftp.o):
-    vortex.o                  network.s(23)
+    vortex.o                  network.s(34)
 tftp_server_msg (vortex.o):
 tftp_set_callback_vector (tftp.o):
 tftp_upload (tftp.o):
@@ -568,24 +568,24 @@ timer_timeout (timer.o):
 udp_add_listener (udp.o):
     tftp.o                    tftp.s(29)
     dhcp.o                    dhcp.s(33)
-    vortex.o                  network.s(14)
+    vortex.o                  network.s(25)
 udp_callback (udp.o):
     tftp.o                    tftp.s(32)
     dhcp.o                    dhcp.s(36)
-    vortex.o                  network.s(15)
+    vortex.o                  network.s(26)
 udp_cksum (udp.o):
 udp_data (udp.o):
     tftp.o                    tftp.s(41)
     dhcp.o                    dhcp.s(41)
-    vortex.o                  network.s(18)
+    vortex.o                  network.s(29)
 udp_dest_port (udp.o):
 udp_init (udp.o):
     ip.o                      ip.s(53)
-    vortex.o                  network.s(7)
+    vortex.o                  network.s(18)
 udp_inp (udp.o):
     tftp.o                    tftp.s(35)
     dhcp.o                    dhcp.s(39)
-    vortex.o                  network.s(17)
+    vortex.o                  network.s(28)
 udp_len (udp.o):
 udp_outp (udp.o):
 udp_process (udp.o):
@@ -596,23 +596,23 @@ udp_remove_listener (udp.o):
 udp_send (udp.o):
     tftp.o                    tftp.s(33)
     dhcp.o                    dhcp.s(37)
-    vortex.o                  network.s(8)
+    vortex.o                  network.s(19)
 udp_send_dest (udp.o):
     tftp.o                    tftp.s(43)
     dhcp.o                    dhcp.s(45)
-    vortex.o                  network.s(9)
+    vortex.o                  network.s(20)
 udp_send_dest_port (udp.o):
     tftp.o                    tftp.s(45)
     dhcp.o                    dhcp.s(47)
-    vortex.o                  network.s(10)
+    vortex.o                  network.s(21)
 udp_send_len (udp.o):
     tftp.o                    tftp.s(46)
     dhcp.o                    dhcp.s(48)
-    vortex.o                  network.s(12)
+    vortex.o                  network.s(23)
 udp_send_src_port (udp.o):
     tftp.o                    tftp.s(44)
     dhcp.o                    dhcp.s(46)
-    vortex.o                  network.s(11)
+    vortex.o                  network.s(22)
 udp_src_port (udp.o):
     tftp.o                    tftp.s(38)
 

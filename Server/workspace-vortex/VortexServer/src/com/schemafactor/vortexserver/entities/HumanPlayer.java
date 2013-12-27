@@ -3,7 +3,6 @@ package com.schemafactor.vortexserver.entities;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
@@ -23,7 +22,7 @@ public class HumanPlayer extends Entity
    /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet)
    {
-       super("Human Player from " + packet.getAddress(), 100, 100, Entity.eTypes.HUMAN_PLAYER);
+       super("Human Player from " + packet.getAddress(), 5000, 5100, Entity.eTypes.HUMAN_PLAYER);
        
        userIP = packet.getAddress();
        receiveUpdate(packet.getData());
@@ -83,25 +82,27 @@ public class HumanPlayer extends Entity
    {
 	   switch (data[0])   // Packet type
 	   {
-	   		case 0:  // Player name and Announce
-	   			
+	   		case  1: // Constants.CLIENT_ANNOUNCE:
+	   		 // Not yet implemented
 	   	    break;
 	   	    
-	   		case 2:  // Client ready
-	   			
-	   		break;
-	   		
-	   		case 3:  // Client update
-	          Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
-	          Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
+	   	
+	   	    	   		
+	   		case 2:  // Constants.CLIENT_UPDATE;
+	          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
+	          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
 	   		  Xspeed  = (data[5] / 100d);
-	   		  Yspeed  = (data[6] / 100d);	   		   
-	   		break;
+	   		  Yspeed  = (data[6] / 100d);
+	   		  
+	   		  // Cheat a little and do the position math here.  Eventually, move to client.
+	   		  Xpos += Xspeed;
+	   		  Ypos += Yspeed;
+	   		  
+	   		  break;
 	   		
 	   		default:
 	   			JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
 	   			return;
-	   		//break;
 	   }
 	   		 
        // Reset timeout
@@ -116,7 +117,7 @@ public class HumanPlayer extends Entity
 	   
 	   // Send data packet to the client	   	   
 	   byte[] message = new byte[940];  
-	   message[0] = (byte) 140;  // Packet type, game update.
+	   message[0] = Constants.PACKET_UPDATE;
 	   message[1] = 0; // Unused
 	   message[2] = getScroll(Xpos);  // Fine X
 	   message[3] = getScroll(Ypos);  // Fine Y 		  
@@ -133,7 +134,7 @@ public class HumanPlayer extends Entity
 		   
 		   // TODO, this needs serious wrapping handling.  Make this a function.
 		   
-		   // Determine distance between this player and other entities    These assume player is centered.
+		   // Determine distance between this player and other entities
 		   long ydist = (long)(this.getYpos() - e.getYpos());           
            if (ydist < -Constants.CLIENT_YPOS)  continue;  // Too high
            if (ydist >  Constants.CLIENT_YPOS)  continue;  // Too low
@@ -159,6 +160,9 @@ public class HumanPlayer extends Entity
            
            offset += 10;   
 	   }
+	   
+	   // Sound effects
+	   // Messages
 	   
 	   // And now, the first 20 lines (=800 bytes) of the screen.	   
 	   System.arraycopy(universe.getScreen(getXcell(), getYcell()), 0, message, 140, 20*40);

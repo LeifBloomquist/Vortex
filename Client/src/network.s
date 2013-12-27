@@ -1,6 +1,17 @@
 ; -------------------------------------------------------------------------
 ; Vortex II Network Code
 
+SEND_LENGTH   = 0016
+
+; Packet Types - C64 to CLIENT
+PACKET_ANNOUNCE = 1
+PACKET_CLIENT_UPDATE = 2
+
+; Packet Types - Server to C64
+PACKET_ANNOUNCE_REPLY = 128
+PACKET_SERVER_UPDATE  = 129
+
+
 ; -------------------------------------------------------------------------
 ; IP65 Imports
   
@@ -63,7 +74,7 @@ network_init_udp:
   ldax #SRC_PORT
   stax udp_send_src_port
   
-  ldax #0018
+  ldax #SEND_LENGTH
   stax udp_send_len
   
   ; UDP Receives
@@ -74,17 +85,31 @@ network_init_udp:
   jsr udp_add_listener 
   rts
   
-  
 
 ; -------------------------------------------------------------------------
 ; Send the update packet
 
 sendupdate:
-  ldx RATE_X
-  ldy RATE_Y
+  lda #PACKET_CLIENT_UPDATE
+  sta SENDBUFFER+0
   
-  stx SENDBUFFER  
-  sty SENDBUFFER+1       
+  
+  ldx RATE_X
+  ldy RATE_Y  
+  stx SENDBUFFER+5  
+  sty SENDBUFFER+6       
+  
+  ; Direction - Tricky!
+  lda #$FF ; TODO
+  sta SENDBUFFER+7  
+  
+  lda JOYBUTTON
+  sta SENDBUFFER+8
+  
+  lda #$00
+  sta SENDBUFFER+9   ; Weapon
+  sta SENDBUFFER+10  ; Powerup
+  sta SENDBUFFER+11  ; Shields  
   
   ldax #SENDBUFFER  
   jsr udp_send
@@ -238,7 +263,7 @@ SRC_PORT    = 6464
 LISTEN_PORT = 3000
 
 SENDBUFFER:
-  .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  .res SEND_LENGTH
   
 WAITMESSAGE:
   .byte "press any key to continue."
@@ -246,16 +271,16 @@ WAITMESSAGE:
   
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
-  .byte "vortex 2 network initialization",13
-  .byte "forward udp port 3000 to your c64",13,13
+  .byte "vORTEX 2 nETWORK INITIALIZATION",13
+  .byte "fORWARD udp pORT 3000 TO YOUR C64",13,13
   .byte 0
 
 DOWNLOADMESSAGE:
-  .byte "downloading game data..."
+  .byte "dOWNLOADING GAME DATA..."
   .byte 0
 
 SERVERMESSAGE:
-  .byte "waiting for server..."
+  .byte "wAITING FOR SERVER..."
   .byte 0       
 
 OKMESSAGE:
@@ -271,10 +296,6 @@ packetreceived:
   
 tftpname:
   .byte "vortexcode", 0
-
-; Packet Types
-PACKET_SCREEN = 100
-PACKET_COLOR  = 101
 
 bittab:
    .byte $80,$40,$20,$10,$08,$04,$02,$01

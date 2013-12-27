@@ -15,6 +15,10 @@ public class Constants
 	public static int SCREEN_SIZE       = SCREEN_WIDTH*SCREEN_HEIGHT;
 	public static int PIXELSPERCELL     = 8;   
 	
+	// Position on screen
+	public static int CLIENT_YPOS       = 100;
+	public static int CLIENT_XPOS       = 160;
+	
 	// C64 colors
 	public static byte COLOR_BLACK      = 0;
 	public static byte COLOR_WHITE      = 1;
@@ -33,12 +37,10 @@ public class Constants
 	public static byte COLOR_LIGHTBLUE  = 14;
 	public static byte COLOR_GREY3      = 15;
 	
-	// packet types
-	public static byte PACKET_SCREEN    = 100;
-	public static byte PACKET_COLOR     = 101;
+	// Packet types	
+	public static byte CLIENT_ANNOUNCE  = 1;
+	public static byte CLIENT_UPDATE    = 2;
 	
-	// Position on screen
-	public static int CLIENT_YPOS       = 100;
-	public static int CLIENT_XPOS       = 160;
-	
+	public static byte PACKET_ANN_REPLY = (byte) 128;
+	public static byte PACKET_UPDATE    = (byte) 129;	
 }
