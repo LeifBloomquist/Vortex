@@ -51,8 +51,8 @@ init:
 
   jsr network_init_dhcp  
   jsr tftptests
-  jsr network_init_udp
-  jsr irq_init
+  jsr network_init_udp  
+  jsr irq_init   ; Needed for network
  
   ; Wait for the first server packet
   kernal_print SERVERMESSAGE

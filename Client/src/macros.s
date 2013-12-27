@@ -14,7 +14,6 @@
 .endmacro
 
 .macro BORDER color
-  lda color
-  and BORDERMASK
+  lda #color
   sta $D020   
 .endmacro

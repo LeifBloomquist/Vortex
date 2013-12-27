@@ -43,8 +43,7 @@ network_init_dhcp:
   jsr print_ip_config
   jsr print_cr  
   rts
-  
-  
+    
 network_init_udp:
   jsr udp_init
   
@@ -64,7 +63,7 @@ network_init_udp:
   ldax #SRC_PORT
   stax udp_send_src_port
   
-  lda #0018 ; Decimal
+  ldax #0018
   stax udp_send_len
   
   ; UDP Receives
@@ -84,10 +83,10 @@ sendupdate:
   ldx RATE_X
   ldy RATE_Y
   
+  stx SENDBUFFER  
+  sty SENDBUFFER+1       
   
-  
-  
-  ldax #SENDBUFFER
+  ldax #SENDBUFFER  
   jsr udp_send
   rts  
 
@@ -96,7 +95,7 @@ sendupdate:
 ; Handle Received Packets (Dispatcher)
 
 gotpacket:
-  inc packetreceived  ; Flag that we got the first packet (this is ignored anfterwards)
+  inc packetreceived  ; Flag that we got the first packet (this is ignored afterwards)
   
   lda udp_inp_data+0
 
@@ -111,60 +110,60 @@ gotpacket:
 ; .A: the sprite to update the position of
 ;
 gameupdate:
-   ldy #$00
-   ldx #$00
-updatesprites:
-   ; x-coordinate
-   lda udp_inp_data+1,x
-   sta $d000,x
-   lda udp_inp_data+2,x
-   lda bittab,y
-   ora $d010
-   sta $d010
+;   ldy #$00
+;   ldx #$00
+;updatesprites:
+;   ; x-coordinate
+;   lda udp_inp_data+1,x
+;   sta $d000,x
+;   lda udp_inp_data+2,x
+;   lda bittab,y
+;   ora $d010
+;   sta $d010
    ; y-coordinate
-   lda udp_inp_data+2,x
-   sta $d001,x
+;   lda udp_inp_data+2,x
+;   sta $d001,x
    ; color
-   lda udp_inp_data+4,x
-   sta $d025,y
-   ; sprite #
-   lda udp_inp_data+5
-   sta SCREEN_BASE+$3f8,y
+;   lda udp_inp_data+4,x
+;   sta $d025,y
+;   ; sprite #
+;   lda udp_inp_data+5
+;   sta SCREEN_BASE+$3f8,y
 
-   txa
-   clc
-   adc #10
-   tax
+;   txa
+;   clc
+;   adc #10
+;   tax
 
-   iny 
-   cpy #$07
-   bcc updatesprites
+;   iny 
+;   cpy #$07
+;   bcc updatesprites
 
 ; update scroll
-  lda udp_inp_data+2
-  ora $d016
-  sta $d016
-  lda udp_inp_data+3
-  ora $d011
-  sta $d011
+;  lda udp_inp_data+2
+;  ora $d016
+;  sta $d016
+;  lda udp_inp_data+3
+;  ora $d011
+;  sta $d011
 
 ; -------------------------------------------------------------------------
 ; Handle Received Screen Update Packet
 screenpacket:  
-  lda udp_inp_data+1
-  sta finex
-  lda udp_inp_data+2
-  sta finey  
-  lda udp_inp_data+3
+;  lda udp_inp_data+1
+;  sta finex
+;  lda udp_inp_data+2
+;  sta finey  
+;  lda udp_inp_data+3
   ;sta whichscreen
   
   lda #$01
   sta screenreceived   ; Flag for next IRQ frame
+  rts
 
 ; -------------------------------------------------------------------------
 ; Copy screen data from UDP buffer to screen
 copyscreen:
-  BORDER #$07
   ;jsr finexy
 
   ldax #SCREEN_BASE
@@ -178,16 +177,16 @@ copyscreen:
 ; -------------------------------------------------------------------------
 ; Handle Received Color Update Packet
 
-colorpacket:  
-  ldax #udp_inp_data+1
-  stax copy_src
-  ldax #$D800
-  stax copy_dest 
-  ldax #1000   ; Decimal
-
-  BORDER #$08
-  jsr copymem  
-  rts
+;colorpacket:  
+;  ldax #udp_inp_data+1
+;  stax copy_src
+;  ldax #$D800
+;  stax copy_dest 
+;  ldax #1000   ; Decimal
+;
+;  BORDER #$08
+;  jsr copymem  
+;  rts
 
 
 tftptests:
@@ -269,9 +268,6 @@ FAILMESSAGE:
   
 packetreceived:
    .byte 0           
-
-BORDERMASK:
-  .byte $FF
   
 tftpname:
   .byte "vortexcode", 0

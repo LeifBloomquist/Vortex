@@ -17,8 +17,8 @@ public class Asteroid extends Entity
    {
        super("Asteroid", 1000+JavaTools.generator.nextInt(1000), 1000+JavaTools.generator.nextInt(1000), Entity.eTypes.ASTEROID);  
        
-       Xspeed = 0; //-0.05 + JavaTools.generator.nextInt(11);
-       Yspeed = 0; //-5 + JavaTools.generator.nextInt(11);
+       Xspeed = -0.05 + (JavaTools.generator.nextDouble()*0.1);
+       Yspeed = -0.05 + (JavaTools.generator.nextDouble()*0.1);
    }
        
    /** Return Color */

@@ -40,7 +40,6 @@ public class HumanPlayer extends Entity
            DatagramSocket dsocket = new DatagramSocket();
            dsocket.send(packet);
            dsocket.close();
- //          JavaTools.printlnTime("Packet sent to " + myIP);
        }
        catch (Exception e)
        {
@@ -107,16 +106,13 @@ public class HumanPlayer extends Entity
 	   		 
        // Reset timeout
        timeoutCounter = 0;
-       
-       JavaTools.printlnTime("Player " + userIP.toString() + " location: " + Xpos + " " + Ypos);     
-   } 
+   }
    
 
    @Override
    public boolean update(Universe universe, Vector<Entity> allEntities)
-   {   
-	   // Don't call for for human players - Position is controlled by client.
-	   // move(universe);
+   {   	   
+	   // move(universe);  // Don't call for for human players - Position is controlled by client.
 	   
 	   // Send data packet to the client	   	   
 	   byte[] message = new byte[940];  

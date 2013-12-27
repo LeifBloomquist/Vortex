@@ -84,7 +84,7 @@ public abstract class Entity
        return description;
    }
 
-   abstract public boolean update(Universe world, Vector<Entity> allEntities);   // True means the player should be removed (timeout, destroyed, etc)   
+   abstract public boolean update(Universe universe, Vector<Entity> allEntities);   // True means the player should be removed (timeout, destroyed, etc)   
    
 
    public eTypes getType() 

@@ -124,11 +124,14 @@ public class VortexDebugServer extends NanoHTTPD
     	
     	msg += "<table border=\"1\">" +
     	       "<tr><th>Entity Name</th><th>Location X</th><th>Location Y</th></tr>";
-    		
-    	for (Entity e : allEntities)
-    	{
-    		msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
-    	}
+    	
+    	synchronized (allEntities) 
+        {
+	    	for (Entity e : allEntities)
+	    	{
+	    		msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
+	    	}
+        }
     	
     	msg += "</table>";
 		return msg;

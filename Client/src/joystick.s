@@ -40,7 +40,6 @@ JOYSTART:
   sta JOYUP
   sta JOYDOWN  
   sta JOYBUTTON  
-  sta BORDERMASK   ; Testing only
   
 ; ---------------------------------------------------------------------
 ; Check joystick bits.
@@ -121,8 +120,7 @@ DOBUTTON:
   beq JOY_x
 
   ; Fire button
-  lda #$FF
-  sta BORDERMASK    ; Testing only
+  
 
 ; ---------------------------------------------------------------------
 JOY_x:

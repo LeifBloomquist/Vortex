@@ -9,6 +9,7 @@ import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Asteroid;
 import com.schemafactor.vortexserver.entities.Entity;
+import com.schemafactor.vortexserver.entities.ServerControlled;
 import com.schemafactor.vortexserver.network.UDPListener;
 import com.schemafactor.vortexserver.universe.Universe;
 
@@ -33,9 +34,14 @@ public class Main
         Vector<Entity> allEntities = new Vector<Entity>();
         
         // Add some entities.
-        for (int i=1; i<=10; i++)
+        for (int i=1; i<=3; i++)
         {
         	allEntities.add(new Asteroid());
+        }
+        
+        for (int i=1; i<=3; i++)
+        {
+        	allEntities.add(new ServerControlled());
         }
         
         // Testing - a mini http server to show stats through a browser
