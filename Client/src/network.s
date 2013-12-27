@@ -19,6 +19,13 @@
   
   udp_inp_data = udp_inp + udp_data
   
+  .import tftp_download
+    .import tftp_load_address
+    .importzp tftp_filename
+    .import tftp_ip 
+    
+  .import tftp_clear_callbacks 
+  
   .import copymem
     .importzp copy_src
     .importzp copy_dest  
@@ -27,15 +34,18 @@
 ; -------------------------------------------------------------------------
 ; Network Initialization
 
-network_init:
+network_init_dhcp:
   
   kernal_print NETWORKMESSAGE
   
   init_ip_via_dhcp   
   jsr print_cr
   jsr print_ip_config
-  jsr print_cr
+  jsr print_cr  
+  rts
   
+  
+network_init_udp:
   jsr udp_init
   
   ; UDP Sends 
@@ -54,42 +64,18 @@ network_init:
   ldax #SRC_PORT
   stax udp_send_src_port
   
-  lda #16 ; Decimal
-  sta udp_send_len+0
-  lda #0
-  sta udp_send_len+1
+  lda #0018 ; Decimal
+  stax udp_send_len
   
   ; UDP Receives
   ldax #gotpacket
   stax udp_callback
      
   ldax #LISTEN_PORT
-  jsr udp_add_listener
-  
-  jsr waitforkey
-  
-    
-  lda #CG_UCS
-  jsr $FFD2
-  
+  jsr udp_add_listener 
   rts
   
   
-
-
-; -------------------------------------------------------------------------
-; Wait 
-waitforkey:
-   
-  ; Wait for key
-  kernal_print WAITMESSAGE
-    
-gak0:
-	jsr $FFE4  ;GETIN
-	beq gak0
-
-  
-  rts
 
 ; -------------------------------------------------------------------------
 ; Send the update packet
@@ -97,10 +83,11 @@ gak0:
 sendupdate:
   ldx RATE_X
   ldy RATE_Y
-  stx TESTMESSAGE  
-  sty TESTMESSAGE+1  
   
-  ldax #TESTMESSAGE
+  
+  
+  
+  ldax #SENDBUFFER
   jsr udp_send
   rts  
 
@@ -109,6 +96,8 @@ sendupdate:
 ; Handle Received Packets (Dispatcher)
 
 gotpacket:
+  inc packetreceived  ; Flag that we got the first packet (this is ignored anfterwards)
+  
   lda udp_inp_data+0
 
   cmp #140
@@ -201,8 +190,46 @@ colorpacket:
   rts
 
 
+tftptests:
+  kernal_print DOWNLOADMESSAGE
+
+  lda SERVER_IP+0
+  sta tftp_ip+0 
+  lda SERVER_IP+1
+  sta tftp_ip+1
+  lda SERVER_IP+2
+  sta tftp_ip+2
+  lda SERVER_IP+3
+  sta tftp_ip+3
+  
+  ldax #tftpname
+  stax tftp_filename
+  
+  ldax #$8000 ; !!!!
+  stax tftp_load_address
+  
+  jsr tftp_clear_callbacks   ; To RAM directly
+  
+  jsr tftp_download  
+  bcs tftperror
+
+tftpok: 
+  kernal_print OKMESSAGE 
+  rts
+
+
+tftperror:
+  kernal_print FAILMESSAGE
+:
+  lda #$07
+  sta $d020
+  lda #$02
+  sta $d020
+  jmp :-
+    
+
 ; -------------------------------------------------------------------------
-; Network Constants  
+; Network Constants and Data  
   
 SERVER_IP:
   .byte 208,79,218,201    ; Vortex VPS  
@@ -211,24 +238,47 @@ SERVER_PORT = 3005
 SRC_PORT    = 6464
 LISTEN_PORT = 3000
 
-TESTMESSAGE:
-  .byte "Hello everyone."
-  .byte 0
+SENDBUFFER:
+  .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
   
 WAITMESSAGE:
   .byte "press any key to continue."
   .byte 0
   
 NETWORKMESSAGE:
-  .byte 147, CG_LCS, "network init started",13,13  
+  .byte 147, CG_LCS, CG_DCS, CG_LBL
+  .byte "vortex 2 network initialization",13
+  .byte "forward udp port 3000 to your c64",13,13
   .byte 0
+
+DOWNLOADMESSAGE:
+  .byte "downloading game data..."
+  .byte 0
+
+SERVERMESSAGE:
+  .byte "waiting for server..."
+  .byte 0       
+
+OKMESSAGE:
+  .byte "ok",13
+  .byte 0                      
+
+FAILMESSAGE:
+  .byte "failed",13
+  .byte 0                    
+  
+packetreceived:
+   .byte 0           
 
 BORDERMASK:
   .byte $FF
+  
+tftpname:
+  .byte "vortexcode", 0
 
 ; Packet Types
 PACKET_SCREEN = 100
 PACKET_COLOR  = 101
 
 bittab:
-.byte $80,$40,$20,$10,$08,$04,$02,$01
+   .byte $80,$40,$20,$10,$08,$04,$02,$01

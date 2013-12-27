@@ -4,19 +4,12 @@
 ; -------------------------------------------------------------------------
 ; Screen Initialization
 
-screen_init:
-  lda #CG_DCS
-  jsr $FFD2
-  
-  lda #CG_LCS
-  jsr $FFD2
-  
+screen_init: 
   ; Background Colors
-  
   lda #$00
   sta $d020
   sta $d021
-  
+      
   lda #$01
   sta $d022  
   

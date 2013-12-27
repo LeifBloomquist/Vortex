@@ -1,4 +1,4 @@
-; -------------------------------------------------------------------------
+;------------------------------------------------------------------------
 ; Vortex II Source Code
 
 ; -------------------------------------------------------------------------
@@ -45,10 +45,27 @@ basicstub:
 .code
 
 init:
-  jsr network_init
-  jsr screen_init
-  jsr sprites_init  
+  lda #$00
+  sta $d020
+  sta $d021
+
+  jsr network_init_dhcp  
+  jsr tftptests
+  jsr network_init_udp
   jsr irq_init
+ 
+  ; Wait for the first server packet
+  kernal_print SERVERMESSAGE
+  
+:
+  lda packetreceived
+  beq :-
+  
+  kernal_print OKMESSAGE
+  
+  
+  jsr screen_init
+  jsr sprites_init                   
   
 ; -------------------------------------------------------------------------
 ; Main Loop - Idle.

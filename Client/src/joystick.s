@@ -8,7 +8,7 @@ JOYOK:
 ;This holds the joystick button state
 JOYBUTTON:
   .byte $00
-  
+                
 ;Flags for directions
 JOYLEFT:
   .byte $00
