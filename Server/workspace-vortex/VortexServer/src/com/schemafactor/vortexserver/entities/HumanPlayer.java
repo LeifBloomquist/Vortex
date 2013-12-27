@@ -82,13 +82,11 @@ public class HumanPlayer extends Entity
    {
 	   switch (data[0])   // Packet type
 	   {
-	   		case  1: // Constants.CLIENT_ANNOUNCE:
+	   		case  Constants.CLIENT_ANNOUNCE:
 	   		 // Not yet implemented
 	   	    break;
 	   	    
-	   	
-	   	    	   		
-	   		case 2:  // Constants.CLIENT_UPDATE;
+	   		case Constants.CLIENT_UPDATE:
 	          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
 	          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
 	   		  Xspeed  = (data[5] / 100d);
@@ -136,16 +134,16 @@ public class HumanPlayer extends Entity
 		   
 		   // Determine distance between this player and other entities
 		   long ydist = (long)(this.getYpos() - e.getYpos());           
-           if (ydist < -Constants.CLIENT_YPOS)  continue;  // Too high
-           if (ydist >  Constants.CLIENT_YPOS)  continue;  // Too low
+           if (ydist < -Constants.PLAYER_YPOS)  continue;  // Too high
+           if (ydist >  Constants.PLAYER_YPOS)  continue;  // Too low
 		   
            long xdist = (long)(this.getXpos() - e.getXpos());           
-           if (xdist < -Constants.CLIENT_XPOS)  continue;  // Too far to the left
-           if (xdist >  Constants.CLIENT_XPOS)  continue;  // Too far to the right
+           if (xdist < -Constants.PLAYER_XPOS)  continue;  // Too far to the left
+           if (xdist >  Constants.PLAYER_XPOS)  continue;  // Too far to the right
 		   
            // Other entity is visible!
-           int yrel = (int)(ydist + Constants.CLIENT_YPOS);
-           int xrel = (int)(xdist + Constants.CLIENT_XPOS);           
+           int yrel = (int)(ydist + Constants.PLAYER_YPOS);
+           int xrel = (int)(xdist + Constants.PLAYER_XPOS);           
            
            message[offset+0] = JavaTools.getLowByte(xrel);  
            message[offset+1] = JavaTools.getHighByte(xrel);

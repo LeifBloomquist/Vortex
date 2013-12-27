@@ -120,7 +120,7 @@ public class VortexDebugServer extends NanoHTTPD
     
     private String getEntities()
     { 
-    	String msg = "<h2>List of entities</h2>";
+    	String msg = "<h2>List of entities (" + allEntities.size() + " total)</h2>";
     	
     	msg += "<table border=\"1\">" +
     	       "<tr><th>Entity Name</th><th>Location X</th><th>Location Y</th></tr>";
