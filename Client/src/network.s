@@ -214,7 +214,7 @@ copyscreen:
 ;  rts
 
 
-tftptests:
+tftpget:
   kernal_print DOWNLOADMESSAGE
 
   lda SERVER_IP+0
@@ -229,7 +229,7 @@ tftptests:
   ldax #tftpname
   stax tftp_filename
   
-  ldax #$8000 ; !!!!
+  ldax #$4000
   stax tftp_load_address
   
   jsr tftp_clear_callbacks   ; To RAM directly
@@ -293,9 +293,9 @@ FAILMESSAGE:
   
 packetreceived:
    .byte 0           
-  
+
 tftpname:
-  .byte "vortexcode", 0
+  .byte "vortexdata", 0
 
 bittab:
    .byte $80,$40,$20,$10,$08,$04,$02,$01

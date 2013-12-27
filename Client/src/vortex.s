@@ -50,7 +50,7 @@ init:
   sta $d021
 
   jsr network_init_dhcp  
-  jsr tftptests
+  jsr tftpget
   jsr network_init_udp  
   jsr irq_init   ; Needed for network
  
@@ -84,12 +84,6 @@ loop:
   .include "network.s"  
 
 ; -------------------------------------------------------------------------
-; Binary data
-
-.SEGMENT "CHARSET"
-   .incbin "..\..\Server\data\chars.raw" 
-
-.SEGMENT "SPRITES"
-   .incbin "..\..\Server\data\Sprites.raw"
+; Binary data is now loaded from server via TFTP
   
 ; EOF!

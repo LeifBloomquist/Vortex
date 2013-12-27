@@ -8,8 +8,6 @@ vortex.o:
     ZEROPAGE          Offs = 000000   Size = 000000
     NULL              Offs = 000000   Size = 000000
     STARTUP           Offs = 000000   Size = 00000E
-    CHARSET           Offs = 000000   Size = 0007F8
-    SPRITES           Offs = 000000   Size = 002000
 ip65/ip65/ip65.lib(copymem.o):
     CODE              Offs = 00061D   Size = 000027
     RODATA            Offs = 0000DE   Size = 000000
@@ -159,8 +157,6 @@ RODATA                001FA2  00228E  0002ED
 IP65_DEFAULTS         00228F  0022AD  00001F
 BSS                   0022AE  0031AF  000F02
 TCP_VARS              0031B0  0031B7  000008
-CHARSET               004000  0047F7  0007F8
-SPRITES               004C00  006BFF  002000
 
 
 Exports list:

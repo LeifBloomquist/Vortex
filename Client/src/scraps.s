@@ -1,3 +1,25 @@
+
+old .cfg entries
+
+    RAM4000: start = $4000, size = $0800, type=rw, file = %O, fill = yes;
+    RAM4C00: start = $4C00, size = $2C00, type=rw, file = %O, fill = yes;
+    RAM6000: start = $6000, size = $1800, type=rw;
+    DISCARD: start = $77FF, size = $10; 
+
+
+
+        BSS4K: load = RAM4000, type = bss, optional=yes;
+    DATA6K:   load = RAM, run = RAM6000, type = rw, define = yes, optional=yes;
+     EXEHDR: load = DISCARD, type = ro, optional=yes;
+
+
+
+
+
+
+
+
+
 ; Copy screen data from UDP buffer to screen
 
 copyscreen:
