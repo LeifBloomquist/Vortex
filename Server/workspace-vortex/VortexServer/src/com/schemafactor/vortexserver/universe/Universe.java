@@ -21,6 +21,15 @@ public class Universe
 	{
 		universeMapCells = new Cell[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];		
 		
+		// Instantiate
+		for (int x=0; x < size*Constants.SCREEN_WIDTH; x++)
+		{
+			for (int y=0; y < size*Constants.SCREEN_HEIGHT; y++)
+			{
+				universeMapCells[x][y] = new Cell();
+			}
+		}
+		
 		Xsize = size*Constants.SCREEN_WIDTH*Constants.PIXELSPERCELL;
 		Ysize = size*Constants.SCREEN_HEIGHT*Constants.PIXELSPERCELL;
 		

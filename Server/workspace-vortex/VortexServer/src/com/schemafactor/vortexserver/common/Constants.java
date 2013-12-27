@@ -3,6 +3,9 @@ package com.schemafactor.vortexserver.common;
 
 public class Constants 
 {
+	// Server version
+	public static double VERSION        = 0.004;
+	
 	// Game-specific constants
 	public static int TICK_TIME         = 50; // milliseconds
 	
