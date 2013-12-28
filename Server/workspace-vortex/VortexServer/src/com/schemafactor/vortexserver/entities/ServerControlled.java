@@ -14,7 +14,7 @@ public class ServerControlled extends Entity
    /** Creates a new instance of Server Controlled */
    public ServerControlled()
    {
-       super("Server Controlled Alien", 2000+JavaTools.generator.nextInt(1000), 2000+JavaTools.generator.nextInt(1000), Entity.eTypes.SERVER_CONTROLLED);
+       super("Server Controlled Alien", 5000+JavaTools.generator.nextInt(100), 5000+JavaTools.generator.nextInt(200), Entity.eTypes.SERVER_CONTROLLED);
        
        Xspeed = 0;
        Yspeed = 0;
@@ -23,7 +23,7 @@ public class ServerControlled extends Entity
    /** Return Color */
    public byte getColor()
    {
-       return Constants.COLOR_CYAN;
+       return Constants.COLOR_GREEN;
    }
    
    @Override 

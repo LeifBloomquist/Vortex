@@ -210,11 +210,11 @@ updatesprites2:
 ; -------------------------------------------------------------------------
 ; Copy screen data from UDP buffer to screen
 copyscreen:
-  ;jsr finexy
+  jsr finexy
 
   ldax #SCREEN_BASE
   stax copy_dest  
-  ldax #udp_inp_data+4
+  ldax #udp_inp_data+140
   stax copy_src 
   ldax #800 ;#1000   ; Decimal 
   jsr copymem  
@@ -254,8 +254,8 @@ tftpget:
   stax tftp_load_address
   
   jsr tftp_clear_callbacks    
-  ldax #tftpprogress
-  jsr tftp_set_callback_vector
+  ; ldax #tftpprogress
+  ; jsr tftp_set_callback_vector
   
   jsr tftp_download  
   bcs tftperror

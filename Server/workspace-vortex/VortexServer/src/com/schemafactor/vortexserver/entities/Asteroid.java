@@ -17,13 +17,14 @@ public class Asteroid extends Entity
     /** Creates a new instance of Asteroid */
     public Asteroid()
     {
-       super("Asteroid", 5000+JavaTools.generator.nextInt(100), 5080+JavaTools.generator.nextInt(1), Entity.eTypes.ASTEROID);  
+       super("Asteroid", 5000+JavaTools.generator.nextInt(100), 5080+JavaTools.generator.nextInt(100), Entity.eTypes.ASTEROID);  
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());
     }
        
     /** Return Color */
+    @Override 
     public byte getColor()
     {
        return Constants.COLOR_GREY2;
@@ -42,7 +43,7 @@ public class Asteroid extends Entity
 		animtimer += Constants.TICK_TIME;
 		
 		// Animate the Asteroid
-		if (animtimer > 500)   // Half a second
+		if (animtimer > 100)   // Half a second
 		{
 			animtimer=0;
 			spriteNum++;

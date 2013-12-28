@@ -34,16 +34,23 @@ public class Universe
 		Ysize = size*Constants.SCREEN_HEIGHT*Constants.PIXELSPERCELL;
 		
 		// Stars
-		for (int t=1; t< 100000; t++)
+		
+		
+		int[] starchars = {2, 7, 10, 11};
+		
+		for (int t=1; t<100000; t++)
 		{
 			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
-			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
+			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);			
 			
-			universeMapCells[randx][randy].setAttributes(46, Constants.COLOR_WHITE, Cell.Types.Background);	
+			universeMapCells[randx][randy].setAttributes(starchars[JavaTools.generator.nextInt(starchars.length)], Cell.Types.Background);	
 		}
 		
 		
 		// Put some simple planetoids into the universe
+		
+		
+		
 		for (int t=1; t < 5000; t++)
 		{
 			int randx=10+JavaTools.generator.nextInt((size*Constants.SCREEN_WIDTH )-20);
@@ -51,17 +58,17 @@ public class Universe
 			
 			planetoids.add(new Point(randx,randy));
 			
-			universeMapCells[randx-1][randy-1].setAttributes(85, Constants.COLOR_GREY2, Cell.Types.Destructable);
-			universeMapCells[randx+0][randy-1].setAttributes(68, Constants.COLOR_GREY2, Cell.Types.Destructable);
-			universeMapCells[randx+1][randy-1].setAttributes(73, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx-1][randy-1].setAttributes(129, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy-1].setAttributes(130, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy-1].setAttributes(136, Constants.COLOR_GREY2, Cell.Types.Destructable);
 			
-			universeMapCells[randx-1][randy+0].setAttributes(71, Constants.COLOR_GREY2, Cell.Types.Destructable);
-			universeMapCells[randx+0][randy+0].setAttributes((byte) (t % 255), Constants.COLOR_LIGHTBLUE, Cell.Types.Destructable);
-			universeMapCells[randx+1][randy+0].setAttributes(72, Constants.COLOR_GREY2, Cell.Types.Destructable);		
+			universeMapCells[randx-1][randy+0].setAttributes(161, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy+0].setAttributes(14, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy+0].setAttributes(141, Constants.COLOR_GREY2, Cell.Types.Destructable);		
 			
-			universeMapCells[randx-1][randy+1].setAttributes(74, Constants.COLOR_GREY2, Cell.Types.Destructable);
-			universeMapCells[randx+0][randy+1].setAttributes(70, Constants.COLOR_GREY2, Cell.Types.Destructable);
-			universeMapCells[randx+1][randy+1].setAttributes(75, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx-1][randy+1].setAttributes(164, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy+1].setAttributes(165, Constants.COLOR_GREY2, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy+1].setAttributes(171, Constants.COLOR_GREY2, Cell.Types.Destructable);
 			
 			// Planets
 			for (int p=1; p < JavaTools.generator.nextInt(15); p++)
@@ -72,12 +79,14 @@ public class Universe
 				int diffx=(int) Math.round(orbit*Math.sin(dir));
 				int diffy=(int) Math.round(orbit*Math.cos(dir));
 				
-				universeMapCells[randx+diffx][randy+diffy].setAttributes(81, Constants.COLOR_BLUE, Cell.Types.Destructable);	
+				universeMapCells[randx+diffx][randy+diffy].setAttributes(14, Constants.COLOR_BLUE, Cell.Types.Destructable);	
 			}
 		}
 		
 		
 		// Experiment - huge asteroid belt
+		int[] rockchars = {145, 146, 147, 148, 154, 157};
+		
 		for (int a=1; a < 100000; a++)
 		{
 			int orbit=500+JavaTools.generator.nextInt(20);
@@ -86,30 +95,36 @@ public class Universe
 			int diffx=(int) Math.round(orbit*Math.sin(dir));
 			int diffy=(int) Math.round(orbit*Math.cos(dir));
 			
-			universeMapCells[1000+diffx][1000+diffy].setAttributes(42, Constants.COLOR_BROWN, Cell.Types.Destructable);	
+			universeMapCells[1000+diffx][1000+diffy].setAttributes(rockchars[JavaTools.generator.nextInt(rockchars.length)], Constants.COLOR_BROWN, Cell.Types.Destructable);	
 		}		
 		
 		
 		// Put some standalone asteroids into the universe
 		for (int t=1; t< 10000; t++)
 		{
-			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
-			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
+			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH-1);
+			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT-1);
 			
-			universeMapCells[randx][randy].setAttributes(87, Constants.COLOR_GREY1, Cell.Types.Destructable);	
+			universeMapCells[randx+0][randy+0].setAttributes(132, Constants.COLOR_GREY1, Cell.Types.Destructable);	
+			universeMapCells[randx+1][randy+0].setAttributes(137, Constants.COLOR_GREY1, Cell.Types.Destructable);
+			universeMapCells[randx+0][randy+1].setAttributes(163, Constants.COLOR_GREY1, Cell.Types.Destructable);
+			universeMapCells[randx+1][randy+1].setAttributes(169, Constants.COLOR_GREY1, Cell.Types.Destructable);
 		}
 		
+		/*
 		// Put some powerups into the universe
 		for (int t=1; t< 1000; t++)
 		{
 			int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
 			int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);
 			
-			universeMapCells[randx][randy].setAttributes(90, Constants.COLOR_YELLOW, Cell.Types.Background);	
+			universeMapCells[randx+0][randy+0].setAttributes(90, Constants.COLOR_YELLOW, Cell.Types.Background);
+			
 		}
+		*/
 		
 		// Put a special marker at the origin
-		universeMapCells[0][0].setAttributes(91, Constants.COLOR_LIGHTRED, Cell.Types.Background);
+		universeMapCells[0][0].setAttributes(15, Constants.COLOR_LIGHTRED, Cell.Types.Background);
 	
 	}
 	
