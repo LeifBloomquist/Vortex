@@ -13,11 +13,7 @@ import com.schemafactor.vortexserver.universe.Universe;
 public class HumanPlayer extends Entity
 {		
    private InetAddress userIP;       // User IP Address
-   
-   private byte shipColor;
-   private byte spriteNum; 
-   
-   private int timeoutCounter=0;  
+   private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections
   
    /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet)
@@ -51,18 +47,6 @@ public class HumanPlayer extends Entity
    {
        return userIP;
    } 
-
-   /** Return Color */
-   public byte getColor()
-   {
-       return shipColor;
-   }
-   
-   /** Return Sprite# */
-   public byte getSprite()
-   {
-       return spriteNum;
-   }
    
    // Increment the timeout - called by UpdaterThread
    public void incTimeout()
@@ -89,12 +73,13 @@ public class HumanPlayer extends Entity
 	   		case Constants.CLIENT_UPDATE:
 	          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
 	          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
-	   		  Xspeed  = (data[5] / 100d);
-	   		  Yspeed  = (data[6] / 100d);
+	   		  Xspeed  = (data[5] / 10d);
+	   		  Yspeed  = (data[6] / 10d);
 	   		  
 	   		  // Cheat a little and do the position math here.  Eventually, move to client.
 	   		  Xpos += Xspeed;
 	   		  Ypos += Yspeed;
+	   		  //wrap();
 	   		  
 	   		  break;
 	   		
@@ -112,6 +97,7 @@ public class HumanPlayer extends Entity
    public boolean update(Universe universe, Vector<Entity> allEntities)
    {   	   
 	   // move(universe);  // Don't call for for human players - Position is controlled by client.
+	   wrap(universe);  // This is kind of odd placed here, should ultimately be in receiveUpdate() above
 	   
 	   // Send data packet to the client	   	   
 	   byte[] message = new byte[940];  
@@ -142,8 +128,8 @@ public class HumanPlayer extends Entity
            if (xdist >  Constants.PLAYER_XPOS)  continue;  // Too far to the right
 		   
            // Other entity is visible!
-           int yrel = (int)(ydist + Constants.PLAYER_YPOS);
-           int xrel = (int)(xdist + Constants.PLAYER_XPOS);           
+           int yrel = (int)(Constants.PLAYER_YPOS - ydist);
+           int xrel = (int)(Constants.PLAYER_XPOS - xdist);           
            
            message[offset+0] = JavaTools.getLowByte(xrel);  
            message[offset+1] = JavaTools.getHighByte(xrel);
@@ -151,8 +137,8 @@ public class HumanPlayer extends Entity
            message[offset+3] = JavaTools.getHighByte(yrel);  // Not used by C64
            message[offset+4] = e.getXspeed();
            message[offset+5] = e.getYspeed();
-           message[offset+6] = 0;  // Sprite color
-           message[offset+7] = 0;  // Sprite number
+           message[offset+6] = e.getColor();
+           message[offset+7] = e.getSpriteNum();
            message[offset+8] = 0;  // Spare 1
            message[offset+9] = 0;  // Spare 2
            

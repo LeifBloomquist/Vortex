@@ -16,8 +16,8 @@ public class Constants
 	public static final int PIXELSPERCELL     = 8;   
 	
 	// Position on screen
-	public static final int PLAYER_XPOS       = 160;
-	public static final int PLAYER_YPOS       = 100;
+	public static final int PLAYER_XPOS       = 172;  // 24+(320/2)-(24/2)
+	public static final int PLAYER_YPOS       = 140;  // 50+(200/2)-(21/2);
 	
 	// C64 colors
 	public static final byte COLOR_BLACK      = 0;

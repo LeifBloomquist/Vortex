@@ -90,7 +90,7 @@ irq_screen:
   lda screenreceived
   beq :+
 
-  jsr copyscreen
+  ;jsr copyscreen
   lda #$00
   sta screenreceived
   

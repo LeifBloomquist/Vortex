@@ -122,65 +122,82 @@ sendupdate:
 gotpacket:
   inc packetreceived  ; Flag that we got the first packet (this is ignored afterwards)
   
-  lda udp_inp_data+0
-
-  cmp #140
+  lda udp_inp_data+0   
+  cmp #PACKET_SERVER_UPDATE
   beq gameupdate
   rts
 
 
 ;--------------------------------------------------------------------------
 ; Handle sprite position updates
-;In:
-; .A: the sprite to update the position of
-;
+
 gameupdate:
-;   ldy #$00
-;   ldx #$00
-;updatesprites:
-;   ; x-coordinate
-;   lda udp_inp_data+1,x
-;   sta $d000,x
-;   lda udp_inp_data+2,x
-;   lda bittab,y
-;   ora $d010
-;   sta $d010
-   ; y-coordinate
-;   lda udp_inp_data+2,x
-;   sta $d001,x
+  
+  ; update scroll
+  ldx udp_inp_data+2
+  ldy udp_inp_data+3
+  stx finex
+  sty finey
+
+; This first loop is for sprite parameters that count up by 1.
+
+   ldx #$00    ; Offset into packet
+   ldy #$01    ; Current sprite number  (Start at 1 because Sprite 0 is local player)       
+   
+updatesprites1:   
+   ; x-coordinate MSB  (Cool trick from Bryce)
+   lda udp_inp_data+7,x
+   beq :+   ; Zero means no MSB 
+   
+   lda bittab,y
+   ora $d010
+   sta $d010
+
+:      
    ; color
-;   lda udp_inp_data+4,x
-;   sta $d025,y
-;   ; sprite #
-;   lda udp_inp_data+5
-;   sta SCREEN_BASE+$3f8,y
+   lda udp_inp_data+12,x
+   sta $d027,y
+   
+   ; sprite #
+   lda udp_inp_data+13,x
+   clc
+   adc #SPRITE_BASE 
+   sta SPRITE_POINTERS,y
 
-;   txa
-;   clc
-;   adc #10
-;   tax
+   txa
+   clc
+   adc #10
+   tax
 
-;   iny 
-;   cpy #$07
-;   bcc updatesprites
+   iny 
+   cpy #$07
+   bcc updatesprites1
+   
+     
+   ; This second loop is for sprite parameters that count up by 2
 
-; update scroll
-;  lda udp_inp_data+2
-;  ora $d016
-;  sta $d016
-;  lda udp_inp_data+3
-;  ora $d011
-;  sta $d011
+   ldx #$00    ; Offset into packet
+   ldy #$02    ; Current sprite number  (Start at 1*2 because Sprite 0 is local player)       
+   
+updatesprites2:
+   ; x-coordinate LSB
+   lda udp_inp_data+6,x
+   sta $d000,y
+ 
+   ; y-coordinate
+   lda udp_inp_data+8,x
+   sta $d001,y
 
-; -------------------------------------------------------------------------
-; Handle Received Screen Update Packet
-screenpacket:  
-;  lda udp_inp_data+1
-;  sta finex
-;  lda udp_inp_data+2
-;  sta finey  
-;  lda udp_inp_data+3
-  ;sta whichscreen
+   txa
+   clc
+   adc #10
+   tax
+
+   iny
+   iny 
+   cpy #14
+   bcc updatesprites2
+   
   
   lda #$01
   sta screenreceived   ; Flag for next IRQ frame

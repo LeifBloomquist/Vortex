@@ -12,11 +12,14 @@ public abstract class Entity
 	
    protected String description;   
    
-   protected double Xpos;      // These are pixels, and refers to the top-left corner of the object (sprite, etc.)
-   protected double Ypos;
+   protected double Xpos = -1;      // These are pixels, and refers to the top-left corner of the object (sprite, etc.)
+   protected double Ypos = -1;
    
    protected double Xspeed = 0; 
    protected double Yspeed = 0;
+   
+   protected byte spriteNum = 0;  // This is the offset from SPRITE_BASE, *not* the selected memory bank.  (Client handles this)
+   protected byte spriteColor = Constants.COLOR_BLACK;
      
    /** Creates a new instance of Entity */
    public Entity(String description, double startX, double startY, eTypes type)
@@ -27,18 +30,25 @@ public abstract class Entity
 	   this.myType = type;
    }
    
+   // Handle wraparound
+   protected void wrap(Universe universe)
+   {
+       // Wrap around, repeatedly if necessary
+       while (Xpos < 0)                   Xpos += universe.getXsize();
+       while (Ypos < 0)                   Ypos += universe.getYsize();       
+       while (Xpos > universe.getXsize()) Xpos -= universe.getXsize();
+       while (Ypos > universe.getYsize()) Ypos -= universe.getYsize();       
+   }
+   
    public void move(Universe universe)
    {
        Xpos += Xspeed;  
        Ypos += Yspeed;
        
-       // Wrap around
-       if (Xpos < 0) Xpos += universe.getXsize();
-       if (Ypos < 0) Ypos += universe.getYsize();
-       
-       if (Xpos > universe.getXsize()) Xpos -= universe.getXsize();
-       if (Ypos > universe.getYsize()) Ypos -= universe.getYsize();
+       wrap(universe);
    }
+   
+   abstract public boolean update(Universe universe, Vector<Entity> allEntities);   // True means the player should be removed (timeout, destroyed, etc)
    
    /** Return X,Y positions */
    public double getXpos()
@@ -84,12 +94,20 @@ public abstract class Entity
        return description;
    }
 
-   abstract public boolean update(Universe universe, Vector<Entity> allEntities);   // True means the player should be removed (timeout, destroyed, etc)   
-   
-
    public eTypes getType() 
    {
       return myType;
    }   
    
+   /** Return Color */
+   public byte getColor()
+   {
+       return spriteColor;
+   }
+   
+   /** Return Sprite# */
+   public byte getSpriteNum()
+   {
+       return spriteNum;
+   }   
 }

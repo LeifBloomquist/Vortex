@@ -7,9 +7,10 @@ import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.universe.Universe;
 
 public class ServerControlled extends Entity
-{	
-   private byte spriteNum; 
-   
+{
+   private byte spriteBase = 32;
+   private byte spriteNum  = 0;  // TODO
+	   
    /** Creates a new instance of Server Controlled */
    public ServerControlled()
    {
@@ -22,20 +23,20 @@ public class ServerControlled extends Entity
    /** Return Color */
    public byte getColor()
    {
-       return Constants.COLOR_GREY1;
+       return Constants.COLOR_CYAN;
    }
    
-   /** Return Sprite# */
-   public byte getSprite()
+   @Override 
+   public byte getSpriteNum()
    {
-       return spriteNum;
-   }
+       return (byte)(spriteBase+spriteNum);  // TODO, base on direction
+   }   
 
 	@Override
 	public boolean update(Universe universe, Vector<Entity> allEntities) 
 	{
-		   // Move within the world
-		   move(universe);
-		   return false;
+		// Move within the world
+		move(universe);
+		return false;
 	}   
 }
