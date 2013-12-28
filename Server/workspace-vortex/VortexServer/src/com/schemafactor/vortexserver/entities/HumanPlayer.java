@@ -119,17 +119,23 @@ public class HumanPlayer extends Entity
 		   // TODO, this needs serious wrapping handling.  Make this a function.
 		   
 		   // Determine distance between this player and other entities
-		   long ydist = (long)(this.getYpos() - e.getYpos());           
-           if (ydist < -Constants.PLAYER_YPOS)  continue;  // Too high
-           if (ydist >  Constants.PLAYER_YPOS)  continue;  // Too low
+		   long xdist = (long)(this.getXpos() - e.getXpos());
+		   long ydist = (long)(this.getYpos() - e.getYpos());
 		   
-           long xdist = (long)(this.getXpos() - e.getXpos());           
-           if (xdist < -Constants.PLAYER_XPOS)  continue;  // Too far to the left
-           if (xdist >  Constants.PLAYER_XPOS)  continue;  // Too far to the right
+		   if (Math.abs(xdist) > 170) continue;
+		   if (Math.abs(ydist) > 110) continue;
+		   
+		   
+//           if (xdist < -Constants.PLAYER_XPOS)  continue;  // Too far to the left
+//           if (xdist >  Constants.PLAYER_XPOS)  continue;  // Too far to the right
+//           
+//		              
+//           if (ydist < -Constants.PLAYER_YPOS)  continue;  // Too high
+//           if (ydist >  Constants.PLAYER_YPOS)  continue;  // Too low         
 		   
            // Other entity is visible!
-           int yrel = (int)(Constants.PLAYER_YPOS - ydist);
-           int xrel = (int)(Constants.PLAYER_XPOS - xdist);           
+           int xrel = (int)(Constants.PLAYER_XPOS - xdist);
+           int yrel = (int)(Constants.PLAYER_YPOS - ydist);                      
            
            message[offset+0] = JavaTools.getLowByte(xrel);  
            message[offset+1] = JavaTools.getHighByte(xrel);

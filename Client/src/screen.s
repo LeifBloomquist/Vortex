@@ -8,8 +8,9 @@ screen_init:
   ; Background Colors
   lda #$00
   sta $d020
-  sta $d021
-      
+  sta $d021  
+  
+  ; Extended background colors
   lda #$01
   sta $d022  
   

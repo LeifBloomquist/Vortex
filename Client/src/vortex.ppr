@@ -14,8 +14,8 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
-		+ip65
-			-cfg
+		-ip65
+			+cfg
 				ip65\cfg\c64prg-vortex.cfg
 			-drivers
 				ip65\drivers\a2charconv.s
@@ -117,42 +117,34 @@ vortex
 		util.s
 		vortex.s
 [Open project files]
-0=ip65\cfg\c64prg-vortex.cfg
-1=make.cmd
-2=network.s
-3=irq.s
+0=irq.s
+1=network.s
+2=joystick.s
+3=sprites.s
 4=vortex.s
-5=ip65\ip65\ip65.s
-6=screen.s
-7=ip65\inc\sidplay.i
-8=ip65\inc\telnet.i
+5=macros.s
+6=ip65\cfg\c64prg-vortex.cfg
 [Selected Project Files]
 Main=
 Selected=network.s
+[irq.s]
+TopLine=99
+Caret=33,95
+[network.s]
+TopLine=278
+Caret=28,292
+[joystick.s]
+TopLine=111
+Caret=7,3
+[sprites.s]
+TopLine=1
+Caret=1,1
+[vortex.s]
+TopLine=61
+Caret=53,33
+[macros.s]
+TopLine=1
+Caret=3,17
 [ip65\cfg\c64prg-vortex.cfg]
 TopLine=1
-Caret=64,31
-[make.cmd]
-TopLine=1
-Caret=2,8
-[network.s]
-TopLine=196
-Caret=3,229
-[irq.s]
-TopLine=1
-Caret=41,28
-[vortex.s]
-TopLine=40
-Caret=25,64
-[ip65\ip65\ip65.s]
-TopLine=55
-Caret=36,69
-[screen.s]
-TopLine=1
-Caret=13,7
-[ip65\inc\sidplay.i]
-TopLine=189
-Caret=1,209
-[ip65\inc\telnet.i]
-TopLine=119
-Caret=1,139
+Caret=59,4

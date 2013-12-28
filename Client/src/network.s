@@ -4,8 +4,8 @@
 SEND_LENGTH   = 0016
 
 ; Packet Types - C64 to CLIENT
-PACKET_ANNOUNCE = 1
-PACKET_CLIENT_UPDATE = 2
+PACKET_ANNOUNCE       = 1
+PACKET_CLIENT_UPDATE  = 2
 
 ; Packet Types - Server to C64
 PACKET_ANNOUNCE_REPLY = 128
@@ -36,6 +36,7 @@ PACKET_SERVER_UPDATE  = 129
     .import tftp_ip 
     
   .import tftp_clear_callbacks 
+  .import tftp_set_callback_vector
   
   .import copymem
     .importzp copy_src
@@ -138,6 +139,9 @@ gameupdate:
   ldy udp_inp_data+3
   stx finex
   sty finey
+  
+  lda #$00
+  sta $d010  
 
 ; This first loop is for sprite parameters that count up by 1.
 
@@ -249,7 +253,9 @@ tftpget:
   ldax #$4000
   stax tftp_load_address
   
-  jsr tftp_clear_callbacks   ; To RAM directly
+  jsr tftp_clear_callbacks    
+  ldax #tftpprogress
+  jsr tftp_set_callback_vector
   
   jsr tftp_download  
   bcs tftperror
@@ -267,7 +273,11 @@ tftperror:
   lda #$02
   sta $d020
   jmp :-
-    
+
+tftpprogress:
+  lda #'.'
+  jsr $FFD2
+  rts    
 
 ; -------------------------------------------------------------------------
 ; Network Constants and Data  
@@ -276,7 +286,7 @@ SERVER_IP:
   .byte 208,79,218,201    ; Vortex VPS  
   
 SERVER_PORT = 3005
-SRC_PORT    = 6464
+SRC_PORT    = 3000  ; In theory, having these match makes NAT work on some routers
 LISTEN_PORT = 3000
 
 SENDBUFFER:
@@ -288,12 +298,12 @@ WAITMESSAGE:
   
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
-  .byte "vORTEX 2 nETWORK INITIALIZATION",13
+  .byte "vORTEX 2 nETWORK iNITIALIZATION",13
   .byte "fORWARD udp pORT 3000 TO YOUR C64",13,13
   .byte 0
 
 DOWNLOADMESSAGE:
-  .byte "dOWNLOADING GAME DATA..."
+  .byte "dOWNLOADING GAME DATA"
   .byte 0
 
 SERVERMESSAGE:
@@ -315,4 +325,4 @@ tftpname:
   .byte "vortexdata", 0
 
 bittab:
-   .byte $80,$40,$20,$10,$08,$04,$02,$01
+   .byte $01,$02,$04,$08,$10,$20,$40,$80

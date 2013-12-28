@@ -46,7 +46,7 @@ public class Asteroid extends Entity
 		{
 			animtimer=0;
 			spriteNum++;
-			if (spriteNum > 32) spriteNum=0;	
+			if (spriteNum > 31) spriteNum=0;   // 32???	
 		}
 		
 		// Move within the universe
