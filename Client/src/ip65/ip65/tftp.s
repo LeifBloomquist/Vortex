@@ -19,6 +19,7 @@
   .export tftp_data_block_length
   .export tftp_set_callback_vector
   .export tftp_callback_vector
+  .export copy_tftp_block_to_ram
   .export tftp_clear_callbacks
   .export tftp_filesize
   .export tftp_upload_from_memory

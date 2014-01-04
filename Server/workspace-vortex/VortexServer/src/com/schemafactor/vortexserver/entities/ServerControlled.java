@@ -48,7 +48,7 @@ public class ServerControlled extends Entity
 		}
 		
 		// Only get within so many pixels
-		if (distanceTo(target) < 30)
+		if (distanceTo(target) < 40)
 		{
 		   Xspeed = 0;
 		   Yspeed = 0;
