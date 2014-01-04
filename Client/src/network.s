@@ -37,7 +37,7 @@ PACKET_SERVER_UPDATE  = 129
     
   .import tftp_clear_callbacks 
   .import tftp_set_callback_vector
-  .import copy_tftp_block_to_ram
+ ; .import copy_tftp_block_to_ram
   
   .import copymem
     .importzp copy_src
@@ -255,8 +255,8 @@ tftpget:
   stax tftp_load_address
   
   jsr tftp_clear_callbacks    
-  ldax #tftpprogress
-  jsr tftp_set_callback_vector
+ ; ldax #tftpprogress
+ ; jsr tftp_set_callback_vector
   
   jsr tftp_download  
   bcs tftperror
@@ -280,7 +280,7 @@ tftpprogress:
   lda #'.'        ; Call kernal routine
   jsr $FFD2
   ldax saveax     ; Retrieve pointer
-  jmp copy_tftp_block_to_ram    ; Call into default handler (ends with rts)    
+  ;jmp copy_tftp_block_to_ram    ; Call into default handler (ends with rts)    
 
 saveax: 
   .byte 0,0  
