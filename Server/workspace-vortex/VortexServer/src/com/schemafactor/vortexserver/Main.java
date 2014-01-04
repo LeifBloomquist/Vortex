@@ -34,29 +34,19 @@ public class Main
         Vector<Entity> allEntities = new Vector<Entity>();
         
         // Add some entities.
-        for (int i=1; i<=20; i++)
-        {
-            allEntities.add(new Asteroid(universe, allEntities));
-        }
-        
         for (int i=1; i<=5; i++)
         {
             allEntities.add(new ServerControlled(universe, allEntities));
         }
         
-        // Testing - a mini http server to show stats through a browser
+        for (int i=1; i<=100; i++)
+        {
+            allEntities.add(new Asteroid(universe, allEntities));
+        }
+        
+        // A mini http server to show stats through a browser
         JavaTools.printlnTime("Creating debug http server...");
         VortexDebugServer vdbg = new VortexDebugServer(8080, allEntities);
-        
-        try 
-        {
-            vdbg.start();
-        }
-        catch (IOException ioe) 
-        {
-            JavaTools.printlnTime("Couldn't start httpd server:\n" + ioe);
-            System.exit(-1);
-        }
                 
         // Start the thread that updates everything at a fixed interval
         JavaTools.printlnTime("Creating update scheduler...");

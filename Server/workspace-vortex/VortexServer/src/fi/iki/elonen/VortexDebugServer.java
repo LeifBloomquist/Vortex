@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
+import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
 
 
@@ -20,7 +21,17 @@ public class VortexDebugServer extends NanoHTTPD
     public VortexDebugServer(int port, Vector<Entity> allEntities) 
     {
         super(port);
-        this.allEntities = allEntities;        
+        this.allEntities = allEntities;    
+        
+        try 
+        {
+            this.start();
+        }
+        catch (IOException ioe) 
+        {
+            JavaTools.printlnTime("Couldn't start httpd server:\n" + ioe);
+            System.exit(-1);
+        }
     }
 
     @Override public Response serve(IHTTPSession session) 
@@ -125,12 +136,9 @@ public class VortexDebugServer extends NanoHTTPD
         msg += "<table border=\"1\">" +
                "<tr><th>Entity Name</th><th>Location X</th><th>Location Y</th></tr>";
         
-        synchronized (allEntities) 
+        for (Entity e : allEntities)
         {
-            for (Entity e : allEntities)
-            {
-                msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
-            }
+            msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
         }
         
         msg += "</table>";

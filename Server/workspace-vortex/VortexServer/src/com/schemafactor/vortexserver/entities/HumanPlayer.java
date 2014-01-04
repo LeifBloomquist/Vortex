@@ -3,6 +3,8 @@ package com.schemafactor.vortexserver.entities;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
@@ -42,7 +44,7 @@ public class HumanPlayer extends Entity
        }
        catch (Exception e)
        {
-           JavaTools.printlnTime(e.toString());
+           JavaTools.printlnTime("EXCEPTION sending update: " + e.getMessage());
        }
    }
       
@@ -111,10 +113,9 @@ public class HumanPlayer extends Entity
        message[5] = 0; // Unused - Spare
               
        int offset = 6;
-       
-       
+              
        // Determine which entities would be visible on screen to this player.
-       Vector<Entity> visibleEntities = new Vector<Entity>();
+       List<Entity> visibleEntities = new ArrayList<Entity>();
        
        for (Entity e : allEntities)
        {           
@@ -125,15 +126,21 @@ public class HumanPlayer extends Entity
                 visibleEntities.add(e);   
             }
        }
-              
+
        // The C64 can't display more than 7 entities at a time due to sprite limits (and our client can't multiplex)
        if (visibleEntities.size() > 7)       
-       {
+       {   
            // In future, could be fancier with round-robin, or only showing 7 closest entities.  For now, just limit to the first 7.           
-           visibleEntities = (Vector<Entity>) visibleEntities.subList(0, 6);           
+           try
+           {
+               visibleEntities = visibleEntities.subList(0, 6); 
+           }
+           catch (Exception e)
+           {              
+               JavaTools.printlnTime( "EXCEPTION: " + e.getMessage());
+           }
        }
               
-       
        for (Entity e : visibleEntities)
        {   
            // TODO, this needs serious wrapping handling.  Make this a function.
@@ -171,7 +178,6 @@ public class HumanPlayer extends Entity
            
        // Increment and Timeout.  This is reset in receiveUpdate() above.     
        checkTimeout();
-       
        return;
    }     
    

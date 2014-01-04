@@ -67,33 +67,19 @@ public class UDPListener
         byte[] packetBytes = Arrays.copyOf(packet.getData(), packet.getLength());
      
         // Check Checksum - Future
-        
-//        String s = "Packet received!  Length:" + packet.getLength() + "  Data [ ";
-//        
-//        for (Byte b : packetBytes)
-//        {
-//            s += b.toString()+ " ";
-//        }
-//        s+="]";
-//         
-//        JavaTools.printlnTime(s); 
                 
         // Determine player
-        
-        synchronized (allEntities)
-        {
-            for (Entity e : allEntities)
+        for (Entity e : allEntities)
+        {         
+            if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
             {
-                if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
+                HumanPlayer hp = (HumanPlayer)e;
+                
+                if ( hp.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
                 {
-                    HumanPlayer hp = (HumanPlayer)e;
-                    
-                    if ( hp.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
-                    {
-                        hp.receiveUpdate(packetBytes);
-                        return;
-                    }                    
-                }                
+                    hp.receiveUpdate(packetBytes);
+                    return;
+                }                    
             }
         }
         
@@ -101,10 +87,10 @@ public class UDPListener
         JavaTools.printlnTime( "Creating player from " + packet.getAddress() );
         HumanPlayer who = new HumanPlayer(packet, universe, allEntities);
             
-        synchronized (allEntities) 
-        {
+       synchronized (allEntities)  // Synchronize where entity list is modified 
+       {
             allEntities.add(who);
-        }
-        return;  
+       }
+       return;  
    }
 }

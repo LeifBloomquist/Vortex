@@ -31,34 +31,30 @@ public class UpdaterThread implements Runnable
     
     /** Main updating thread (called from ScheduledThreadPoolExecutor in main(). */
     public void run()                       
-    {         
+    {
         long startTime = System.nanoTime(); 
         
         // 1. Update the universe.
+        universe.update();        
         
-        synchronized (universe) 
-        {
-            universe.update();
-        }        
+        // 2. Update each entity                  
+        for (Entity e : allEntities)
+        { 
+            e.update(); 
+        }
         
-        synchronized (allEntities) 
+        // 3. Remove any entities that are flagged to be removed            
+        Iterator<Entity> i = allEntities.iterator();
+        
+        synchronized (allEntities)  // Synchronize where entity list is modified 
         {
-            // 2. Update each entity
-            for (Entity e : allEntities)
-            {
-                e.update();
-            }
-            
-            // 3. Remove any entities that are flagged to be removed            
-            Iterator<Entity> i = allEntities.iterator();
-            
             while (i.hasNext()) 
             {
                 Entity who = i.next(); // must be called before you can call i.remove()
               
                 if (who.removeMe())
                 {
-                    JavaTools.printlnTime("Removing entity " + who.getDescription() );
+                    JavaTools.printlnTime("Removing entity: " + who.getDescription() );
                     i.remove();
                 }               
             }

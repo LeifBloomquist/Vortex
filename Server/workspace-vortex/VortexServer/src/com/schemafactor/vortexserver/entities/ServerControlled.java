@@ -62,11 +62,10 @@ public class ServerControlled extends Entity
            Yspeed = 0;
            //Leave sprite#
            return;
-        }
-        
+        }        
         
         // Navigation.  Seek out the target and avoid all other entities.
-
+        
         for (Entity e : allEntities)
         {
             if (this == e) continue;   // Don't worry about myself
@@ -108,8 +107,8 @@ public class ServerControlled extends Entity
 
             Xspeed += 0.1*Xdelta;
             Yspeed += 0.1*Ydelta;              
-        }      
-        
+        }
+
         // Limit
         if (Xspeed >  3.0) Xspeed =  3.0;
         if (Xspeed < -3.0) Xspeed = -3.0;
@@ -120,8 +119,8 @@ public class ServerControlled extends Entity
         // Determine overall pointing
         double rads    = Math.atan2(-Yspeed, Xspeed);   // Negative here because our y-axis is inverted    
         double degrees = 112.5-Math.toDegrees(rads);                
-        while (degrees<0)   degrees+=360d; 
-        while (degrees>360) degrees-=360d;        
+        if (degrees<0)   degrees+=360d;   // while
+        if (degrees>360) degrees-=360d;   // while     
         spriteNum = (byte)(degrees/45);
 
         // Move within the universe
