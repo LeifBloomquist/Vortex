@@ -92,18 +92,18 @@ network_init_udp:
 
 sendupdate:
   lda #PACKET_CLIENT_UPDATE
-  sta SENDBUFFER+0
-  
+  sta SENDBUFFER+0      
   
   ldx RATE_X
   ldy RATE_Y  
   stx SENDBUFFER+5  
   sty SENDBUFFER+6       
   
-  ; Direction - Tricky!
-  lda #$FF ; TODO
+  ; Direction
+  lda DIRECTION
   sta SENDBUFFER+7  
   
+  ; Fire button
   lda JOYBUTTON
   sta SENDBUFFER+8
   
@@ -291,10 +291,6 @@ LISTEN_PORT = 3000
 
 SENDBUFFER:
   .res SEND_LENGTH
-  
-WAITMESSAGE:
-  .byte "press any key to continue."
-  .byte 0
   
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL

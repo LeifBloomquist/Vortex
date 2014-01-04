@@ -34,6 +34,8 @@ public class UpdaterThread implements Runnable
     {     	
     	long startTime = System.nanoTime(); 
     	
+    	// 1. Update the universe.
+    	
     	synchronized (universe) 
         {
     		universe.update();
@@ -41,14 +43,20 @@ public class UpdaterThread implements Runnable
     	
         synchronized (allEntities) 
         {
-            // Update each entity, removing if necessary        	
+            // 2. Update each entity
+        	for (Entity e : allEntities)
+        	{
+        		e.update();
+        	}
+        	
+        	// 3. Remove any entities that are flagged to be removed        	
         	Iterator<Entity> i = allEntities.iterator();
         	
         	while (i.hasNext()) 
         	{
         		Entity who = i.next(); // must be called before you can call i.remove()
         	  
-        		if (who.update(universe, allEntities))
+        		if (who.removeMe())
            	 	{
                     JavaTools.printlnTime("Removing entity " + who.getDescription() );
                     i.remove();
@@ -57,6 +65,6 @@ public class UpdaterThread implements Runnable
          }
         
         long estimatedTime = System.nanoTime() - startTime;    	
-    	//JavaTools.printlnTime( "Update time [us]: " + estimatedTime/1000);       
+    	JavaTools.printlnTime( "Update time [ms]: " + estimatedTime/1000000d);       
     }
 }

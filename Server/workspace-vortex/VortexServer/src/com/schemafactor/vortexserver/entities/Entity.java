@@ -7,7 +7,7 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class Entity 
 {	
-   public enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID};
+   public static enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID}
    protected eTypes myType = eTypes.NONE;
 	
    protected String description;   
@@ -18,20 +18,29 @@ public abstract class Entity
    protected double Xspeed = 0; 
    protected double Yspeed = 0;
    
-   protected byte spriteNum = 0;  // This is the offset from SPRITE_BASE, *not* the selected memory bank.  (Client handles this)
+   protected byte spriteBase  = 32;   
+   protected byte spriteNum   = 0;  // This is the offset from SPRITE_BASE, *not* the selected memory bank.  (Client handles this)
    protected byte spriteColor = Constants.COLOR_BLACK;
+   
+   protected Universe universe=null;
+   protected Vector<Entity> allEntities=null;
+   
+   /** Flag that this entity is to be removed at the end of this update cycle.  true=remove */
+   protected boolean removeMeFlag = false;
      
    /** Creates a new instance of Entity */
-   public Entity(String description, double startX, double startY, eTypes type)
+   public Entity(String description, eTypes type, double startX, double startY,  Universe universe, Vector<Entity> allEntities)
    {
 	   this.description = new String(description);
+	   this.myType = type;
 	   Xpos = startX;
 	   Ypos = startY;
-	   this.myType = type;
+	   this.universe = universe;
+	   this.allEntities = allEntities;	   
    }
    
    // Handle wraparound
-   protected void wrap(Universe universe)
+   protected void wrap()
    {
        // Wrap around, repeatedly if necessary
        while (Xpos < 0)                   Xpos += universe.getXsize();
@@ -40,15 +49,15 @@ public abstract class Entity
        while (Ypos > universe.getYsize()) Ypos -= universe.getYsize();       
    }
    
-   public void move(Universe universe)
+   public void move()
    {
        Xpos += Xspeed;  
        Ypos += Yspeed;
        
-       wrap(universe);
+       wrap();
    }
    
-   abstract public boolean update(Universe universe, Vector<Entity> allEntities);   // True means the player should be removed (timeout, destroyed, etc)
+   abstract public void update();   // True means the player should be removed (timeout, destroyed, etc)
    
    /** Return X,Y positions */
    public double getXpos()
@@ -105,12 +114,20 @@ public abstract class Entity
        return spriteColor;
    }
    
-   /** Return Sprite# */
-   abstract public byte getSpriteNum();
+    /** Return Sprite# */
+  	public byte getSpriteNum()
+  	{
+      return (byte)(spriteBase+spriteNum); 
+  	}   
    
    // Helper function to get distance to another Entity
    protected double distanceTo(Entity target)
    {	   
 	   return Math.sqrt( Math.pow((this.Xpos - target.getXpos()), 2) + Math.pow((this.Ypos - target.getYpos()), 2)); 
-   }   
+   }
+
+	public boolean removeMe() 
+	{		
+		return removeMeFlag;
+	}   
 }

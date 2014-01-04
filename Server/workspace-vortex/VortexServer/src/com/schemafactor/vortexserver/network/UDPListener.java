@@ -28,7 +28,7 @@ public class UDPListener
     private Vector<Entity> allEntities = null;
     
     /** Creates a new instance of UDPListener */
-    public UDPListener(int port, Vector<Entity> allEntities)
+    public UDPListener(int port, Universe universe, Vector<Entity> allEntities)
     {
         this.allEntities = allEntities;  // Keep a reference to the users list
 
@@ -44,7 +44,7 @@ public class UDPListener
             while (true) 
             {                            
                 socket.receive(packet);  // This blocks!                
-                handlePacket(packet);    // Handle it              
+                handlePacket(packet, universe);    // Handle it              
             }
             
             //socket.close();
@@ -62,7 +62,7 @@ public class UDPListener
     /**
      *  Handle a received packet.
      */    
-    private void handlePacket(DatagramPacket packet)
+    private void handlePacket(DatagramPacket packet, Universe universe)
     {
         byte[] packetBytes = Arrays.copyOf(packet.getData(), packet.getLength());
      
@@ -99,7 +99,7 @@ public class UDPListener
         
         // No match, create new user and add to vector
         JavaTools.printlnTime( "Creating player from " + packet.getAddress() );
-        HumanPlayer who = new HumanPlayer(packet);
+        HumanPlayer who = new HumanPlayer(packet, universe, allEntities);
             
         synchronized (allEntities) 
         {

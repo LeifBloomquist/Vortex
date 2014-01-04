@@ -30,7 +30,7 @@ screen_init:
   
   
 ; Explicitly paint screen color, for older kernals
-  lda #$0A
+  lda #$0A   ; Remember, multicolor character mode 
   ldx #$00  
 :
   sta COLOR_BASE+$000,x

@@ -16,10 +16,13 @@ public class HumanPlayer extends Entity
    private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections
   
    /** Creates a new instance of Human Player */
-   public HumanPlayer(DatagramPacket packet)
+   public HumanPlayer(DatagramPacket packet, Universe universe, Vector<Entity> allEntities)
    {
 	   // Random starting positions for multiple players
-       super("Human Player from " + packet.getAddress(), 5100+JavaTools.generator.nextInt(100), 5100+JavaTools.generator.nextInt(100), Entity.eTypes.HUMAN_PLAYER);
+       super("Human Player from " + packet.getAddress(), Entity.eTypes.HUMAN_PLAYER, 5000+JavaTools.generator.nextInt(200), 5000+JavaTools.generator.nextInt(200), universe,  allEntities);
+       
+       spriteBase=0;
+       spriteNum=0;
        
        userIP = packet.getAddress();
        receiveUpdate(packet.getData());
@@ -47,27 +50,17 @@ public class HumanPlayer extends Entity
    public InetAddress getAddress()
    {
        return userIP;
-   } 
-   
-   /** Return Sprite# */
-   @Override 
-   public byte getSpriteNum()
-   {
-       return (byte)(0);
-   }      
-
-   
-   // Increment the timeout - called by UpdaterThread
-   public void incTimeout()
-   {
-	   if (timeoutCounter < 10000) timeoutCounter += Constants.TICK_TIME;
    }
    
-   // Check the timeout
-   // true if timed out
-   public boolean checkTimeout()
+   // Increment and check the timeout
+   public void checkTimeout()
    {
-      return (timeoutCounter > 2000);   // Two seconds         
+	   if (timeoutCounter < 10000) timeoutCounter += Constants.TICK_TIME;
+	   
+	   if (timeoutCounter > 2000)   // Two seconds 
+	   {
+		   removeMeFlag = true;
+	   }	   
    }
    
    /** Update me with new data from client */
@@ -82,13 +75,14 @@ public class HumanPlayer extends Entity
 	   		case Constants.CLIENT_UPDATE:
 	          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
 	          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
-	   		  Xspeed  = data[5]/5; //(data[5] / 10d);
-	   		  Yspeed  = data[6]/5; //(data[6] / 10d);
+	   		  Xspeed    = data[5]/5;
+	   		  Yspeed    = data[6]/5;
+	   		  spriteNum = data[7];
 	   		  
 	   		  // Cheat a little and do the position math here.  Eventually, move to client.
 	   		  Xpos += Xspeed;
 	   		  Ypos += Yspeed;
-	   		  //wrap();
+	   		  wrap();
 	   		  
 	   		  break;
 	   		
@@ -103,10 +97,9 @@ public class HumanPlayer extends Entity
    
 
    @Override
-   public boolean update(Universe universe, Vector<Entity> allEntities)
+   public void update()
    {   	   
-	   // move(universe);  // Don't call for for human players - Position is controlled by client.
-	   wrap(universe);  // This is kind of odd placed here, should ultimately be in receiveUpdate() above
+	   // move();   // Don't call for for human players - Position will be controlled by client.	   
 	   
 	   // Send data packet to the client	   	   
 	   byte[] message = new byte[940];  
@@ -176,9 +169,10 @@ public class HumanPlayer extends Entity
 	   // Send the packet.
 	   sendUpdate(message);		   
 		   
-	   // Increment and Timeout.  This is reset in receiveUpdate() above.
-	   incTimeout();
-	   return checkTimeout();
+	   // Increment and Timeout.  This is reset in receiveUpdate() above.	 
+	   checkTimeout();
+	   
+	   return;
    }     
    
    private boolean isOnScreen(Entity e)

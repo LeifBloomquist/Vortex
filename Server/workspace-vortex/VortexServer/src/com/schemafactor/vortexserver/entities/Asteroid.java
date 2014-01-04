@@ -9,19 +9,21 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 public class Asteroid extends Entity
 {	
-    private byte spriteBase = 96;
-    private byte spriteNum  = (byte)JavaTools.generator.nextInt(32);
-   
+	private final int num_sprites=32; 
+	
     /** Milliseconds */
     private int animtimer = 0;  
    
     /** Creates a new instance of Asteroid */
-    public Asteroid()
-    {
-       super("Asteroid", 5100+JavaTools.generator.nextInt(100), 5080+JavaTools.generator.nextInt(100), Entity.eTypes.ASTEROID);  
+    public Asteroid(Universe universe, Vector<Entity> allEntities)
+    {	
+       super("Asteroid", Entity.eTypes.ASTEROID, universe.getXsize()*JavaTools.generator.nextDouble(), universe.getYsize()*JavaTools.generator.nextDouble(), universe, allEntities);       
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());
+       
+       spriteBase = 96;
+       spriteNum  = (byte)JavaTools.generator.nextInt(num_sprites);
     }
        
     /** Return Color */
@@ -39,20 +41,20 @@ public class Asteroid extends Entity
     }      
 
 	@Override
-	public boolean update(Universe universe, Vector<Entity> allEntities) 
+	public void update() 
 	{
 		animtimer += Constants.TICK_TIME;
 		
 		// Animate the Asteroid
-		if (animtimer >= 100)   // milliseconds
+		if (animtimer >= 200)   // milliseconds
 		{
 			animtimer=0;
 			spriteNum++;
-			if (spriteNum > 31) spriteNum=0;
+			if (spriteNum >= num_sprites) spriteNum=0;
 		}
 		
 		// Move within the universe
-		move(universe);
-		return false;
+		move();
+		return;
 	}   
 }

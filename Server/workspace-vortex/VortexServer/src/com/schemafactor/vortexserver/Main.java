@@ -34,14 +34,14 @@ public class Main
         Vector<Entity> allEntities = new Vector<Entity>();
         
         // Add some entities.
-        for (int i=1; i<=3; i++)
+        for (int i=1; i<=1000; i++)
         {
-        	allEntities.add(new Asteroid());
+        	allEntities.add(new Asteroid(universe, allEntities));
         }
         
-        for (int i=1; i<=1; i++)
+        for (int i=1; i<=3; i++)
         {
-        	allEntities.add(new ServerControlled());
+        	allEntities.add(new ServerControlled(universe, allEntities));
         }
         
         // Testing - a mini http server to show stats through a browser
@@ -66,6 +66,6 @@ public class Main
         
         // Instantiate a UDP listener, and let it take over.
         JavaTools.printlnTime("Creating UDP Listener...");
-        UDPListener udp = new UDPListener( 3005, allEntities );		
+        UDPListener udp = new UDPListener( 3005, universe, allEntities );		
 	}
 }

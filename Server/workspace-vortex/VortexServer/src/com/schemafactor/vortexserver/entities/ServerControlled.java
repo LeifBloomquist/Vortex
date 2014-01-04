@@ -8,13 +8,11 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 public class ServerControlled extends Entity
 {
-   private byte spriteBase = 32;
-   private byte spriteNum  = 0;  // TODO
 	   
    /** Creates a new instance of Server Controlled */
-   public ServerControlled()
+   public ServerControlled(Universe universe, Vector<Entity> allEntities)
    {
-       super("Server Controlled Alien", 5100+JavaTools.generator.nextInt(100), 5100+JavaTools.generator.nextInt(200), Entity.eTypes.SERVER_CONTROLLED);
+       super("Server Controlled Alien",  Entity.eTypes.SERVER_CONTROLLED, 5000+JavaTools.generator.nextInt(200), 5000+JavaTools.generator.nextInt(200), universe,  allEntities);
        
        Xspeed = 0;
        Yspeed = 0;
@@ -25,15 +23,9 @@ public class ServerControlled extends Entity
    {
        return Constants.COLOR_GREEN;
    }
-   
-   	@Override 
-   	public byte getSpriteNum()
-   	{
-       return (byte)(spriteBase+spriteNum); 
-   	}   
 
 	@Override
-	public boolean update(Universe universe, Vector<Entity> allEntities) 
+	public void update() 
 	{
 		// Find a human player to chase
 		
@@ -52,7 +44,7 @@ public class ServerControlled extends Entity
 	       Xspeed = 0;
 	       Yspeed = 0;
 	       //Leave sprite#
-	       return false;
+	       return;
 		}
 		
 		// Only get within so many pixels
@@ -61,7 +53,7 @@ public class ServerControlled extends Entity
 		   Xspeed = 0;
 		   Yspeed = 0;
 		   // Leave sprite#
-		   return false;
+		   return;
 		}
 		
 		// Move towards the target
@@ -76,16 +68,13 @@ public class ServerControlled extends Entity
 		Yspeed = -2 * Math.sin(angle);		
 		
 		// Determine pointing
-		double degrees = Math.toDegrees(angle);
-		double degrees1 = 112.5-degrees;		
-		if (degrees1<0) degrees1+=360; 
-		
-		spriteNum = (byte)(degrees1/45);
-		//JavaTools.printlnTime("xdist="+xdist+"\t ydist="+ydist+"\t angle="+angle + "\t degrees="+degrees + "\t sprite="+spriteNum);		
-		JavaTools.printlnTime("degrees="+degrees + "\t degrees1="+degrees1 + "\t sprite="+spriteNum);
+		double degrees = 112.5-Math.toDegrees(angle);				
+		while (degrees<0)   degrees+=360d; 
+		while (degrees>360) degrees-=360d;		
+		spriteNum = (byte)(degrees/45);
 	
 		// Move within the world
-		move(universe);
-		return false;
+		move();
+		return;
 	}   
 }

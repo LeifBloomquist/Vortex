@@ -27,6 +27,9 @@ RATE_X:    ; Signed
 RATE_Y:    ; Signed
   .byte 0
   
+DIRECTION:
+  .byte 0
+  
 ; ---------------------------------------------------------------------
 ; Joystick handler.
 
@@ -119,9 +122,25 @@ DORIGHT:
 ; ---------------------------------------------------------------------
 DOBUTTON:
   lda JOYBUTTON
-  beq JOY_x
+  beq JOYDIRECTION
 
-  ; Fire button
+  ; Fire button handling here, if needed
+
+; ---------------------------------------------------------------------
+JOYDIRECTION:
+   
+   ; Determine direction with a lookup table
+   lda $dc00  ; Port 2
+   and #$0F
+   tax
+   lda spritedirections,x
+   cmp #$ff ; leave as-is
+   beq JOY_x
+   
+   clc
+   sta DIRECTION   
+   adc #SPRITE_BASE
+   sta SPRITE_POINTERS+00
   
 ; ---------------------------------------------------------------------
 JOY_x:
@@ -133,6 +152,14 @@ LOCATION_X:
    
 LOCATION_Y:
   .byte $EC, $13    ; 5100    
+
+; Lookup table to map joystick input to a sprite.  
+; $FF=leave as before (centered or impossible)
+spritedirections:  
+  .byte $ff,$ff,$ff,$ff
+  .byte $ff,$03,$01,$02
+  .byte $ff,$05,$07,$06
+  .byte $ff,$04,$00,$ff
   
 ; ---------------------------------------------------------------------
 ; Position calculation.
