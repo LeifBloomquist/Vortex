@@ -11,14 +11,14 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 
 public class HumanPlayer extends Entity
-{		
+{        
    private InetAddress userIP;       // User IP Address
    private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections
   
    /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet, Universe universe, Vector<Entity> allEntities)
    {
-	   // Random starting positions for multiple players
+       // Random starting positions for multiple players
        super("Human Player from " + packet.getAddress(), Entity.eTypes.HUMAN_PLAYER, 5000+JavaTools.generator.nextInt(200), 5000+JavaTools.generator.nextInt(200), universe,  allEntities);
        
        spriteBase=0;
@@ -55,42 +55,42 @@ public class HumanPlayer extends Entity
    // Increment and check the timeout
    public void checkTimeout()
    {
-	   if (timeoutCounter < 10000) timeoutCounter += Constants.TICK_TIME;
-	   
-	   if (timeoutCounter > 2000)   // Two seconds 
-	   {
-		   removeMeFlag = true;
-	   }	   
+       if (timeoutCounter < 10000) timeoutCounter += Constants.TICK_TIME;
+       
+       if (timeoutCounter > 2000)   // Two seconds 
+       {
+           removeMeFlag = true;
+       }       
    }
    
    /** Update me with new data from client */
    public void receiveUpdate(byte[] data)
    {
-	   switch (data[0])   // Packet type
-	   {
-	   		case  Constants.CLIENT_ANNOUNCE:
-	   		 // Not yet implemented
-	   	    break;
-	   	    
-	   		case Constants.CLIENT_UPDATE:
-	          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
-	          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
-	   		  Xspeed    = data[5]/5;
-	   		  Yspeed    = data[6]/5;
-	   		  spriteNum = data[7];
-	   		  
-	   		  // Cheat a little and do the position math here.  Eventually, move to client.
-	   		  Xpos += Xspeed;
-	   		  Ypos += Yspeed;
-	   		  wrap();
-	   		  
-	   		  break;
-	   		
-	   		default:
-	   			JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
-	   			return;
-	   }
-	   		 
+       switch (data[0])   // Packet type
+       {
+               case  Constants.CLIENT_ANNOUNCE:
+                // Not yet implemented
+               break;
+               
+               case Constants.CLIENT_UPDATE:
+              //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
+              //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
+                 Xspeed    = data[5]/5;
+                 Yspeed    = data[6]/5;
+                 spriteNum = data[7];
+                 
+                 // Cheat a little and do the position math here.  Eventually, move to client.
+                 Xpos += Xspeed;
+                 Ypos += Yspeed;
+                 wrap();
+                 
+                 break;
+               
+               default:
+                   JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
+                   return;
+       }
+                
        // Reset timeout
        timeoutCounter = 0;
    }
@@ -98,51 +98,51 @@ public class HumanPlayer extends Entity
 
    @Override
    public void update()
-   {   	   
-	   // move();   // Don't call for for human players - Position will be controlled by client.	   
-	   
-	   // Send data packet to the client	   	   
-	   byte[] message = new byte[940];  
-	   message[0] = Constants.PACKET_UPDATE;
-	   message[1] = 0; // Unused
-	   message[2] = getScroll(Xpos);  // Fine X
-	   message[3] = getScroll(Ypos);  // Fine Y 		  
-	   message[4] = 0; // Unused - Screen # if needed
-	   message[5] = 0; // Unused - Spare
-	   	   
-	   int offset = 6;
-	   
-	   
-	   // Determine which entities would be visible on screen to this player.
-	   Vector<Entity> visibleEntities = new Vector<Entity>();
-	   
-	   for (Entity e : allEntities)
-	   {		   
-		   	if (this == e) continue;  // Don't update with myself
-		   
-			if (isOnScreen(e))
-			{
-				visibleEntities.add(e);   
-			}
-	   }
-	   	   
-	   // The C64 can't display more than 7 entities at a time due to sprite limits (and our client can't multiplex)
-	   if (visibleEntities.size() > 7)	   
-	   {
-		   // In future, could be fancier with round-robin, or only showing 7 closest entities.  For now, just limit to the first 7.		   
-		   visibleEntities = (Vector<Entity>) visibleEntities.subList(0, 6);		   
-	   }
-	   	   
-	   
-	   for (Entity e : visibleEntities)
-	   {   
-		   // TODO, this needs serious wrapping handling.  Make this a function.
-		   
-		   // Determine distance between this player and other entities
-		   long xdist = (long)(this.getXpos() - e.getXpos());
-		   long ydist = (long)(this.getYpos() - e.getYpos());
-		  
-		   // Relative distances onscreen
+   {          
+       // move();   // Don't call for for human players - Position will be controlled by client.       
+       
+       // Send data packet to the client              
+       byte[] message = new byte[940];  
+       message[0] = Constants.PACKET_UPDATE;
+       message[1] = 0; // Unused
+       message[2] = getScroll(Xpos);  // Fine X
+       message[3] = getScroll(Ypos);  // Fine Y           
+       message[4] = 0; // Unused - Screen # if needed
+       message[5] = 0; // Unused - Spare
+              
+       int offset = 6;
+       
+       
+       // Determine which entities would be visible on screen to this player.
+       Vector<Entity> visibleEntities = new Vector<Entity>();
+       
+       for (Entity e : allEntities)
+       {           
+            if (this == e) continue;  // Don't update with myself
+           
+            if (isOnScreen(e))
+            {
+                visibleEntities.add(e);   
+            }
+       }
+              
+       // The C64 can't display more than 7 entities at a time due to sprite limits (and our client can't multiplex)
+       if (visibleEntities.size() > 7)       
+       {
+           // In future, could be fancier with round-robin, or only showing 7 closest entities.  For now, just limit to the first 7.           
+           visibleEntities = (Vector<Entity>) visibleEntities.subList(0, 6);           
+       }
+              
+       
+       for (Entity e : visibleEntities)
+       {   
+           // TODO, this needs serious wrapping handling.  Make this a function.
+           
+           // Determine distance between this player and other entities
+           long xdist = (long)(this.getXpos() - e.getXpos());
+           long ydist = (long)(this.getYpos() - e.getYpos());
+          
+           // Relative distances onscreen
            int xrel = (int)(Constants.PLAYER_XPOS - xdist);  
            int yrel = (int)(Constants.PLAYER_YPOS - ydist);                      
            
@@ -158,31 +158,31 @@ public class HumanPlayer extends Entity
            message[offset+9] = 0;  // Spare 2
            
            offset += 10;   
-	   }
-	   
-	   // Sound effects
-	   // Messages
-	   
-	   // And now, the first 20 lines (=800 bytes) of the screen.	   
-	   System.arraycopy(universe.getScreen(getXcell(), getYcell()), 0, message, 140, 20*40);
-	   
-	   // Send the packet.
-	   sendUpdate(message);		   
-		   
-	   // Increment and Timeout.  This is reset in receiveUpdate() above.	 
-	   checkTimeout();
-	   
-	   return;
+       }
+       
+       // Sound effects
+       // Messages
+       
+       // And now, the first 20 lines (=800 bytes) of the screen.       
+       System.arraycopy(universe.getScreen(getXcell(), getYcell()), 0, message, 140, 20*40);
+       
+       // Send the packet.
+       sendUpdate(message);           
+           
+       // Increment and Timeout.  This is reset in receiveUpdate() above.     
+       checkTimeout();
+       
+       return;
    }     
    
    private boolean isOnScreen(Entity e)
    {
-	   long xdist = (long)(this.getXpos() - e.getXpos());
-	   long ydist = (long)(this.getYpos() - e.getYpos());
-	   
-	   if (Math.abs(xdist) > 170) return false;
-	   if (Math.abs(ydist) > 110) return false;
-	   
-	   return true;
+       long xdist = (long)(this.getXpos() - e.getXpos());
+       long ydist = (long)(this.getYpos() - e.getYpos());
+       
+       if (Math.abs(xdist) > 170) return false;
+       if (Math.abs(ydist) > 110) return false;
+       
+       return true;
    }
 }

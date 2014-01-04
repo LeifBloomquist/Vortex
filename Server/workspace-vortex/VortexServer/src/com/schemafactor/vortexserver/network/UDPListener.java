@@ -34,7 +34,7 @@ public class UDPListener
 
         try
         {
-        	byte[] buf = new byte[50];
+            byte[] buf = new byte[50];
             DatagramSocket socket = new DatagramSocket(port);
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 
@@ -72,7 +72,7 @@ public class UDPListener
 //        
 //        for (Byte b : packetBytes)
 //        {
-//        	s += b.toString()+ " ";
+//            s += b.toString()+ " ";
 //        }
 //        s+="]";
 //         
@@ -84,16 +84,16 @@ public class UDPListener
         {
             for (Entity e : allEntities)
             {
-            	if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
-            	{
-            		HumanPlayer hp = (HumanPlayer)e;
-            		
-            		if ( hp.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
+                if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
+                {
+                    HumanPlayer hp = (HumanPlayer)e;
+                    
+                    if ( hp.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
                     {
-            			hp.receiveUpdate(packetBytes);
+                        hp.receiveUpdate(packetBytes);
                         return;
-                    }            		
-            	}                
+                    }                    
+                }                
             }
         }
         

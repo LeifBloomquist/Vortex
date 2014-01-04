@@ -43,9 +43,9 @@ import javax.swing.table.TableColumn;
  */
 public abstract class JavaTools
 {
-	
-	public static Random generator = new Random();
-	
+    
+    public static Random generator = new Random();
+    
     static FileLock lck = null; //Putting it here keeps it active for the life of the application
     
     public static boolean isEven(int test) 
@@ -72,14 +72,14 @@ public abstract class JavaTools
             return;
         }
 
-		// Set Auto resizing
-		table.setAutoResizeMode( JTable.AUTO_RESIZE_NEXT_COLUMN );
+        // Set Auto resizing
+        table.setAutoResizeMode( JTable.AUTO_RESIZE_NEXT_COLUMN );
 
-		for (int i=0; i<cols; i++) 
-		{
-		    TableColumn column = table.getColumnModel().getColumn(i);
-		    column.setPreferredWidth( widths[i] );   //Sol
-	    }
+        for (int i=0; i<cols; i++) 
+        {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth( widths[i] );   //Sol
+        }
     }
         
   
@@ -380,33 +380,33 @@ public abstract class JavaTools
    /**
     * Returns current system data and time in yyyy-MM-dd HH:mm:ss.millisecs format.
     * 
-	 * @return string containing formatted system date and time
-	 */
-	public static String GetCurrentDateTimeStamp()
+     * @return string containing formatted system date and time
+     */
+    public static String GetCurrentDateTimeStamp()
     {
-   	    java.util.Date date = new java.util.Date();  // "Now"
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		return format.format(date);
+           java.util.Date date = new java.util.Date();  // "Now"
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return format.format(date);
     }
-	
-	/**
-	 *  Allow array reads to wrap around (positive only)
-	 */
-	public static Object getArrayWrap(Object[][] array, long row, long col)
+    
+    /**
+     *  Allow array reads to wrap around (positive only)
+     */
+    public static Object getArrayWrap(Object[][] array, long row, long col)
     {
-   	    return array[(int) (row % array.length)][(int) (col % array[0].length)];
+           return array[(int) (row % array.length)][(int) (col % array[0].length)];
     }
-	
-	/** Convert cartesian to distance */
-	public static double getDistance(double x, double y)
-	{
-	    return Math.sqrt(x * x + y * y); 
-	}
-	
-	/** Convert cartesian to angle in DEGREES */ 
-	public static double getAngleDegrees(double y, double x)
-	{
-		return Math.toDegrees(Math.atan2(y, x));
-	}
-	
+    
+    /** Convert cartesian to distance */
+    public static double getDistance(double x, double y)
+    {
+        return Math.sqrt(x * x + y * y); 
+    }
+    
+    /** Convert cartesian to angle in DEGREES */ 
+    public static double getAngleDegrees(double y, double x)
+    {
+        return Math.toDegrees(Math.atan2(y, x));
+    }
+    
 }

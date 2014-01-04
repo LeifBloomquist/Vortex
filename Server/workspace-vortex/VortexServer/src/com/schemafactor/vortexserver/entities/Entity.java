@@ -6,10 +6,10 @@ import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class Entity 
-{	
+{    
    public static enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID}
    protected eTypes myType = eTypes.NONE;
-	
+    
    protected String description;   
    
    protected double Xpos = -1;      // These are pixels, and refers to the top-left corner of the object (sprite, etc.)
@@ -31,12 +31,12 @@ public abstract class Entity
    /** Creates a new instance of Entity */
    public Entity(String description, eTypes type, double startX, double startY,  Universe universe, Vector<Entity> allEntities)
    {
-	   this.description = new String(description);
-	   this.myType = type;
-	   Xpos = startX;
-	   Ypos = startY;
-	   this.universe = universe;
-	   this.allEntities = allEntities;	   
+       this.description = new String(description);
+       this.myType = type;
+       Xpos = startX;
+       Ypos = startY;
+       this.universe = universe;
+       this.allEntities = allEntities;       
    }
    
    // Handle wraparound
@@ -78,13 +78,13 @@ public abstract class Entity
    
    public long getYcell()
    {
-	   return (long) (Math.floor(Ypos / Constants.PIXELSPERCELL));
+       return (long) (Math.floor(Ypos / Constants.PIXELSPERCELL));
    }
    
    /** Return the scroll remainder for either X,Y (for smooth scrolling) */
    public byte getScroll(double xory) 
    {
-	  return (byte) (Constants.PIXELSPERCELL - (Math.floor(xory) % Constants.PIXELSPERCELL) -1);
+      return (byte) (Constants.PIXELSPERCELL - (Math.floor(xory) % Constants.PIXELSPERCELL) -1);
    }
    
     /** Return X,Y speeds as bytes */
@@ -115,19 +115,19 @@ public abstract class Entity
    }
    
     /** Return Sprite# */
-  	public byte getSpriteNum()
-  	{
+      public byte getSpriteNum()
+      {
       return (byte)(spriteBase+spriteNum); 
-  	}   
+      }   
    
    // Helper function to get distance to another Entity
    protected double distanceTo(Entity target)
-   {	   
-	   return Math.sqrt( Math.pow((this.Xpos - target.getXpos()), 2) + Math.pow((this.Ypos - target.getYpos()), 2)); 
+   {       
+       return Math.sqrt( Math.pow((this.Xpos - target.getXpos()), 2) + Math.pow((this.Ypos - target.getYpos()), 2)); 
    }
 
-	public boolean removeMe() 
-	{		
-		return removeMeFlag;
-	}   
+    public boolean removeMe() 
+    {        
+        return removeMeFlag;
+    }   
 }

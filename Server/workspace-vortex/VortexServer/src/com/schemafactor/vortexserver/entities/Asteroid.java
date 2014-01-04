@@ -8,16 +8,17 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 
 public class Asteroid extends Entity
-{	
-	private final int num_sprites=32; 
-	
+{    
+    private final int num_sprites=32; 
+    
     /** Milliseconds */
     private int animtimer = 0;  
    
     /** Creates a new instance of Asteroid */
     public Asteroid(Universe universe, Vector<Entity> allEntities)
-    {	
-       super("Asteroid", Entity.eTypes.ASTEROID, universe.getXsize()*JavaTools.generator.nextDouble(), universe.getYsize()*JavaTools.generator.nextDouble(), universe, allEntities);       
+    {    
+       //super("Asteroid", Entity.eTypes.ASTEROID, universe.getXsize()*JavaTools.generator.nextDouble(), universe.getYsize()*JavaTools.generator.nextDouble(), universe, allEntities);
+       super("Asteroid", Entity.eTypes.ASTEROID, 4700+JavaTools.generator.nextInt(1000), 4700+JavaTools.generator.nextInt(1000), universe, allEntities);       
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());
@@ -40,21 +41,21 @@ public class Asteroid extends Entity
         return (byte)(spriteBase+spriteNum);
     }      
 
-	@Override
-	public void update() 
-	{
-		animtimer += Constants.TICK_TIME;
-		
-		// Animate the Asteroid
-		if (animtimer >= 200)   // milliseconds
-		{
-			animtimer=0;
-			spriteNum++;
-			if (spriteNum >= num_sprites) spriteNum=0;
-		}
-		
-		// Move within the universe
-		move();
-		return;
-	}   
+    @Override
+    public void update() 
+    {
+        animtimer += Constants.TICK_TIME;
+        
+        // Animate the Asteroid
+        if (animtimer >= 200)   // milliseconds
+        {
+            animtimer=0;
+            spriteNum++;
+            if (spriteNum >= num_sprites) spriteNum=0;
+        }
+        
+        // Move within the universe
+        move();
+        return;
+    }   
 }

@@ -17,31 +17,31 @@ import fi.iki.elonen.VortexDebugServer;
 
 public class Main 
 {
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) 
-	{
-	    JavaTools.printlnTime("-----------------------------------------------");
-	    JavaTools.printlnTime("Vortex Server Version " + Constants.VERSION );
-	        
-	    // Create the universe.
-	    JavaTools.printlnTime("Creating game universe...");
-		Universe universe = new Universe(100);
-		
-		 // Vector of all users.
-		JavaTools.printlnTime("Creating default entities...");
+    /**
+     * @param args
+     */
+    public static void main(String[] args) 
+    {
+        JavaTools.printlnTime("-----------------------------------------------");
+        JavaTools.printlnTime("Vortex Server Version " + Constants.VERSION );
+            
+        // Create the universe.
+        JavaTools.printlnTime("Creating game universe...");
+        Universe universe = new Universe(100);
+        
+         // Vector of all users.
+        JavaTools.printlnTime("Creating default entities...");
         Vector<Entity> allEntities = new Vector<Entity>();
         
         // Add some entities.
-        for (int i=1; i<=1000; i++)
+        for (int i=1; i<=20; i++)
         {
-        	allEntities.add(new Asteroid(universe, allEntities));
+            allEntities.add(new Asteroid(universe, allEntities));
         }
         
         for (int i=1; i<=5; i++)
         {
-        	allEntities.add(new ServerControlled(universe, allEntities));
+            allEntities.add(new ServerControlled(universe, allEntities));
         }
         
         // Testing - a mini http server to show stats through a browser
@@ -50,11 +50,11 @@ public class Main
         
         try 
         {
-        	vdbg.start();
+            vdbg.start();
         }
         catch (IOException ioe) 
         {
-        	JavaTools.printlnTime("Couldn't start httpd server:\n" + ioe);
+            JavaTools.printlnTime("Couldn't start httpd server:\n" + ioe);
             System.exit(-1);
         }
                 
@@ -66,6 +66,6 @@ public class Main
         
         // Instantiate a UDP listener, and let it take over.
         JavaTools.printlnTime("Creating UDP Listener...");
-        UDPListener udp = new UDPListener( 3005, universe, allEntities );		
-	}
+        UDPListener udp = new UDPListener( 3005, universe, allEntities );        
+    }
 }
