@@ -39,7 +39,7 @@ public class Main
         	allEntities.add(new Asteroid());
         }
         
-        for (int i=1; i<=3; i++)
+        for (int i=1; i<=1; i++)
         {
         	allEntities.add(new ServerControlled());
         }

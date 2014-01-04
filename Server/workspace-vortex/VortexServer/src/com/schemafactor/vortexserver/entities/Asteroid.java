@@ -12,12 +12,13 @@ public class Asteroid extends Entity
     private byte spriteBase = 96;
     private byte spriteNum  = (byte)JavaTools.generator.nextInt(32);
    
-    private int animtimer = 0;
+    /** Milliseconds */
+    private int animtimer = 0;  
    
     /** Creates a new instance of Asteroid */
     public Asteroid()
     {
-       super("Asteroid", 5000+JavaTools.generator.nextInt(100), 5080+JavaTools.generator.nextInt(100), Entity.eTypes.ASTEROID);  
+       super("Asteroid", 5100+JavaTools.generator.nextInt(100), 5080+JavaTools.generator.nextInt(100), Entity.eTypes.ASTEROID);  
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());
@@ -43,11 +44,11 @@ public class Asteroid extends Entity
 		animtimer += Constants.TICK_TIME;
 		
 		// Animate the Asteroid
-		if (animtimer > 100)   // Half a second
+		if (animtimer >= 100)   // milliseconds
 		{
 			animtimer=0;
 			spriteNum++;
-			if (spriteNum > 31) spriteNum=0;   // 32???	
+			if (spriteNum > 31) spriteNum=0;
 		}
 		
 		// Move within the universe

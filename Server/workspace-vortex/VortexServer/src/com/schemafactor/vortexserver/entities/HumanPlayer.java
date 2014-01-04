@@ -18,7 +18,8 @@ public class HumanPlayer extends Entity
    /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet)
    {
-       super("Human Player from " + packet.getAddress(), 5000, 5100, Entity.eTypes.HUMAN_PLAYER);
+	   // Random starting positions for multiple players
+       super("Human Player from " + packet.getAddress(), 5100+JavaTools.generator.nextInt(100), 5100+JavaTools.generator.nextInt(100), Entity.eTypes.HUMAN_PLAYER);
        
        userIP = packet.getAddress();
        receiveUpdate(packet.getData());
@@ -48,6 +49,14 @@ public class HumanPlayer extends Entity
        return userIP;
    } 
    
+   /** Return Sprite# */
+   @Override 
+   public byte getSpriteNum()
+   {
+       return (byte)(0);
+   }      
+
+   
    // Increment the timeout - called by UpdaterThread
    public void incTimeout()
    {
@@ -73,8 +82,8 @@ public class HumanPlayer extends Entity
 	   		case Constants.CLIENT_UPDATE:
 	          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
 	          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
-	   		  Xspeed  = (data[5] / 10d);
-	   		  Yspeed  = (data[6] / 10d);
+	   		  Xspeed  = data[5]/5; //(data[5] / 10d);
+	   		  Yspeed  = data[6]/5; //(data[6] / 10d);
 	   		  
 	   		  // Cheat a little and do the position math here.  Eventually, move to client.
 	   		  Xpos += Xspeed;
@@ -110,31 +119,38 @@ public class HumanPlayer extends Entity
 	   	   
 	   int offset = 6;
 	   
-	   // !!! Quick assumption for testing, that there will never be more than 7 entities.
+	   
+	   // Determine which entities would be visible on screen to this player.
+	   Vector<Entity> visibleEntities = new Vector<Entity>();
 	   
 	   for (Entity e : allEntities)
 	   {		   
-		   if (this == e) continue;  // Don't update with myself
+		   	if (this == e) continue;  // Don't update with myself
 		   
+			if (isOnScreen(e))
+			{
+				visibleEntities.add(e);   
+			}
+	   }
+	   	   
+	   // The C64 can't display more than 7 entities at a time due to sprite limits (and our client can't multiplex)
+	   if (visibleEntities.size() > 7)	   
+	   {
+		   // In future, could be fancier with round-robin, or only showing 7 closest entities.  For now, just limit to the first 7.		   
+		   visibleEntities = (Vector<Entity>) visibleEntities.subList(0, 6);		   
+	   }
+	   	   
+	   
+	   for (Entity e : visibleEntities)
+	   {   
 		   // TODO, this needs serious wrapping handling.  Make this a function.
 		   
 		   // Determine distance between this player and other entities
 		   long xdist = (long)(this.getXpos() - e.getXpos());
 		   long ydist = (long)(this.getYpos() - e.getYpos());
-		   
-		   if (Math.abs(xdist) > 170) continue;
-		   if (Math.abs(ydist) > 110) continue;
-		   
-		   
-//           if (xdist < -Constants.PLAYER_XPOS)  continue;  // Too far to the left
-//           if (xdist >  Constants.PLAYER_XPOS)  continue;  // Too far to the right
-//           
-//		              
-//           if (ydist < -Constants.PLAYER_YPOS)  continue;  // Too high
-//           if (ydist >  Constants.PLAYER_YPOS)  continue;  // Too low         
-		   
-           // Other entity is visible!
-           int xrel = (int)(Constants.PLAYER_XPOS - xdist);
+		  
+		   // Relative distances onscreen
+           int xrel = (int)(Constants.PLAYER_XPOS - xdist);  
            int yrel = (int)(Constants.PLAYER_YPOS - ydist);                      
            
            message[offset+0] = JavaTools.getLowByte(xrel);  
@@ -163,5 +179,16 @@ public class HumanPlayer extends Entity
 	   // Increment and Timeout.  This is reset in receiveUpdate() above.
 	   incTimeout();
 	   return checkTimeout();
-   }      
+   }     
+   
+   private boolean isOnScreen(Entity e)
+   {
+	   long xdist = (long)(this.getXpos() - e.getXpos());
+	   long ydist = (long)(this.getYpos() - e.getYpos());
+	   
+	   if (Math.abs(xdist) > 170) return false;
+	   if (Math.abs(ydist) > 110) return false;
+	   
+	   return true;
+   }
 }

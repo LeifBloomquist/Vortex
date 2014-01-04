@@ -397,5 +397,16 @@ public abstract class JavaTools
    	    return array[(int) (row % array.length)][(int) (col % array[0].length)];
     }
 	
+	/** Convert cartesian to distance */
+	public static double getDistance(double x, double y)
+	{
+	    return Math.sqrt(x * x + y * y); 
+	}
+	
+	/** Convert cartesian to angle in DEGREES */ 
+	public static double getAngleDegrees(double y, double x)
+	{
+		return Math.toDegrees(Math.atan2(y, x));
+	}
 	
 }

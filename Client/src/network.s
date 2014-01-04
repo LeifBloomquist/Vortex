@@ -299,7 +299,7 @@ WAITMESSAGE:
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
   .byte "vORTEX 2 nETWORK iNITIALIZATION",13
-  .byte "fORWARD udp pORT 3000 TO YOUR C64",13,13
+  .byte "fORWARD udp pORT 3000 TO YOUR c64",13,13
   .byte 0
 
 DOWNLOADMESSAGE:
@@ -315,7 +315,7 @@ OKMESSAGE:
   .byte 0                      
 
 FAILMESSAGE:
-  .byte "failed",13
+  .byte "...failed",13
   .byte 0                    
   
 packetreceived:

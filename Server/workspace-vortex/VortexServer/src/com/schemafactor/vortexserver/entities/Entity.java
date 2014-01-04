@@ -106,8 +106,11 @@ public abstract class Entity
    }
    
    /** Return Sprite# */
-   public byte getSpriteNum()
-   {
-       return spriteNum;
+   abstract public byte getSpriteNum();
+   
+   // Helper function to get distance to another Entity
+   protected double distanceTo(Entity target)
+   {	   
+	   return Math.sqrt( Math.pow((this.Xpos - target.getXpos()), 2) + Math.pow((this.Ypos - target.getYpos()), 2)); 
    }   
 }
