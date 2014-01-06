@@ -39,6 +39,8 @@ PACKET_SERVER_UPDATE  = 129
   .import tftp_set_callback_vector
   .import copy_tftp_block_to_ram
   
+  .import cfg_tftp_server
+  
   .import copymem
     .importzp copy_src
     .importzp copy_dest  
@@ -52,6 +54,16 @@ network_init_dhcp:
   kernal_print NETWORKMESSAGE
   
   init_ip_via_dhcp   
+  
+  lda SERVER_IP+0
+  sta cfg_tftp_server+0 
+  lda SERVER_IP+1
+  sta cfg_tftp_server+1
+  lda SERVER_IP+2
+  sta cfg_tftp_server+2
+  lda SERVER_IP+3
+  sta cfg_tftp_server+3
+  
   jsr print_cr
   jsr print_ip_config
   jsr print_cr  
