@@ -150,8 +150,8 @@ public class ServerControlled extends Entity
         // Determine overall pointing
         double rads    = Math.atan2(-Yspeed, Xspeed);   // Negative here because our y-axis is inverted    
         double degrees = 112.5-Math.toDegrees(rads);                
-        if (degrees<0)   degrees+=360d;   // while
-        if (degrees>360) degrees-=360d;   // while     
+        while (degrees<0)   degrees+=360d;
+        while (degrees>360) degrees-=360d;       
         spriteNum = (byte)(degrees/45);
 
         // Move within the universe

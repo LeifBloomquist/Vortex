@@ -41,17 +41,10 @@ public abstract class Entity
    protected void wrap()
    {
        // Wrap around, repeatedly if necessary
-       /*
        while (Xpos < 0)                   Xpos += universe.getXsize();
        while (Ypos < 0)                   Ypos += universe.getYsize();       
        while (Xpos > universe.getXsize()) Xpos -= universe.getXsize();
        while (Ypos > universe.getYsize()) Ypos -= universe.getYsize();
-       */
-       
-       if (Xpos < 0)                   Xpos += universe.getXsize();
-       if (Ypos < 0)                   Ypos += universe.getYsize();       
-       if (Xpos > universe.getXsize()) Xpos -= universe.getXsize();
-       if (Ypos > universe.getYsize()) Ypos -= universe.getYsize();
    }
    
    public void move()

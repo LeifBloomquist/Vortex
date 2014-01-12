@@ -8,6 +8,7 @@ package com.schemafactor.vortexserver;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
@@ -45,22 +46,25 @@ public class UpdaterThread implements Runnable
             e.update(); 
         }
         
-        // 3. Remove any entities that are flagged to be removed            
-        Iterator<Entity> i = universe.getEntities().iterator();
-        
-        synchronized (universe.getEntities())  // Synchronize where entity list is modified 
+        // 3. Remove any entities that are flagged to be removed
+        try
         {
-            while (i.hasNext()) 
-            {
-                Entity who = i.next(); // must be called before you can call i.remove()
-              
-                if (who.removeMe())
-                {
-                    JavaTools.printlnTime("Removing entity: " + who.getDescription() );
-                    i.remove();
-                }               
+            List<Entity> toBeRemoved = new ArrayList<Entity>();
+            for (Entity e : universe.getEntities())
+            { 
+               if (e.removeMe())
+               {
+                   toBeRemoved.add(e);
+                   JavaTools.printlnTime("Removing entity: " + e.getDescription() );
+               }
             }
+            
+            universe.getEntities().removeAll(toBeRemoved);
         }
+        catch (Exception e)
+        {               
+            JavaTools.printlnTime("EXCEPTION Removing entities:" + JavaTools.getStackTrace(e) );
+        }        
         
         long estimatedTime = System.nanoTime() - startTime;        
         JavaTools.printlnTime( "Update time [ms]: " + estimatedTime/1000000d);       
