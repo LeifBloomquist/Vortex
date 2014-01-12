@@ -1,27 +1,41 @@
 package fi.iki.elonen;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
+import com.schemafactor.vortexserver.entities.Entity.eTypes;
+import com.schemafactor.vortexserver.universe.Universe;
+
+import fi.iki.elonen.NanoHTTPD.Response.Status;
 
 
 /**
- * An example of subclassing NanoHTTPD to make a custom HTTP server.
+ * Custom HTTP server with some debug information.
  */
 public class VortexDebugServer extends NanoHTTPD 
 {
-    private Vector<Entity> allEntities = null;
+    private Universe universe = null;
     
-    public VortexDebugServer(int port, Vector<Entity> allEntities) 
+    public VortexDebugServer(int port, Universe universe) 
     {
         super(port);
-        this.allEntities = allEntities;    
+        this.universe = universe;
         
         try 
         {
@@ -37,8 +51,7 @@ public class VortexDebugServer extends NanoHTTPD
     @Override public Response serve(IHTTPSession session) 
     {
         Method method = session.getMethod();
-        String uri = session.getUri();
-        // System.out.println(method + " '" + uri + "' ");
+        String uri = session.getUri();        
         
         if (method != Method.GET)
         {
@@ -47,14 +60,17 @@ public class VortexDebugServer extends NanoHTTPD
 
         String msg = "<html><head><title>Vortex Debug Server</title></head>" +                
                      "<body><h1>Vortex Debug Server</h1>\n" + 
-                     "<p>" +
-                     "Server version : " + Constants.VERSION + 
+                     "<p>Server version : " + Constants.VERSION +
+                     "<p> " + getOptions() +                     
                      "<hr>";
         
         switch (uri) 
         {
             case "/":
-                msg += getOptions();
+                return new NanoHTTPD.Response("");  // Fake out the hax0rs
+            
+            case "/menu":
+                msg += "Please choose a sub-page";
                 break;
                 
             case "/memory":
@@ -65,13 +81,20 @@ public class VortexDebugServer extends NanoHTTPD
                 msg += getLogs();
                 break;
                 
+            case "/players":
+                msg += getPlayers();
+                break;
+                
             case "/entities":
                 msg += getEntities();
                 break;
+            
+            case "/map.png":
+                InputStream mbuffer = generateMap();        
+                return new NanoHTTPD.Response(Status.OK, "image/png", mbuffer);               
                 
             default:
-                msg += "<b>Unknown: " + uri + "</b>";                
-                break;
+                return new NanoHTTPD.Response("");  
         }
 
         msg += "</body></html>\n";
@@ -81,9 +104,11 @@ public class VortexDebugServer extends NanoHTTPD
     private String getOptions()
     { 
         String msg = "<h2>Subpages:</h2>";
-        msg += "<a href=\"memory\">memory</a><br>" +
-               "<a href=\"logs\">logs</a><br>" +
-               "<a href=\"entities\">entities</a><br>";
+        msg += "<a href=\"memory\">memory+cpu</a> | " +
+               "<a href=\"logs\">logs</a> | " +        
+               "<a href=\"map.png\">map</a> | " +  
+               "<a href=\"players\">players</a> | " +
+               "<a href=\"entities\">all entities</a>";
                  
         return msg;
     }    
@@ -131,17 +156,102 @@ public class VortexDebugServer extends NanoHTTPD
     
     private String getEntities()
     { 
-        String msg = "<h2>List of entities (" + allEntities.size() + " total)</h2>";
+        String msg = "<h2>List of all entities (" + universe.getEntities().size() + " total)</h2>";
         
         msg += "<table border=\"1\">" +
                "<tr><th>Entity Name</th><th>Location X</th><th>Location Y</th></tr>";
         
-        for (Entity e : allEntities)
+        for (Entity e : universe.getEntities())
         {
             msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
         }
         
         msg += "</table>";
         return msg;
-    }        
+    }
+    
+    private String getPlayers()
+    { 
+        List<Entity> allPlayers = universe.getEntities(null, eTypes.HUMAN_PLAYER);
+        
+        String msg = "<h2>List of all players (" + allPlayers.size() + " total)</h2>";
+        
+        msg += "<table border=\"1\">" +
+               "<tr><th>Player Name</th><th>Location X</th><th>Location Y</th></tr>";
+        
+        for (Entity e : allPlayers)
+        {
+            msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
+        }
+        
+        msg += "</table>";
+        return msg;
+    }
+    
+    private InputStream generateMap()
+    {
+        BufferedImage map_Image = new BufferedImage(100*40, 100*25, BufferedImage.TYPE_INT_RGB);        
+        Graphics2D gO = map_Image.createGraphics();        
+        
+        // Plot the main map        
+        for (int x=0; x<universe.getXsize()/Constants.PIXELSPERCELL; x++)
+        {
+            for (int y=0; y<universe.getYsize()/Constants.PIXELSPERCELL; y++)
+            {
+                map_Image.setRGB(x, y, universe.getCellColor(x, y).getRGB() );                         
+            }            
+        }
+        
+        // Title block
+        gO.setColor(Color.CYAN);
+        gO.setFont(new Font( "SansSerif", Font.BOLD, 72 ));
+        gO.drawString("Vortex Universe Map Generated " + JavaTools.Now(), 20, 100);       
+        
+        // Add entities
+        Color c;
+        gO.setFont(new Font( "SansSerif", Font.PLAIN, 12 ));
+        for (Entity e : universe.getEntities())
+        {
+            switch (e.getType())
+            {
+                case HUMAN_PLAYER:
+                    c = Color.RED;                    
+                    break;
+                    
+                case SERVER_CONTROLLED:
+                    c = Color.GREEN;                    
+                    break;
+                    
+                case ASTEROID:
+                    c = Color.LIGHT_GRAY;                    
+                    break;
+                
+                case NONE:
+                    c = Color.MAGENTA;                    
+                    break;
+                    
+                default:
+                    c = Color.PINK;                    
+                    break;                
+            }
+        
+            gO.setColor(c);
+            gO.fillOval((int)e.getXcell(), (int) e.getYcell(), 10, 10);
+            gO.drawString(e.getDescription(), (int)e.getXcell() + 15, (int) e.getYcell());                   
+        }
+        
+        // Clean up graphics
+        gO.dispose();        
+        
+        // Convert
+    
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(map_Image, "png", baos);
+        } catch (IOException e) {           
+            e.printStackTrace();
+        }
+        InputStream is = new ByteArrayInputStream(baos.toByteArray());
+        return is;
+    }
 }

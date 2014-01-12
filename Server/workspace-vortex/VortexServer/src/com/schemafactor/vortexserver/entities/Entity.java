@@ -1,6 +1,6 @@
 package com.schemafactor.vortexserver.entities;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.universe.Universe;
@@ -23,20 +23,18 @@ public abstract class Entity
    protected byte spriteColor = Constants.COLOR_BLACK;
    
    protected Universe universe=null;
-   protected Vector<Entity> allEntities=null;
    
    /** Flag that this entity is to be removed at the end of this update cycle.  true=remove */
    protected boolean removeMeFlag = false;
      
    /** Creates a new instance of Entity */
-   public Entity(String description, eTypes type, double startX, double startY,  Universe universe, Vector<Entity> allEntities)
+   public Entity(String description, eTypes type, double startX, double startY,  Universe universe)
    {
        this.description = new String(description);
        this.myType = type;
        Xpos = startX;
        Ypos = startY;
-       this.universe = universe;
-       this.allEntities = allEntities;       
+       this.universe = universe;       
    }
    
    // Handle wraparound

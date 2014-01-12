@@ -1,6 +1,6 @@
 package com.schemafactor.vortexserver.entities;
 
-import java.util.Vector;
+import java.util.List;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
@@ -12,9 +12,9 @@ public class ServerControlled extends Entity
     Entity target = null;
        
     /** Creates a new instance of Server Controlled */
-    public ServerControlled(Universe universe, Vector<Entity> allEntities)
+    public ServerControlled(String name, Universe universe)
     {
-       super("Server Controlled Alien",  Entity.eTypes.SERVER_CONTROLLED, 4700+JavaTools.generator.nextInt(1000), 4700+JavaTools.generator.nextInt(1000), universe,  allEntities);
+       super(name,  Entity.eTypes.SERVER_CONTROLLED, 1000+JavaTools.generator.nextInt(15000), 1000+JavaTools.generator.nextInt(15000), universe);
        
        Xspeed = 0;
        Yspeed = 0;
@@ -28,45 +28,76 @@ public class ServerControlled extends Entity
     
     private void findNewTarget()
     {
-        target = null;
-        
-        for (Entity e : allEntities)
+        try
         {
-            if (this == e) continue;  // Don't worry about myself
+            target = null;
             
-            if ((e.getType() == Entity.eTypes.HUMAN_PLAYER) && !(e.removeMe()))
+            // Get a list of all human players. 
+            List<Entity> allHumans = universe.getEntities(this, eTypes.HUMAN_PLAYER);           
+            
+            // Pick one
+            int size=allHumans.size();           
+            
+            if (size>0)
             {
-                target = e;
+                int num = JavaTools.generator.nextInt(size);
+                target = allHumans.get(num);  
+                JavaTools.printlnTime(this.description + " chose new target: " + target.getDescription() );
             }
-        }        
+        }
+        catch (Exception e)
+        {               
+            JavaTools.printlnTime( "EXCEPTION finding target: " + JavaTools.getStackTrace(e) );
+        }
     }
 
     @Override
     public void update() 
-    {   
-        if (target == null)   // No current target
-        {
-            findNewTarget();
+    {
+        try
+        {   
+            if (target == null)   // No current target
+            {
+                findNewTarget();
+            }
+            
+            if (target == null) 
+            {
+               Xspeed = 0;
+               Yspeed = 0;
+               //Leave sprite#
+               return;
+            }        
+            
+            if (target.removeMe())  // Target is about to be removed (this also releases this entity's reference to it, allowing it to be garbage collected).
+            {
+                findNewTarget();
+            }
+                
+            
+            // Randomly change targets
+            if (JavaTools.generator.nextInt(1000) == 742)
+            {
+                findNewTarget();
+            }        
+            
+            
+            if (target == null)    // No human players
+            {
+               Xspeed = 0;
+               Yspeed = 0;
+               //Leave sprite#
+               return;
+            }
         }
-        
-     /* bad code causing deadlock, why?  
-      * if (target.removeMe())  // Target is about to be removed (this also releases this entity's reference to it, allowing it to be garbage collected).
-        {
-            findNewTarget();
+        catch (Exception e)
+        {              
+            JavaTools.printlnTime( "EXCEPTION determining target: " + JavaTools.getStackTrace(e));
         }
-        */       
-        
-        if (target == null)    // No human players
-        {
-           Xspeed = 0;
-           Yspeed = 0;
-           //Leave sprite#
-           return;
-        }        
         
         // Navigation.  Seek out the target and avoid all other entities.
         
-        for (Entity e : allEntities)
+        for (Entity e : universe.getEntities())
         {
             if (this == e) continue;   // Don't worry about myself
             

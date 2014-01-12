@@ -1,7 +1,5 @@
 package com.schemafactor.vortexserver.entities;
 
-import java.util.Vector;
-
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.universe.Universe;
@@ -15,10 +13,9 @@ public class Asteroid extends Entity
     private int animtimer = 0;  
    
     /** Creates a new instance of Asteroid */
-    public Asteroid(Universe universe, Vector<Entity> allEntities)
-    {    
-       //super("Asteroid", Entity.eTypes.ASTEROID, universe.getXsize()*JavaTools.generator.nextDouble(), universe.getYsize()*JavaTools.generator.nextDouble(), universe, allEntities);
-       super("Asteroid", Entity.eTypes.ASTEROID, 4700+JavaTools.generator.nextInt(1000), 4700+JavaTools.generator.nextInt(1000), universe, allEntities);       
+    public Asteroid(String name, Universe universe)
+    {
+       super(name, Entity.eTypes.ASTEROID,JavaTools.generator.nextInt((int)universe.getXsize()), JavaTools.generator.nextInt((int)universe.getYsize()), universe);       
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());

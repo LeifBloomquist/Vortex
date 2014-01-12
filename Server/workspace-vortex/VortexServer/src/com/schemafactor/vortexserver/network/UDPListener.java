@@ -9,11 +9,10 @@ package com.schemafactor.vortexserver.network;
  */
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.Arrays;
-import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
@@ -24,14 +23,10 @@ import com.schemafactor.vortexserver.universe.Universe;
  * @author LBLOOMQU
  */
 public class UDPListener
-{
-    private Vector<Entity> allEntities = null;
-    
+{    
     /** Creates a new instance of UDPListener */
-    public UDPListener(int port, Universe universe, Vector<Entity> allEntities)
+    public UDPListener(int port, Universe universe)
     {
-        this.allEntities = allEntities;  // Keep a reference to the users list
-
         try
         {
             byte[] buf = new byte[50];
@@ -51,11 +46,11 @@ public class UDPListener
         }
         catch (SocketException ex)
         {
-            JavaTools.printlnTime( "Socket Exception: " + ex.toString());
+            JavaTools.printlnTime( "Socket Exception: " + JavaTools.getStackTrace(ex));
         }
         catch (IOException ex)
         {
-            JavaTools.printlnTime( "IO Exception: " + ex.toString());
+            JavaTools.printlnTime( "IO Exception: " + JavaTools.getStackTrace(ex));
         }   
     }
     
@@ -69,7 +64,7 @@ public class UDPListener
         // Check Checksum - Future
                 
         // Determine player
-        for (Entity e : allEntities)
+        for (Entity e : universe.getEntities())
         {         
             if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
             {
@@ -85,11 +80,11 @@ public class UDPListener
         
         // No match, create new user and add to vector
         JavaTools.printlnTime( "Creating player from " + packet.getAddress() );
-        HumanPlayer who = new HumanPlayer(packet, universe, allEntities);
+        HumanPlayer who = new HumanPlayer(packet, universe);
             
-       synchronized (allEntities)  // Synchronize where entity list is modified 
+       synchronized (universe.getEntities())  // Synchronize where entity list is modified 
        {
-            allEntities.add(who);
+           universe.getEntities().add(who);
        }
        return;  
    }

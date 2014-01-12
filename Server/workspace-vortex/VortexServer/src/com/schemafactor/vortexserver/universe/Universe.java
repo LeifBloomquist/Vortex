@@ -1,12 +1,14 @@
 package com.schemafactor.vortexserver.universe;
 
+import java.awt.Color;
 import java.awt.Point;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.entities.Entity;
 
 public class Universe 
 {
@@ -16,9 +18,14 @@ public class Universe
     private long Ysize = -1;               // Pixels
     
     Vector<Point> planetoids = new Vector<Point>();
+    List<Entity> allEntities = null;
     
-    public Universe(int size)
+    public Universe(int size, List<Entity> allEntities)
     {
+        // Save the entities
+        this.allEntities = allEntities;
+        
+        // Create array        
         universeMapCells = new Cell[size*Constants.SCREEN_WIDTH][size*Constants.SCREEN_HEIGHT];        
         
         // Instantiate
@@ -43,7 +50,7 @@ public class Universe
             int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
             int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);            
             
-            universeMapCells[randx][randy].setAttributes(starchars[JavaTools.generator.nextInt(starchars.length)], Cell.Types.Background);    
+            universeMapCells[randx][randy].setAttributes(starchars[JavaTools.generator.nextInt(starchars.length)], Constants.COLOR_WHITE, Cell.Types.Background);    
         }
         
         
@@ -105,10 +112,10 @@ public class Universe
             int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH-1);
             int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT-1);
             
-            universeMapCells[randx+0][randy+0].setAttributes(132, Constants.COLOR_GREY1, Cell.Types.Destructable);    
-            universeMapCells[randx+1][randy+0].setAttributes(137, Constants.COLOR_GREY1, Cell.Types.Destructable);
-            universeMapCells[randx+0][randy+1].setAttributes(163, Constants.COLOR_GREY1, Cell.Types.Destructable);
-            universeMapCells[randx+1][randy+1].setAttributes(169, Constants.COLOR_GREY1, Cell.Types.Destructable);
+            universeMapCells[randx+0][randy+0].setAttributes(132, Constants.COLOR_BROWN, Cell.Types.Destructable);    
+            universeMapCells[randx+1][randy+0].setAttributes(137, Constants.COLOR_BROWN, Cell.Types.Destructable);
+            universeMapCells[randx+0][randy+1].setAttributes(163, Constants.COLOR_BROWN, Cell.Types.Destructable);
+            universeMapCells[randx+1][randy+1].setAttributes(169, Constants.COLOR_BROWN, Cell.Types.Destructable);
         }
         
         /*
@@ -171,5 +178,60 @@ public class Universe
     public long getYsize() 
     {
         return Ysize;
-    }    
+    }  
+    
+    public Color getCellColor(int x, int y)
+    {
+        byte cbmcolor = universeMapCells[x][y].getCharColor();
+        
+        Color col = Color.BLACK;
+        
+        switch (cbmcolor)
+        {            
+            // C64 colors
+            case Constants.COLOR_BLACK:      col = Color.BLACK;  break;
+            case Constants.COLOR_WHITE:      col = Color.WHITE;  break;     
+            case Constants.COLOR_RED:        col = Color.RED;  break;       
+            case Constants.COLOR_CYAN:       col = Color.CYAN;  break;      
+            case Constants.COLOR_PURPLE:     col = Color.MAGENTA;  break;    
+            case Constants.COLOR_GREEN:      col = Color.GREEN;  break;     
+            case Constants.COLOR_BLUE:       col = Color.BLUE;  break;      
+            case Constants.COLOR_YELLOW:     col = Color.YELLOW;  break;    
+            case Constants.COLOR_ORANGE:     col = Color.ORANGE;  break;    
+            case Constants.COLOR_BROWN:      col = new Color(150, 75, 0);  break;     
+            case Constants.COLOR_LIGHTRED:   col = Color.PINK;  break;  
+            case Constants.COLOR_GREY1:      col = Color.DARK_GRAY;  break;     
+            case Constants.COLOR_GREY2:      col = Color.GRAY;  break;     
+            case Constants.COLOR_LIGHTGREEN: col = new Color(100, 255, 100);  break;
+            case Constants.COLOR_LIGHTBLUE:  col = new Color(100, 100, 255);  break; 
+            case Constants.COLOR_GREY3:      col = Color.LIGHT_GRAY;  break;     
+            default:                         col = Color.BLACK; break;        
+        }
+        
+        return col;        
+    }
+
+    public List<Entity> getEntities()
+    {
+        return allEntities;
+    }
+    
+    /** Get a list of all entities matching the given type, excluding the one doing the inquiry (who). */
+    public List<Entity> getEntities(Entity who, Entity.eTypes type)
+    {
+        List<Entity> allOfType = new ArrayList<Entity>();
+        
+        for (Entity e : allEntities)
+        {
+            if (who == e) continue;
+            
+            if ((e.getType() == type) && !(e.removeMe()))
+            {
+                allOfType.add(e);                        
+            }
+        }
+        
+        
+        return allOfType;
+    }
 }

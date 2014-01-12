@@ -11,15 +11,13 @@ package com.schemafactor.vortexserver.common;
  */
 
 import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.channels.FileLock;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -42,8 +40,7 @@ import javax.swing.table.TableColumn;
  * Miscellaneous static "helper" routines.
  */
 public abstract class JavaTools
-{
-    
+{    
     public static Random generator = new Random();
     
     static FileLock lck = null; //Putting it here keeps it active for the life of the application
@@ -409,4 +406,10 @@ public abstract class JavaTools
         return Math.toDegrees(Math.atan2(y, x));
     }
     
+    public static String getStackTrace(Exception ex)
+    {
+        StringWriter errors = new StringWriter();
+        ex.printStackTrace(new PrintWriter(errors));
+        return errors.toString();
+    }
 }

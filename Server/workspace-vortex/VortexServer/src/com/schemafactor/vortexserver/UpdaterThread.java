@@ -6,8 +6,8 @@ package com.schemafactor.vortexserver;
  * Updates game state for all players.
  */
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
@@ -18,15 +18,17 @@ import com.schemafactor.vortexserver.universe.Universe;
  */
 public class UpdaterThread implements Runnable
 {   
-    private Vector<Entity> allEntities = null;
     private Universe universe = null;
+    
+    private double averagecount=0.0;
+    private double averagetime=0.0;
+    
      
     /** Creates a new instance of UpdaterThread */
-    public UpdaterThread(Vector<Entity> allEntities, Universe universe)
+    public UpdaterThread(Universe universe)
     {
-        // Save references
-        this.allEntities = allEntities;
-        this.universe = universe;
+        // Save references       
+        this.universe = universe; 
     }                   
     
     /** Main updating thread (called from ScheduledThreadPoolExecutor in main(). */
@@ -38,15 +40,15 @@ public class UpdaterThread implements Runnable
         universe.update();        
         
         // 2. Update each entity                  
-        for (Entity e : allEntities)
+        for (Entity e : universe.getEntities())
         { 
             e.update(); 
         }
         
         // 3. Remove any entities that are flagged to be removed            
-        Iterator<Entity> i = allEntities.iterator();
+        Iterator<Entity> i = universe.getEntities().iterator();
         
-        synchronized (allEntities)  // Synchronize where entity list is modified 
+        synchronized (universe.getEntities())  // Synchronize where entity list is modified 
         {
             while (i.hasNext()) 
             {

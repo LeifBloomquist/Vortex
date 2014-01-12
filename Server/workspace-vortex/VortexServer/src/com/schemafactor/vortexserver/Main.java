@@ -1,7 +1,7 @@
 package com.schemafactor.vortexserver;
 
-import java.io.IOException;
-import java.util.Vector;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -24,38 +24,39 @@ public class Main
     {
         JavaTools.printlnTime("-----------------------------------------------");
         JavaTools.printlnTime("Vortex Server Version " + Constants.VERSION );
-            
+        
+        // ArrayList of all users.
+        //ArrayList<Entity> allEntities = new ArrayList<Entity>();
+        CopyOnWriteArrayList<Entity> allEntities = new CopyOnWriteArrayList<Entity>();               
+        
         // Create the universe.
         JavaTools.printlnTime("Creating game universe...");
-        Universe universe = new Universe(100);
-        
-         // Vector of all users.
-        JavaTools.printlnTime("Creating default entities...");
-        Vector<Entity> allEntities = new Vector<Entity>();
+        Universe universe = new Universe(100, allEntities);
         
         // Add some entities.
-        for (int i=1; i<=5; i++)
-        {
-            allEntities.add(new ServerControlled(universe, allEntities));
-        }
-        
+        JavaTools.printlnTime("Creating default entities...");
         for (int i=1; i<=100; i++)
         {
-            allEntities.add(new Asteroid(universe, allEntities));
+            allEntities.add(new ServerControlled("Alien #" + i, universe));
         }
         
+        for (int i=1; i<=1000; i++)
+        {
+            allEntities.add(new Asteroid("Asteroid #" + i, universe));
+        }        
+        
         // A mini http server to show stats through a browser
-        JavaTools.printlnTime("Creating debug http server...");
-        VortexDebugServer vdbg = new VortexDebugServer(8080, allEntities);
+        JavaTools.printlnTime("Creating debug httpd server...");
+        VortexDebugServer vdbg = new VortexDebugServer(80, universe);
                 
         // Start the thread that updates everything at a fixed interval
         JavaTools.printlnTime("Creating update scheduler...");
-        UpdaterThread ut = new UpdaterThread(allEntities, universe);
+        UpdaterThread ut = new UpdaterThread(universe);
         ScheduledThreadPoolExecutor s = new ScheduledThreadPoolExecutor(1);
         s.scheduleAtFixedRate(ut, 0, Constants.TICK_TIME, TimeUnit.MILLISECONDS );      
         
         // Instantiate a UDP listener, and let it take over.
         JavaTools.printlnTime("Creating UDP Listener...");
-        UDPListener udp = new UDPListener( 3005, universe, allEntities );        
+        UDPListener udp = new UDPListener(3005, universe);        
     }
 }

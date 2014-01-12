@@ -5,7 +5,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
@@ -18,10 +17,10 @@ public class HumanPlayer extends Entity
    private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections
   
    /** Creates a new instance of Human Player */
-   public HumanPlayer(DatagramPacket packet, Universe universe, Vector<Entity> allEntities)
+   public HumanPlayer(DatagramPacket packet, Universe universe)
    {
        // Random starting positions for multiple players
-       super("Human Player from " + packet.getAddress(), Entity.eTypes.HUMAN_PLAYER, 5000+JavaTools.generator.nextInt(200), 5000+JavaTools.generator.nextInt(200), universe,  allEntities);
+       super("Human Player from " + packet.getAddress(), Entity.eTypes.HUMAN_PLAYER, 20000+JavaTools.generator.nextInt(200), 10000+JavaTools.generator.nextInt(200), universe);
        
        spriteBase=0;
        spriteNum=0;
@@ -44,7 +43,7 @@ public class HumanPlayer extends Entity
        }
        catch (Exception e)
        {
-           JavaTools.printlnTime("EXCEPTION sending update: " + e.getMessage());
+           JavaTools.printlnTime("EXCEPTION sending update: " + JavaTools.getStackTrace(e));
        }
    }
       
@@ -70,27 +69,27 @@ public class HumanPlayer extends Entity
    {
        switch (data[0])   // Packet type
        {
-               case  Constants.CLIENT_ANNOUNCE:
-                // Not yet implemented
-               break;
-               
-               case Constants.CLIENT_UPDATE:
-              //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
-              //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
-                 Xspeed    = data[5]/5;
-                 Yspeed    = data[6]/5;
-                 spriteNum = data[7];
-                 
-                 // Cheat a little and do the position math here.  Eventually, move to client.
-                 Xpos += Xspeed;
-                 Ypos += Yspeed;
-                 wrap();
-                 
-                 break;
-               
-               default:
-                   JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
-                   return;
+           case  Constants.CLIENT_ANNOUNCE:
+            // Not yet implemented
+           break;
+           
+           case Constants.CLIENT_UPDATE:
+          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
+          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
+             Xspeed    = data[5]/5;
+             Yspeed    = data[6]/5;
+             spriteNum = data[7];
+             
+             // Cheat a little and do the position math here.  Eventually, move to client.
+             Xpos += Xspeed;
+             Ypos += Yspeed;
+             wrap();
+             
+             break;
+           
+           default:
+               JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
+               return;
        }
                 
        // Reset timeout
@@ -117,7 +116,7 @@ public class HumanPlayer extends Entity
        // Determine which entities would be visible on screen to this player.
        List<Entity> visibleEntities = new ArrayList<Entity>();
        
-       for (Entity e : allEntities)
+       for (Entity e : universe.getEntities())
        {           
             if (this == e) continue;  // Don't update with myself
            
@@ -137,7 +136,7 @@ public class HumanPlayer extends Entity
            }
            catch (Exception e)
            {              
-               JavaTools.printlnTime( "EXCEPTION: " + e.getMessage());
+               JavaTools.printlnTime( "EXCEPTION determining visible entities: " + JavaTools.getStackTrace(e));
            }
        }
               
