@@ -20,7 +20,7 @@ public class Asteroid extends Entity
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());
        
-       spriteBase = 96;
+       spriteBase = 112;
        spriteNum  = (byte)JavaTools.generator.nextInt(num_sprites);
     }
        
