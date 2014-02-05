@@ -1,6 +1,6 @@
 package com.schemafactor.vortexserver;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -24,9 +24,10 @@ public class Main
         JavaTools.printlnTime("-----------------------------------------------");
         JavaTools.printlnTime("Vortex Server Version " + Constants.VERSION );
         
+        JavaTools.onlyOneInstance("vortexserver");
+        
         // ArrayList of all users.
-        //ArrayList<Entity> allEntities = new ArrayList<Entity>();
-        CopyOnWriteArrayList<Entity> allEntities = new CopyOnWriteArrayList<Entity>();               
+        ArrayList<Entity> allEntities = new ArrayList<Entity>();               
         
         // Create the universe.
         JavaTools.printlnTime("Creating game universe...");
@@ -39,7 +40,7 @@ public class Main
             allEntities.add(new ServerControlled("Alien #" + i, universe));
         }
         
-        for (int i=1; i<=1000; i++)
+        for (int i=1; i<=100; i++)
         {
             allEntities.add(new Asteroid("Asteroid #" + i, universe));
         }        

@@ -7,7 +7,7 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class Entity 
 {    
-   public static enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID}
+   public static enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID, TORPEDO}
    protected eTypes myType = eTypes.NONE;
     
    protected String description;   
@@ -54,7 +54,7 @@ public abstract class Entity
        wrap();
    }
    
-   abstract public void update();   // True means the player should be removed (timeout, destroyed, etc)
+   abstract public void update(); 
    
    /** Return X,Y positions */
    public double getXpos()

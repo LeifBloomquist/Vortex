@@ -23,6 +23,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.swing.JFileChooser;
@@ -81,7 +83,7 @@ public abstract class JavaTools
         
   
     /** Helper function for chooseFile. 
-     * Adds an extention to a string (i.e. a filename), only if it isn't there already.
+     * Adds an extension to a string (i.e. a filename), only if it isn't there already.
      * */
     public static String smartAppend( String s, String ext )
     {
@@ -132,21 +134,21 @@ public abstract class JavaTools
     }
     
     /** Only allow one instance */
-    public static void onlyOneInstance()
+    public static void onlyOneInstance(String name)
     {
-        try 
+        try
         {            
-            lck = new FileOutputStream("raceserver.lock").getChannel().tryLock();
+            lck = new FileOutputStream(name+".lock").getChannel().tryLock();
             if(lck == null) 
             {
-                JOptionPane.showMessageDialog( null, "A previous instance is already running!" , "Application", JOptionPane.ERROR_MESSAGE );
+                printlnTime("A previous instance is already running!");
                 System.exit(1);
             }
             return;
         }
         catch (Exception e)
         {
-            System.out.println("Can't create/read lock file: " + e.toString() );
+           printlnTime("Can't create/read lock file: " + e.toString() );
         };   
     }
 
@@ -221,7 +223,8 @@ public abstract class JavaTools
        // It needs to be an int type.
        // Before converting to an int type, check
        // to ensure that file is not larger than Integer.MAX_VALUE.
-       if (length > Integer.MAX_VALUE) {
+       if (length > Integer.MAX_VALUE) 
+       {
            // File is too large
            return null;
        }
@@ -233,7 +236,8 @@ public abstract class JavaTools
        int offset = 0;
        int numRead = 0;
        while (offset < bytes.length
-              && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+              && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) 
+       {
            offset += numRead;
        }
    
@@ -411,5 +415,31 @@ public abstract class JavaTools
         StringWriter errors = new StringWriter();
         ex.printStackTrace(new PrintWriter(errors));
         return errors.toString();
+    }
+    
+    // From http://rosettacode.org/wiki/Averages/Simple_moving_average
+    public static class MovingAverage {
+        private final Queue<Double> window = new LinkedList<Double>();
+        private final int period;
+        private double sum;
+     
+        public MovingAverage(int period) {
+            assert period > 0 : "Period must be a positive integer";
+            this.period = period;
+        }
+     
+        public void newNum(double num) {
+            sum += num;
+            window.add(num);
+            if (window.size() > period) {
+                sum -= window.remove();
+            }
+        }
+     
+        public double getAvg() {
+            if (window.isEmpty()) return 0; // technically the average is undefined
+            return sum / window.size();
+        }
+     
     }
 }

@@ -14,7 +14,10 @@ import com.schemafactor.vortexserver.universe.Universe;
 public class HumanPlayer extends Entity
 {        
    private InetAddress userIP;       // User IP Address
-   private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections
+   private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections      
+   
+   private boolean fireButton = false;
+   private boolean lastFireState = false;
   
    /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet, Universe universe)
@@ -74,16 +77,18 @@ public class HumanPlayer extends Entity
            break;
            
            case Constants.CLIENT_UPDATE:
-          //Xpos    = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
-          //Ypos    = (0xFF & data[3]) + (0xFF & data[4])*256;
-             Xspeed    = data[5]/5;
-             Yspeed    = data[6]/5;
-             spriteNum = data[7];
+           //Xpos       = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
+           //Ypos       = (0xFF & data[3]) + (0xFF & data[4])*256;
+             Xspeed     = data[5]/5;
+             Yspeed     = data[6]/5;
+             spriteNum  = data[7];
+             fireButton =(data[8] == 1);             
              
              // Cheat a little and do the position math here.  Eventually, move to client.
-             Xpos += Xspeed;
-             Ypos += Yspeed;
-             wrap();
+             move();
+             
+             // Handle fire button
+             handleFireButton();
              
              break;
            
@@ -189,5 +194,30 @@ public class HumanPlayer extends Entity
        if (Math.abs(ydist) > 110) return false;
        
        return true;
+   }
+   
+   public void handleFireButton()
+   {
+       // Look for a positive edge       
+       if ((fireButton == true) && (lastFireState == false))
+       {
+           // TODO, this needs to be made cleaner.  For now, derive direction from sprite number.
+           double angle = 1.57079633 - (spriteNum/8d)*2d*Math.PI;
+           
+           Torpedo t = new Torpedo(this, angle, universe);
+           
+           try
+           {
+               universe.newEntities.put(t);
+           }
+           catch (InterruptedException e)
+           {
+               JavaTools.printlnTime( "EXCEPTION firing torpedo: " + JavaTools.getStackTrace(e) );
+           }
+           
+           JavaTools.printlnTime( this.getDescription() + " Fire button pressed! angle="+angle );                      
+       }      
+      
+       lastFireState = fireButton;              
    }
 }

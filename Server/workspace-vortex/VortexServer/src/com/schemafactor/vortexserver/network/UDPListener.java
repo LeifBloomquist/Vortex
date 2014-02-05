@@ -29,6 +29,8 @@ public class UDPListener
     {
         try
         {
+            Thread.currentThread().setName("Vortex UDP Listener Thread");
+            
             byte[] buf = new byte[50];
             DatagramSocket socket = new DatagramSocket(port);
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -81,11 +83,16 @@ public class UDPListener
         // No match, create new user and add to vector
         JavaTools.printlnTime( "Creating player from " + packet.getAddress() );
         HumanPlayer who = new HumanPlayer(packet, universe);
-            
-       synchronized (universe.getEntities())  // Synchronize where entity list is modified 
-       {
-           universe.getEntities().add(who);
-       }
-       return;  
+        
+        try
+        {
+            universe.newEntities.put(who);
+        }
+        catch (InterruptedException e)
+        {
+            JavaTools.printlnTime( "EXCEPTION adding new player: " + JavaTools.getStackTrace(e) );
+        }
+        
+        return;  
    }
 }

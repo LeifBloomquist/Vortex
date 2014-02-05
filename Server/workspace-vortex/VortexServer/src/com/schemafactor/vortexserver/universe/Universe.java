@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
@@ -18,8 +20,23 @@ public class Universe
     private long Ysize = -1;               // Pixels
     
     Vector<Point> planetoids = new Vector<Point>();
+    
     List<Entity> allEntities = null;
     
+    /**
+     * Thread-safe queue of new entities that are to be created (and added to the allEntities list)
+     */
+    public BlockingQueue<Entity> newEntities = new ArrayBlockingQueue<Entity>(1000);
+
+    // Some run-time statistics for monitoring
+    public double avg_ms = 0d;
+    public double avg_cpu = 0d;
+    
+    /**
+     * 
+     * @param size
+     * @param allEntities
+     */
     public Universe(int size, List<Entity> allEntities)
     {
         // Save the entities
@@ -216,7 +233,7 @@ public class Universe
         return allEntities;
     }
     
-    /** Get a list of all entities matching the given type, excluding the one doing the inquiry (who). */
+    /** Get a list of all entities matching the given type, excluding the one who is doing the inquiry (who). */
     public List<Entity> getEntities(Entity who, Entity.eTypes type)
     {
         List<Entity> allOfType = new ArrayList<Entity>();

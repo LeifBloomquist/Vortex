@@ -76,7 +76,7 @@ public class ServerControlled extends Entity
                 
             
             // Randomly change targets
-            if (JavaTools.generator.nextInt(1000) == 742)
+            if (JavaTools.generator.nextInt(10000) == 246)
             {
                 findNewTarget();
             }        

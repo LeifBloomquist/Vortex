@@ -11,6 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <folder path="/VortexServer/fonts"/>
         <javaElement handleIdentifier="=VortexServer/src"/>
     </selectedElements>
 </jardesc>

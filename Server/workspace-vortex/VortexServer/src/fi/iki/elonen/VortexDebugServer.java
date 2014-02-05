@@ -2,17 +2,18 @@ package fi.iki.elonen;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +31,7 @@ import fi.iki.elonen.NanoHTTPD.Response.Status;
  */
 public class VortexDebugServer extends NanoHTTPD 
 {
+    private Font C64font = null;
     private Universe universe = null;
     
     public VortexDebugServer(int port, Universe universe) 
@@ -39,9 +41,10 @@ public class VortexDebugServer extends NanoHTTPD
         
         try 
         {
+            loadResources();
             this.start();
         }
-        catch (IOException ioe) 
+        catch (IOException | FontFormatException ioe) 
         {
             JavaTools.printlnTime("Couldn't start httpd server:\n" + ioe);
             System.exit(-1);
@@ -136,6 +139,10 @@ public class VortexDebugServer extends NanoHTTPD
         //Print Maximum available memory
         msg += ("<p>Max Memory: " + (double)runtime.maxMemory() / mb);
         
+        // CPU usage stats
+        msg += ("<p><p>Average update time [ms]: " + universe.avg_ms);
+        msg += ("<p>Average CPU Usage [%]: " + universe.avg_cpu*100 );        		
+        
         return msg;
     }    
     
@@ -187,6 +194,13 @@ public class VortexDebugServer extends NanoHTTPD
         msg += "</table>";
         return msg;
     }
+   
+    
+    private void loadResources() throws FontFormatException, IOException  
+    {
+        InputStream is = this.getClass().getResourceAsStream("/fonts/C64_User_Mono_v1.0-STYLE.ttf");
+        C64font=Font.createFont(Font.TRUETYPE_FONT,is);        
+    }
     
     private InputStream generateMap()
     {
@@ -204,12 +218,12 @@ public class VortexDebugServer extends NanoHTTPD
         
         // Title block
         gO.setColor(Color.CYAN);
-        gO.setFont(new Font( "SansSerif", Font.BOLD, 72 ));
+        gO.setFont(C64font.deriveFont(60f));
         gO.drawString("Vortex Universe Map Generated " + JavaTools.Now(), 20, 100);       
         
         // Add entities
         Color c;
-        gO.setFont(new Font( "SansSerif", Font.PLAIN, 12 ));
+        gO.setFont(C64font.deriveFont(12f));
         for (Entity e : universe.getEntities())
         {
             switch (e.getType())
@@ -226,6 +240,10 @@ public class VortexDebugServer extends NanoHTTPD
                     c = Color.LIGHT_GRAY;                    
                     break;
                 
+                case TORPEDO:
+                    c = Color.YELLOW;                    
+                    break;
+                    
                 case NONE:
                     c = Color.MAGENTA;                    
                     break;
