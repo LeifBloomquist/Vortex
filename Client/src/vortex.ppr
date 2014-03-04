@@ -14,8 +14,8 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
-		-ip65
-			+cfg
+		+ip65
+			-cfg
 				ip65\cfg\c64prg-vortex.cfg
 			-drivers
 				ip65\drivers\a2charconv.s
@@ -124,27 +124,39 @@ vortex
 4=vortex.s
 5=macros.s
 6=ip65\cfg\c64prg-vortex.cfg
+7=util.s
+8=make.cmd
+9=screen.s
 [Selected Project Files]
 Main=
 Selected=network.s
 [irq.s]
-TopLine=99
-Caret=33,95
+TopLine=73
+Caret=185,121
 [network.s]
-TopLine=278
-Caret=28,292
+TopLine=1
+Caret=41,26
 [joystick.s]
-TopLine=111
-Caret=7,3
+TopLine=118
+Caret=7,166
 [sprites.s]
 TopLine=1
-Caret=1,1
+Caret=23,1
 [vortex.s]
-TopLine=61
-Caret=53,33
+TopLine=38
+Caret=53,64
 [macros.s]
 TopLine=1
 Caret=3,17
 [ip65\cfg\c64prg-vortex.cfg]
 TopLine=1
 Caret=59,4
+[util.s]
+TopLine=1
+Caret=1,1
+[make.cmd]
+TopLine=1
+Caret=1,1
+[screen.s]
+TopLine=1
+Caret=1,1

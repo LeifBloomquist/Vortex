@@ -40,7 +40,7 @@ sprites_init:
   lda #$ff
   sta $d015
     
-  ; All sprites are muilticolor.
+  ; All sprites are multicolor.
   sta $d01c
   
   ; Define multicolors  
@@ -51,8 +51,7 @@ sprites_init:
   sta $d026
   
   
-  ; Place Sprite #0 at the center of the screen (Player)
-  
+  ; Place Sprite #0 at the center of the screen (Player)  
   ldx #PLAYER_XPOS
   ldy #PLAYER_YPOS
   stx $d000
