@@ -10,4 +10,4 @@
 
 @dir *.prg
 @copy !*.prg p:\vortex\
-@copy vortex8000.prg ..\..\Server\data
+@copy vortex8000.prg ..\..\Server\data\vortex8000.bin

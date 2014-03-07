@@ -30,17 +30,6 @@ PACKET_SERVER_UPDATE  = 129
   
   udp_inp_data = udp_inp + udp_data
   
-  .import tftp_download
-    .import tftp_load_address
-    .importzp tftp_filename
-    .import tftp_ip 
-    
-  .import tftp_clear_callbacks 
-  .import tftp_set_callback_vector
-  .import copy_tftp_block_to_ram
-  
-  .import cfg_tftp_server
-  
   .import copymem
     .importzp copy_src
     .importzp copy_dest  
@@ -280,9 +269,6 @@ FAILMESSAGE:
   
 packetreceived:
    .byte 0           
-
-tftpname:
-  .byte "vortexdata", 0
 
 bittab:
    .byte $01,$02,$04,$08,$10,$20,$40,$80

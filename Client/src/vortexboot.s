@@ -114,7 +114,7 @@ tftpget:
   ldax #tftpname
   stax tftp_filename
   
-  ldax #$4000
+  ldax #$3000
   stax tftp_load_address
   
   jsr tftp_clear_callbacks    
