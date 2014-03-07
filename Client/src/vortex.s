@@ -29,6 +29,13 @@
 ; Program entry point
 
 init:
+  lda #$00
+  sta $d020
+  sta $d021
+  
+  jsr music_init
+  jsr login
+
   lda #$02
   sta $d020
   lda #$00
@@ -65,9 +72,12 @@ loop:
   .include "screen.s"
   .include "sprites.s"  
   .include "irq.s"
-  .include "network.s"  
+  .include "network.s" 
+  .include "music.s"
+  .include "login.s"  
+  .include "util.s"
 
 ; -------------------------------------------------------------------------
-; Binary data is now loaded from server via TFTP
+; Binary data is loaded from server via TFTP - no includes needed
   
 ; EOF!

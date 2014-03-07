@@ -14,9 +14,9 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
-		+cfg
-			cfg\c64prg-vortex8000.cfg
-			cfg\c64prg-vortex.cfg
+		-cfg
+			cfg\c64prg-vortex-boot.cfg
+			cfg\c64prg-vortex-8000.cfg
 		-ip65
 			-cfg
 				ip65\cfg\c64prg-vortex8000.cfg
@@ -120,29 +120,25 @@ vortex
 		util.s
 		vortex.s
 		vortexboot.s
+		music.s
 [Open project files]
 0=make.cmd
-1=irq.s
-2=network.s
-3=joystick.s
-4=sprites.s
-5=vortex.s
-6=util.s
-7=vortexboot.s
-8=cfg\c64prg-vortex8000.cfg
-9=cfg\c64prg-vortex.cfg
+1=network.s
+2=joystick.s
+3=sprites.s
+4=vortex.s
+5=util.s
+6=screen.s
+7=music.s
 [Selected Project Files]
 Main=
-Selected=cfg\c64prg-vortex8000.cfg
+Selected=vortex.s
 [make.cmd]
 TopLine=1
-Caret=39,13
-[irq.s]
-TopLine=84
-Caret=185,121
+Caret=40,15
 [network.s]
-TopLine=295
-Caret=1,343
+TopLine=1
+Caret=42,39
 [joystick.s]
 TopLine=1
 Caret=7,166
@@ -150,17 +146,14 @@ Caret=7,166
 TopLine=1
 Caret=23,1
 [vortex.s]
-TopLine=1
-Caret=45,59
+TopLine=25
+Caret=12,33
 [util.s]
 TopLine=1
 Caret=1,1
-[vortexboot.s]
+[screen.s]
 TopLine=1
 Caret=1,1
-[cfg\c64prg-vortex8000.cfg]
+[music.s]
 TopLine=1
-Caret=48,3
-[cfg\c64prg-vortex.cfg]
-TopLine=1
-Caret=53,19
+Caret=11,9
