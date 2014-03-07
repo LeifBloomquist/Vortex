@@ -52,5 +52,4 @@ irqmusic:
   ; Exit the current interrupt - jump to regular handler so keyboard works.
   jmp $ea31
 
-;
 ; EOF!
