@@ -247,56 +247,6 @@ copyscreen:
 ;  jsr copymem  
 ;  rts
 
-
-tftpget:
-  kernal_print DOWNLOADMESSAGE
-
-  lda SERVER_IP+0
-  sta tftp_ip+0 
-  lda SERVER_IP+1
-  sta tftp_ip+1
-  lda SERVER_IP+2
-  sta tftp_ip+2
-  lda SERVER_IP+3
-  sta tftp_ip+3
-  
-  ldax #tftpname
-  stax tftp_filename
-  
-  ldax #$4000
-  stax tftp_load_address
-  
-  jsr tftp_clear_callbacks    
-  ldax #tftpprogress
-  jsr tftp_set_callback_vector
-  
-  jsr tftp_download  
-  bcs tftperror
-
-tftpok: 
-  kernal_print OKMESSAGE 
-  rts
-
-
-tftperror:
-  kernal_print FAILMESSAGE
-:
-  lda #$07
-  sta $d020
-  lda #$02
-  sta $d020
-  jmp :-
-
-tftpprogress:
-  stax saveax     ; Save pointer to block of data 
-  lda #'.'        ; Call kernal routine
-  jsr $FFD2
-  ldax saveax     ; Retrieve pointer
-  jmp copy_tftp_block_to_ram    ; Call into default handler (ends with rts)    
-
-saveax: 
-  .byte 0,0  
-
 ; -------------------------------------------------------------------------
 ; Network Constants and Data  
   
@@ -314,10 +264,6 @@ NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
   .byte "vORTEX 2 nETWORK iNITIALIZATION",13
   .byte "fORWARD udp pORT 3000 TO YOUR c64",13,13
-  .byte 0
-
-DOWNLOADMESSAGE:
-  .byte "dOWNLOADING GAME DATA"
   .byte 0
 
 SERVERMESSAGE:

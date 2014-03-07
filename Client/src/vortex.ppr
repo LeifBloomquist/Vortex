@@ -14,9 +14,12 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
-		+ip65
+		+cfg
+			cfg\c64prg-vortex8000.cfg
+			cfg\c64prg-vortex.cfg
+		-ip65
 			-cfg
-				ip65\cfg\c64prg-vortex.cfg
+				ip65\cfg\c64prg-vortex8000.cfg
 			-drivers
 				ip65\drivers\a2charconv.s
 				ip65\drivers\a2input.s
@@ -116,47 +119,48 @@ vortex
 		make.cmd
 		util.s
 		vortex.s
+		vortexboot.s
 [Open project files]
-0=irq.s
-1=network.s
-2=joystick.s
-3=sprites.s
-4=vortex.s
-5=macros.s
-6=ip65\cfg\c64prg-vortex.cfg
-7=util.s
-8=make.cmd
-9=screen.s
+0=make.cmd
+1=irq.s
+2=network.s
+3=joystick.s
+4=sprites.s
+5=vortex.s
+6=util.s
+7=vortexboot.s
+8=cfg\c64prg-vortex8000.cfg
+9=cfg\c64prg-vortex.cfg
 [Selected Project Files]
 Main=
-Selected=network.s
+Selected=cfg\c64prg-vortex8000.cfg
+[make.cmd]
+TopLine=1
+Caret=39,13
 [irq.s]
-TopLine=73
+TopLine=84
 Caret=185,121
 [network.s]
-TopLine=1
-Caret=41,26
+TopLine=295
+Caret=1,343
 [joystick.s]
-TopLine=118
+TopLine=1
 Caret=7,166
 [sprites.s]
 TopLine=1
 Caret=23,1
 [vortex.s]
-TopLine=38
-Caret=53,64
-[macros.s]
 TopLine=1
-Caret=3,17
-[ip65\cfg\c64prg-vortex.cfg]
-TopLine=1
-Caret=59,4
+Caret=45,59
 [util.s]
 TopLine=1
 Caret=1,1
-[make.cmd]
+[vortexboot.s]
 TopLine=1
 Caret=1,1
-[screen.s]
+[cfg\c64prg-vortex8000.cfg]
 TopLine=1
-Caret=1,1
+Caret=48,3
+[cfg\c64prg-vortex.cfg]
+TopLine=1
+Caret=53,19

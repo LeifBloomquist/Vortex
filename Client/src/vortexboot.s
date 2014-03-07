@@ -183,7 +183,7 @@ CG_UCS = 142 ;switch to uppercase
    
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
-  .byte "vORTEX 2 nETWORK iNITIALIZATION",13
+  .byte "vORTEX 2 nETWORK bOOT 0.1",13
   .byte "fORWARD udp pORT 3000 TO YOUR c64",13,13
   .byte 0
 

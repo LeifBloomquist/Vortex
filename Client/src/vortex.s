@@ -33,9 +33,10 @@ init:
   sta $d020
   lda #$00
   sta $d021
-
-  jsr network_init_dhcp
+  
+  jsr network_init_dhcp  
   jsr network_init_udp  
+    
   jsr irq_init   ; Needed for network
  
   ; Wait for the first server packet
@@ -53,7 +54,7 @@ init:
 ; -------------------------------------------------------------------------
 ; Main Loop - Idle.
 
-loop: 
+loop:
   jmp loop
 
 
