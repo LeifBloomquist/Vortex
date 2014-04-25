@@ -121,6 +121,7 @@ vortex
 		vortex.s
 		vortexboot.s
 		music.s
+		login.s
 [Open project files]
 0=make.cmd
 1=network.s
@@ -130,30 +131,34 @@ vortex
 5=util.s
 6=screen.s
 7=music.s
+8=login.s
 [Selected Project Files]
 Main=
-Selected=vortex.s
+Selected=login.s
 [make.cmd]
 TopLine=1
 Caret=40,15
 [network.s]
-TopLine=1
+TopLine=2
 Caret=42,39
 [joystick.s]
-TopLine=1
+TopLine=129
 Caret=7,166
 [sprites.s]
 TopLine=1
 Caret=23,1
 [vortex.s]
-TopLine=25
-Caret=12,33
+TopLine=22
+Caret=56,53
 [util.s]
-TopLine=1
-Caret=1,1
+TopLine=119
+Caret=10,142
 [screen.s]
 TopLine=1
 Caret=1,1
 [music.s]
+TopLine=17
+Caret=1,54
+[login.s]
 TopLine=1
-Caret=11,9
+Caret=9,16
