@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.channels.FileLock;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -441,5 +442,37 @@ public abstract class JavaTools
             return sum / window.size();
         }
      
+    }
+
+    public static String fromPETSCII(byte[] petscii)
+    { 
+        String out = "";
+        
+        for (byte b : petscii)
+        {
+             int i = (int)(b & 0xFF);             
+             
+             // Numbers
+             if ((i>=48) && (i<=57))
+             {
+                 out += new String(new byte[] {b}, StandardCharsets.US_ASCII); // Pass-Thru
+             }
+             
+             // Lowercase
+             if ((i>=65) && (i<=90))
+             {
+                 out += new String(new byte[] {(byte) (b+32)}, StandardCharsets.US_ASCII);  // Add 32
+             }
+             
+             // Uppercase
+             if ((i>=193) && (i<=218))
+             {
+                 out += new String(new byte[] {(byte) (b-128)}, StandardCharsets.US_ASCII);  // Subtract 128
+             } 
+             
+             // Ignore anything else
+        }
+        
+        return out;
     }
 }

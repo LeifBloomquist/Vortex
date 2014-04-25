@@ -14,6 +14,10 @@ Extensions=*.s,*.i
 [Project tree]
 vortex
 	+vortex
+		-Make Scripts
+			make.cmd
+			makeboot.cmd
+			..\..\Server\data\combine.cmd
 		-cfg
 			cfg\c64prg-vortex-boot.cfg
 			cfg\c64prg-vortex-8000.cfg
@@ -116,28 +120,24 @@ vortex
 		network.s
 		sprites.s
 		screen.s
-		make.cmd
 		util.s
 		vortex.s
 		vortexboot.s
 		music.s
 		login.s
 [Open project files]
-0=make.cmd
-1=network.s
-2=joystick.s
-3=sprites.s
-4=vortex.s
-5=util.s
-6=screen.s
-7=music.s
-8=login.s
+0=network.s
+1=joystick.s
+2=sprites.s
+3=vortex.s
+4=util.s
+5=screen.s
+6=music.s
+7=login.s
+8=vortexboot.s
 [Selected Project Files]
 Main=
-Selected=login.s
-[make.cmd]
-TopLine=1
-Caret=40,15
+Selected=vortexboot.s
 [network.s]
 TopLine=2
 Caret=42,39
@@ -162,3 +162,6 @@ Caret=1,54
 [login.s]
 TopLine=1
 Caret=9,16
+[vortexboot.s]
+TopLine=1
+Caret=47,2

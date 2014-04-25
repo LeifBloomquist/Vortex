@@ -27,42 +27,53 @@ public class UDPListener
     /** Creates a new instance of UDPListener */
     public UDPListener(int port, Universe universe)
     {
-        try
-        {
-            Thread.currentThread().setName("Vortex UDP Listener Thread");
-            
-            byte[] buf = new byte[50];
-            DatagramSocket socket = new DatagramSocket(port);
-            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        while (true)   // Always loop and try to recover in case of exceptions
+        {  
+            try
+            {
+                Thread.currentThread().setName("Vortex UDP Listener Thread");
                 
-            JavaTools.printlnTime( "Waiting for packets on port " + port );
-            
-            /* Loop Forever, waiting for packets. */      
-            while (true) 
-            {                            
-                socket.receive(packet);  // This blocks!                
-                handlePacket(packet, universe);    // Handle it              
+                byte[] buf = new byte[50];
+                DatagramSocket socket = new DatagramSocket(port);
+                DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                    
+                JavaTools.printlnTime( "Waiting for packets on port " + port );
+                
+                /* Loop Forever, waiting for packets. */      
+                while (true) 
+                {                            
+                    socket.receive(packet);  // This blocks!                
+                    handlePacket(packet, universe);    // Handle it              
+                }
+                
+                //socket.close();
             }
+            catch (SocketException ex)
+            {
+                JavaTools.printlnTime( "Socket Exception: " + JavaTools.getStackTrace(ex));
+            }
+            catch (IOException ex)
+            {
+                JavaTools.printlnTime( "IO Exception: " + JavaTools.getStackTrace(ex));
+            }   
             
-            //socket.close();
+            
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e)
+            {
+                ;
+            }
         }
-        catch (SocketException ex)
-        {
-            JavaTools.printlnTime( "Socket Exception: " + JavaTools.getStackTrace(ex));
-        }
-        catch (IOException ex)
-        {
-            JavaTools.printlnTime( "IO Exception: " + JavaTools.getStackTrace(ex));
-        }   
     }
     
     /**
      *  Handle a received packet.
      */    
     private void handlePacket(DatagramPacket packet, Universe universe)
-    {
-        byte[] packetBytes = Arrays.copyOf(packet.getData(), packet.getLength());
-     
+    {     
         // Check Checksum - Future
                 
         // Determine player
@@ -74,7 +85,7 @@ public class UDPListener
                 
                 if ( hp.getAddress().equals( packet.getAddress()) )   // Match found.  There's probably a faster way to do this, hashtable etc.
                 {
-                    hp.receiveUpdate(packetBytes);
+                    hp.receiveUpdate(packet);
                     return;
                 }                    
             }

@@ -30,16 +30,16 @@ GETIN = $ffe4
 
 ; Example usage
 ;FILTERED_TEXT
-;  lda #>TEXT
-;  ldx #<TEXT
+;  lda #<TEXT
+;  ldx #>TEXT
 ;  ldy #38
   ;Drop through
 
 ; Main entry
 FILTERED_INPUT:
   sty MAXCHARS
-  stx CHECKALLOWED+1
-  sta CHECKALLOWED+2
+  sta CHECKALLOWED+1
+  stx CHECKALLOWED+2
 
   ;Zero characters received.
   lda #$00
@@ -122,11 +122,16 @@ DELETE_OK:
 ;Some example filters
 ;=================================================
 
-;IPADDRESS
-;  dc.b "1234567890.",0
+IPADDRESS:
+  .byte "1234567890.",0
 
-TEXT:
-  .byte "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",0
+ALPHANUMERIC:
+  .byte "ABCDEFGHIJKLMNOPQRSTUVWXYZ"    ; Lowercase
+  .byte 193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218 ; Uppercase
+    
+NUMBERS:
+  .byte "1234567890"
+  .byte 0
 
 ;=================================================
 MAXCHARS:
@@ -139,7 +144,7 @@ INPUT_Y:
   .byte $00
 
 GOTINPUT:
-  .res 50
+  .res 40
 
   
 ; EOF!

@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.schemafactor.vortexserver.common.Constants;
@@ -14,7 +15,9 @@ import com.schemafactor.vortexserver.universe.Universe;
 public class HumanPlayer extends Entity
 {        
    private InetAddress userIP;       // User IP Address
-   private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections      
+   private int timeoutCounter=0;     // Counter, in milliseconds, for timeouts for dropped connections
+   
+   private boolean announceReceived = false;
    
    private boolean fireButton = false;
    private boolean lastFireState = false;
@@ -29,7 +32,7 @@ public class HumanPlayer extends Entity
        spriteNum=0;
        
        userIP = packet.getAddress();
-       receiveUpdate(packet.getData());
+       receiveUpdate(packet);
    }
    
    public void sendUpdate(byte[] data)
@@ -68,12 +71,16 @@ public class HumanPlayer extends Entity
    }
    
    /** Update me with new data from client */
-   public void receiveUpdate(byte[] data)
+   public void receiveUpdate(DatagramPacket packet)
    {
+       byte[] data = Arrays.copyOf(packet.getData(), packet.getLength());    
+       
        switch (data[0])   // Packet type
        {
-           case  Constants.CLIENT_ANNOUNCE:
-            // Not yet implemented
+           case Constants.CLIENT_ANNOUNCE:
+               announceReceived = true;
+               spriteColor = data[1];
+               description = JavaTools.fromPETSCII(Arrays.copyOfRange(data, 2, data.length)) + " [" + packet.getAddress() + "]";
            break;
            
            case Constants.CLIENT_UPDATE:
@@ -104,7 +111,12 @@ public class HumanPlayer extends Entity
 
    @Override
    public void update()
-   {          
+   {   
+       if (!announceReceived)  // Don't update if there's been no announce packet
+       {
+           return;
+       }
+       
        // move();   // Don't call for for human players - Position will be controlled by client.       
        
        // Send data packet to the client              

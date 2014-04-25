@@ -1,7 +1,7 @@
 ; -------------------------------------------------------------------------
 ; Vortex II Network Code
 
-SEND_LENGTH   = 0016
+SEND_LENGTH   = 0017
 
 ; Packet Types - C64 to CLIENT
 PACKET_ANNOUNCE       = 1
@@ -90,9 +90,14 @@ network_init_udp:
   
 
 ; -------------------------------------------------------------------------
-; Send the update packet
+; Send the Game Update packet
 
 sendupdate:
+
+  ; At the start of the game we send the Announce packet instead.
+  lda gamepacketreceived
+  beq sendannounce
+
   lda #PACKET_CLIENT_UPDATE
   sta SENDBUFFER+0      
   
@@ -118,13 +123,70 @@ sendupdate:
   jsr udp_send
   rts  
 
+sendannounce:
+  lda #PACKET_ANNOUNCE
+  sta SENDBUFFER+0      
+  
+  ; TODO: Player Ship Color
+  lda #$02  
+  sta SENDBUFFER+1
+  
+  ; Player name
+  lda GOTINPUT+0
+  sta SENDBUFFER+2
+  
+  lda GOTINPUT+1
+  sta SENDBUFFER+3
+  
+  lda GOTINPUT+2
+  sta SENDBUFFER+4
+  
+  lda GOTINPUT+3
+  sta SENDBUFFER+5
+  
+  lda GOTINPUT+4
+  sta SENDBUFFER+6
+  
+  lda GOTINPUT+5
+  sta SENDBUFFER+7
+  
+  lda GOTINPUT+6
+  sta SENDBUFFER+8
+  
+  lda GOTINPUT+7
+  sta SENDBUFFER+9
+  
+  lda GOTINPUT+8
+  sta SENDBUFFER+10
+  
+  lda GOTINPUT+9
+  sta SENDBUFFER+11
+  
+  lda GOTINPUT+10
+  sta SENDBUFFER+12
+  
+  lda GOTINPUT+11
+  sta SENDBUFFER+13
+  
+  lda GOTINPUT+12
+  sta SENDBUFFER+14
+  
+  lda GOTINPUT+13
+  sta SENDBUFFER+15
+  
+  lda GOTINPUT+14
+  sta SENDBUFFER+16
+  
+  
+  ldax #SENDBUFFER  
+  jsr udp_send
+  rts  
+
 
 ; -------------------------------------------------------------------------
 ; Handle Received Packets (Dispatcher)
 
 gotpacket:
-  inc packetreceived  ; Flag that we got the first packet (this is ignored afterwards)
-  
   lda udp_inp_data+0   
   cmp #PACKET_SERVER_UPDATE
   beq gameupdate
@@ -135,6 +197,8 @@ gotpacket:
 ; Handle sprite position updates
 
 gameupdate:
+  lda #$01
+  sta gamepacketreceived  ; Flag that we got the first game packet
   
   ; update scroll
   ldx udp_inp_data+2
@@ -267,7 +331,7 @@ FAILMESSAGE:
   .byte "...failed",13
   .byte 0                    
   
-packetreceived:
+gamepacketreceived:
    .byte 0           
 
 bittab:
