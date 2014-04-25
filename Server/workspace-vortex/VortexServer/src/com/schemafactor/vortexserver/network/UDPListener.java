@@ -25,7 +25,7 @@ import com.schemafactor.vortexserver.universe.Universe;
 public class UDPListener
 {    
     /** Creates a new instance of UDPListener */
-    public UDPListener(int port, Universe universe)
+    public UDPListener(int port)
     {
         while (true)   // Always loop and try to recover in case of exceptions
         {  
@@ -43,7 +43,7 @@ public class UDPListener
                 while (true) 
                 {                            
                     socket.receive(packet);  // This blocks!                
-                    handlePacket(packet, universe);    // Handle it              
+                    handlePacket(packet);    // Handle it              
                 }
                 
                 //socket.close();
@@ -72,9 +72,11 @@ public class UDPListener
     /**
      *  Handle a received packet.
      */    
-    private void handlePacket(DatagramPacket packet, Universe universe)
-    {     
+    private void handlePacket(DatagramPacket packet)
+    {   
         // Check Checksum - Future
+        
+        Universe universe = Universe.getInstance();        
                 
         // Determine player
         for (Entity e : universe.getEntities())
@@ -92,8 +94,8 @@ public class UDPListener
         }
         
         // No match, create new user and add to vector
-        JavaTools.printlnTime( "Creating player from " + packet.getAddress() );
-        HumanPlayer who = new HumanPlayer(packet, universe);
+        JavaTools.printlnTime( "Creating player from " + JavaTools.packetAddress(packet) );
+        HumanPlayer who = new HumanPlayer(packet);
         
         try
         {

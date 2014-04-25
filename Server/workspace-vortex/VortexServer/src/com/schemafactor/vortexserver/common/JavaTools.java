@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.DatagramPacket;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -474,5 +475,10 @@ public abstract class JavaTools
         }
         
         return out;
+    }
+    
+    public static String packetAddress(DatagramPacket packet)
+    {
+        return packet.getAddress().toString().substring(1);
     }
 }

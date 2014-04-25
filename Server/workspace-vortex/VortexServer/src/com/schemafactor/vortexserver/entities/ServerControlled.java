@@ -12,9 +12,9 @@ public class ServerControlled extends Entity
     Entity target = null;
        
     /** Creates a new instance of Server Controlled */
-    public ServerControlled(String name, Universe universe)
+    public ServerControlled(String name)
     {
-       super(name,  Entity.eTypes.SERVER_CONTROLLED, 1000+JavaTools.generator.nextInt(15000), 1000+JavaTools.generator.nextInt(15000), universe);
+       super(name, Entity.eTypes.SERVER_CONTROLLED, 1000+JavaTools.generator.nextInt(15000), 1000+JavaTools.generator.nextInt(15000));
        
        Xspeed = 0;
        Yspeed = 0;

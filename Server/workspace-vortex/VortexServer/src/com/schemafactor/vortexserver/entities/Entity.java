@@ -28,13 +28,13 @@ public abstract class Entity
    protected boolean removeMeFlag = false;
      
    /** Creates a new instance of Entity */
-   public Entity(String description, eTypes type, double startX, double startY,  Universe universe)
+   public Entity(String description, eTypes type, double startX, double startY)
    {
        this.description = new String(description);
        this.myType = type;
        Xpos = startX;
        Ypos = startY;
-       this.universe = universe;       
+       this.universe = Universe.getInstance();       
    }
    
    // Handle wraparound

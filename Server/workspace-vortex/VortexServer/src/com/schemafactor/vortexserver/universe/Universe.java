@@ -14,6 +14,18 @@ import com.schemafactor.vortexserver.entities.Entity;
 
 public class Universe 
 {
+    // Universe is a Singleton
+    private static final Universe instance = new Universe();
+ 
+    private Universe() {}
+ 
+    public static Universe getInstance() 
+    {
+        return instance;
+    }
+    
+    
+    
     private Cell[][] universeMapCells = null;   // Matrix of cells
     
     private long Xsize = -1;               // Pixels
@@ -37,7 +49,7 @@ public class Universe
      * @param size
      * @param allEntities
      */
-    public Universe(int size, List<Entity> allEntities)
+    public void Create(int size, List<Entity> allEntities)
     {
         // Save the entities
         this.allEntities = allEntities;

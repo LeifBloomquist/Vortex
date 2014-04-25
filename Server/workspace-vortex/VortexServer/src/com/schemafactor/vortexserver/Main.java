@@ -31,32 +31,32 @@ public class Main
         
         // Create the universe.
         JavaTools.printlnTime("Creating game universe...");
-        Universe universe = new Universe(100, allEntities);
+        Universe.getInstance().Create(100, allEntities);
         
         // Add some entities.
         JavaTools.printlnTime("Creating default entities...");
         for (int i=1; i<=100; i++)
         {
-            allEntities.add(new ServerControlled("Alien #" + i, universe));
+            allEntities.add(new ServerControlled("Alien #" + i));
         }
         
         for (int i=1; i<=100; i++)
         {
-            allEntities.add(new Asteroid("Asteroid #" + i, universe));
+            allEntities.add(new Asteroid("Asteroid #" + i));
         }        
         
         // A mini http server to show stats through a browser
         JavaTools.printlnTime("Creating debug httpd server...");
-        VortexDebugServer vdbg = new VortexDebugServer(80, universe);
+        VortexDebugServer vdbg = new VortexDebugServer(80);
                 
         // Start the thread that updates everything at a fixed interval
         JavaTools.printlnTime("Creating update scheduler...");
-        UpdaterThread ut = new UpdaterThread(universe);
+        UpdaterThread ut = new UpdaterThread();
         ScheduledThreadPoolExecutor s = new ScheduledThreadPoolExecutor(1);
         s.scheduleAtFixedRate(ut, 0, Constants.TICK_TIME, TimeUnit.MILLISECONDS );      
         
         // Instantiate a UDP listener, and let it take over.
         JavaTools.printlnTime("Creating UDP Listener...");
-        UDPListener udp = new UDPListener(3005, universe);        
+        UDPListener udp = new UDPListener(3005);        
     }
 }

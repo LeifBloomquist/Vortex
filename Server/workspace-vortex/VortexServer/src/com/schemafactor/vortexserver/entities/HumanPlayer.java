@@ -23,10 +23,10 @@ public class HumanPlayer extends Entity
    private boolean lastFireState = false;
   
    /** Creates a new instance of Human Player */
-   public HumanPlayer(DatagramPacket packet, Universe universe)
+   public HumanPlayer(DatagramPacket packet)
    {
        // Random starting positions for multiple players
-       super("Human Player from " + packet.getAddress(), Entity.eTypes.HUMAN_PLAYER, 20000+JavaTools.generator.nextInt(200), 10000+JavaTools.generator.nextInt(200), universe);
+       super("Human Player from " + JavaTools.packetAddress(packet), Entity.eTypes.HUMAN_PLAYER, 20000+JavaTools.generator.nextInt(200), 10000+JavaTools.generator.nextInt(200));
        
        spriteBase=0;
        spriteNum=0;
@@ -80,7 +80,8 @@ public class HumanPlayer extends Entity
            case Constants.CLIENT_ANNOUNCE:
                announceReceived = true;
                spriteColor = data[1];
-               description = JavaTools.fromPETSCII(Arrays.copyOfRange(data, 2, data.length)) + " [" + packet.getAddress() + "]";
+               description = JavaTools.fromPETSCII(Arrays.copyOfRange(data, 2, data.length)) + " [" +JavaTools.packetAddress(packet) + "]";
+               JavaTools.printlnTime( "New Player Name: " + description);
            break;
            
            case Constants.CLIENT_UPDATE:
@@ -216,7 +217,7 @@ public class HumanPlayer extends Entity
            // TODO, this needs to be made cleaner.  For now, derive direction from sprite number.
            double angle = 1.57079633 - (spriteNum/8d)*2d*Math.PI;
            
-           Torpedo t = new Torpedo(this, angle, universe);
+           Torpedo t = new Torpedo(this, angle);
            
            try
            {

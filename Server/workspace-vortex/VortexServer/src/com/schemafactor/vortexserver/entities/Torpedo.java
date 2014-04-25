@@ -16,9 +16,9 @@ public class Torpedo extends Entity
    private int timeoutCounter=0;     // Counter, in milliseconds, for life of this object      
   
    /** Creates a new instance */
-   public Torpedo(Entity shooter, double angle, Universe universe)
+   public Torpedo(Entity shooter, double angle)
    {
-       super("Torpedo", Entity.eTypes.TORPEDO, shooter.Xpos, shooter.Ypos, universe);
+       super("Torpedo fired by " + shooter.getDescription(), Entity.eTypes.TORPEDO, shooter.Xpos, shooter.Ypos);
        
        // Determine overall pointing   
        Xspeed =  7 * Math.cos(angle); 

@@ -34,10 +34,10 @@ public class VortexDebugServer extends NanoHTTPD
     private Font C64font = null;
     private Universe universe = null;
     
-    public VortexDebugServer(int port, Universe universe) 
+    public VortexDebugServer(int port) 
     {
         super(port);
-        this.universe = universe;
+        universe = Universe.getInstance();
         
         try 
         {

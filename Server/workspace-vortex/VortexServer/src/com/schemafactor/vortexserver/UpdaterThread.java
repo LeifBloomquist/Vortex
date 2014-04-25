@@ -25,10 +25,10 @@ public class UpdaterThread implements Runnable
     JavaTools.MovingAverage sma_cpu = new JavaTools.MovingAverage(100);
      
     /** Creates a new instance of UpdaterThread */
-    public UpdaterThread(Universe universe)
+    public UpdaterThread()
     {
         // Save references       
-        this.universe = universe;        
+        universe = Universe.getInstance();        
     }                   
     
     /** Main updating thread (called from ScheduledThreadPoolExecutor in main(). */
