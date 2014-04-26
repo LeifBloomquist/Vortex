@@ -19,6 +19,7 @@ public class Torpedo extends Entity
    public Torpedo(Entity shooter, double angle)
    {
        super("Torpedo fired by " + shooter.getDescription(), Entity.eTypes.TORPEDO, (int)shooter.Xpos, (int)shooter.Ypos);
+       JavaTools.printlnTime( this.getDescription() + " :: angle="+angle );                
        
        // Determine overall pointing
        max_speed   = 7;
@@ -29,7 +30,7 @@ public class Torpedo extends Entity
        // Customize
        spriteBase=8;
        spriteNum=0;
-       spriteColor = Constants.COLOR_YELLOW;       
+       spriteColor = Constants.COLOR_WHITE;       
    }
    
    // Increment and check the timeout
@@ -37,7 +38,7 @@ public class Torpedo extends Entity
    {
        if (timeoutCounter < 100000) timeoutCounter += Constants.TICK_TIME;
        
-       if (timeoutCounter > 30000)   // Thirty seconds
+       if (timeoutCounter > 5000)   // Five seconds
        {
            removeMeFlag = true;
        }       

@@ -3,6 +3,7 @@ package com.schemafactor.vortexserver.entities;
 import java.util.ArrayList;
 
 import com.schemafactor.vortexserver.common.Constants;
+import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class Entity 
@@ -129,4 +130,19 @@ public abstract class Entity
     {        
         return removeMeFlag;
     }   
+    
+    protected void fireTorpedo(double angle) 
+    {
+        Torpedo t = new Torpedo(this, angle);        
+        
+        try
+        {
+            //universe.newEntities.put(t);            
+            universe.newEntities.add(t);           
+        }
+        catch (Exception e)
+        {
+            JavaTools.printlnTime( "EXCEPTION firing torpedo: " + JavaTools.getStackTrace(e) );
+        }
+    }
 }

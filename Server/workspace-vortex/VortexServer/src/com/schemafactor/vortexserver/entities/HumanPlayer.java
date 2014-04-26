@@ -29,7 +29,7 @@ public class HumanPlayer extends Entity
        super("Human Player from " + JavaTools.packetAddress(packet), Entity.eTypes.HUMAN_PLAYER, 8000+JavaTools.generator.nextInt(1000), 8000+JavaTools.generator.nextInt(1000));
        
        // Customize       
-       spriteBase=0;
+       spriteBase=48;
        spriteNum=0;
        
        userIP = packet.getAddress();
@@ -80,7 +80,7 @@ public class HumanPlayer extends Entity
        {
            case Constants.CLIENT_ANNOUNCE:
                announceReceived = true;
-               spriteColor = data[1];
+               spriteColor = Constants.COLOR_BLUE; // data[1];
                description = JavaTools.fromPETSCII(Arrays.copyOfRange(data, 2, data.length)) + " [" +JavaTools.packetAddress(packet) + "]";
                JavaTools.printlnTime( "New Player Name: " + description);
            break;
@@ -220,18 +220,7 @@ public class HumanPlayer extends Entity
            // TODO, this needs to be made cleaner.  For now, derive direction from sprite number.
            double angle = 1.57079633 - (spriteNum/8d)*2d*Math.PI;
            
-           Torpedo t = new Torpedo(this, angle);
-           
-           try
-           {
-               universe.newEntities.put(t);
-           }
-           catch (InterruptedException e)
-           {
-               JavaTools.printlnTime( "EXCEPTION firing torpedo: " + JavaTools.getStackTrace(e) );
-           }
-           
-           JavaTools.printlnTime( this.getDescription() + " Fire button pressed! angle="+angle );                      
+           fireTorpedo(angle);
        }      
       
        lastFireState = fireButton;              

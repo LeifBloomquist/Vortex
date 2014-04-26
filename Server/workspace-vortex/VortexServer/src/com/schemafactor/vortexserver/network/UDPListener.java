@@ -99,9 +99,10 @@ public class UDPListener
         
         try
         {
-            universe.newEntities.put(who);
+            //universe.newEntities.put(who);
+            universe.newEntities.add(who);
         }
-        catch (InterruptedException e)
+        catch (Exception e)
         {
             JavaTools.printlnTime( "EXCEPTION adding new player: " + JavaTools.getStackTrace(e) );
         }

@@ -39,13 +39,28 @@ public class UpdaterThread implements Runnable
         long startTime = System.nanoTime(); 
         
         // 1. Update the universe.
-        universe.update();        
+        try
+        {
+            universe.update();
+        }
+        catch (Exception e)
+        {               
+            JavaTools.printlnTime("EXCEPTION Updating Universe: " + JavaTools.getStackTrace(e) );
+        }   
+        
         
         // 2. Update each entity                  
-        for (Entity e : universe.getEntities())
-        { 
-            e.update(); 
+        try
+        {
+            for (Entity e : universe.getEntities())
+            {             
+                e.update(); 
+            } 
         }
+        catch (Exception ex)
+        {               
+            JavaTools.printlnTime("EXCEPTION Updating Entities: " + JavaTools.getStackTrace(ex) );
+        }   
                 
         // 3. Remove any entities that are flagged to be removed
         try
@@ -56,27 +71,25 @@ public class UpdaterThread implements Runnable
                if (e.removeMe())
                {
                    toBeRemoved.add(e);
-                   JavaTools.printlnTime("Removing entity: " + e.getDescription() );
                }
-            }
-            
+            }            
             universe.getEntities().removeAll(toBeRemoved);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {               
-            JavaTools.printlnTime("EXCEPTION removing entities:" + JavaTools.getStackTrace(e) );
-        }   
+            JavaTools.printlnTime("EXCEPTION removing entities: " + JavaTools.getStackTrace(ex) );
+        }                          
         
         // 4. Add any new entities
         try
         {
             universe.newEntities.drainTo( universe.getEntities() );
         }
-        catch (Exception e)
+        catch (Exception ex)
         {               
-            JavaTools.printlnTime("EXCEPTION adding new entities:" + JavaTools.getStackTrace(e) );
-        }             
-        
+            JavaTools.printlnTime("EXCEPTION adding new entities:" + JavaTools.getStackTrace(ex) );
+        }        
+
         // 5. Gather some stats (read out in httpd server)
         long estimatedTime = System.nanoTime() - startTime;  
         double estimatedMilliseconds = estimatedTime/1000000d;

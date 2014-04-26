@@ -23,9 +23,7 @@ public class Universe
     {
         return instance;
     }
-    
-    
-    
+        
     private Cell[][] universeMapCells = null;   // Matrix of cells
     
     private long Xsize = -1;               // Pixels
@@ -36,7 +34,7 @@ public class Universe
     List<Entity> allEntities = null;
     
     /**
-     * Thread-safe queue of new entities that are to be created (and added to the allEntities list)
+     * Thread-safe queue of new entities that have been created (and added to the allEntities list)
      */
     public BlockingQueue<Entity> newEntities = new ArrayBlockingQueue<Entity>(1000);
 

@@ -4,9 +4,12 @@ import java.util.List;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.entities.ServerControlled.States;
 
 public class Xacor extends ServerControlled
-{      
+{   
+    int firingDelay=0;
+    
     /** Creates a new instance of Server Controlled */
     public Xacor(String name, int startx, int starty, int range)
     {
@@ -15,7 +18,7 @@ public class Xacor extends ServerControlled
        // Customize
        max_speed = 2.5;
        spriteBase = 56;
-       spriteColor = Constants.COLOR_YELLOW;
+       spriteColor = Constants.COLOR_RED;
     }
     
     @Override
@@ -39,6 +42,7 @@ public class Xacor extends ServerControlled
                     double angle = Math.toRadians(JavaTools.generator.nextInt(360));
                     Xspeed =  max_speed * speed * Math.cos(angle); 
                     Yspeed = -max_speed * speed * Math.sin(angle);   // Negative here because our y-axis is inverted
+                    break;
                 } 
                 
                 break;
@@ -53,10 +57,10 @@ public class Xacor extends ServerControlled
                 {
                     if (this == e) continue;   // Don't chase myself
                     
-                    if (distanceTo(e) <= 50)
+                    if (distanceTo(e) <= 60)   // Close by
                     {
                         target = e;
-                        State = States.CHASING;
+                        State = States.CHASING;  
                         break;
                     }     
                 }
@@ -65,6 +69,7 @@ public class Xacor extends ServerControlled
                 if (JavaTools.generator.nextInt(10000) == 102)
                 {
                     State = States.IDLE;
+                    break;
                 }      
                 
                 break;
@@ -72,7 +77,7 @@ public class Xacor extends ServerControlled
         
             case CHASING:
             {
-                max_speed = 4.0;
+                max_speed = 3.0;
                 
                 if (target == null)   // No current target
                 {
@@ -84,14 +89,35 @@ public class Xacor extends ServerControlled
                 {
                     target = null;       //  (this also releases this entity's reference to it, allowing it to be garbage collected).
                     State = States.IDLE;
+                    break;
                 }
                 
-                navigateTo(target);                
+                navigateTo(target);   
+                
+                if (distanceTo(target) < 50)
+                {                    
+                    State = States.ATTACKING;
+                    break;
+                }
+                
                 break;
             }
             
             case ATTACKING:
             {
+                // Fire a torpedo!                
+                if (firingDelay < 10000) firingDelay += Constants.TICK_TIME;
+                
+                if (firingDelay > 500)   // milliseconds 
+                {   
+                    double angle = Math.atan2(-Yspeed, Xspeed); // Negative here because our y-axis is inverted   
+                    fireTorpedo(angle);
+                    firingDelay=0; // Reset
+                    
+                    State = States.CHASING;   
+                    break;
+                }
+                
                 break;
             }
             
@@ -99,14 +125,14 @@ public class Xacor extends ServerControlled
             {
                 break;
             }
-        }
-        
+        }        
+       
         limitAndMove();
     }   
 
     // Navigation.  Seek out the target and avoid all other entities.
     private void navigateTo(Entity target)   
-    {        
+    {    
         for (Entity e : universe.getEntities())
         {
             if (this == e) continue;   // Don't worry about myself

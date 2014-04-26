@@ -56,7 +56,7 @@ public class Main
                 
         // Start the thread that updates everything at a fixed interval
         JavaTools.printlnTime("Creating update scheduler...");
-        UpdaterThread ut = new UpdaterThread();
+        UpdaterThread ut = new UpdaterThread();        
         ScheduledThreadPoolExecutor s = new ScheduledThreadPoolExecutor(1);
         s.scheduleAtFixedRate(ut, 0, Constants.TICK_TIME, TimeUnit.MILLISECONDS );      
         
