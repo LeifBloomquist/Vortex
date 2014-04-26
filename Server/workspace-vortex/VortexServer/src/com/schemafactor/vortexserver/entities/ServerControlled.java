@@ -11,9 +11,9 @@ public abstract class ServerControlled extends Entity
     // The entity this alien is currently chasing    
     Entity target = null;   
     
-    // States    
+    // States
     protected enum States {IDLE, PATROLLING, CHASING, ATTACKING, RETREATING};
-    protected States State = States.IDLE;    
+    protected States State = States.IDLE;
        
     /** Creates a new instance of Server Controlled */
     public ServerControlled(String name, int startx, int starty, int range)

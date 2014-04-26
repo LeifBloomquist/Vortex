@@ -5,17 +5,42 @@ import java.util.List;
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 
-public class Xacor extends ServerControlled
+public class Xeeker extends ServerControlled
 {      
     /** Creates a new instance of Server Controlled */
-    public Xacor(String name, int startx, int starty, int range)
+    public Xeeker(String name, int startx, int starty, int range)
     {
        super(name, startx, starty, range);
        
        // Customize
-       max_speed = 2.5;
-       spriteBase = 56;
-       spriteColor = Constants.COLOR_YELLOW;
+       max_speed = 7;
+       spriteBase = 40;
+       spriteColor = Constants.COLOR_BLUE;
+    }
+
+    private void findNewTarget()
+    {
+        try
+        {
+            target = null;
+            
+            // Get a list of all human players. 
+            List<Entity> allHumans = universe.getEntities(this, eTypes.HUMAN_PLAYER);           
+            
+            // Pick one
+            int size=allHumans.size();           
+            
+            if (size>0)
+            {
+                int num = JavaTools.generator.nextInt(size);
+                target = allHumans.get(num);  
+                JavaTools.printlnTime(this.description + " chose new target: " + target.getDescription() );
+            }
+        }
+        catch (Exception e)
+        {               
+            JavaTools.printlnTime( "EXCEPTION finding target: " + JavaTools.getStackTrace(e) );
+        }
     }
     
     @Override
@@ -25,58 +50,27 @@ public class Xacor extends ServerControlled
         {
             case IDLE:
             {
-                max_speed = 2;
                 Xspeed = 0;
                 Yspeed = 0;
-                
-                // Randomly go on patrol
-                if (JavaTools.generator.nextInt(1000) <= 1)
+
+                // Staert chasing right away - Find a human player
+                findNewTarget();
+
+                if (target != null)
                 {
-                    State = States.PATROLLING;
-                    max_speed = 2.5;
-                    
-                    double speed = 0.5 + 0.5*JavaTools.generator.nextDouble();
-                    double angle = Math.toRadians(JavaTools.generator.nextInt(360));
-                    Xspeed =  max_speed * speed * Math.cos(angle); 
-                    Yspeed = -max_speed * speed * Math.sin(angle);   // Negative here because our y-axis is inverted
-                } 
-                
+                    State = States.CHASING;
+                }                
                 break;
             }
                
             case PATROLLING:
-            {
-                max_speed = 2.5;
-                
-                // If we spot a hostile entity, chase it                
-                for (Entity e : universe.getEntities())
-                {
-                    if (this == e) continue;   // Don't chase myself
-                    
-                    if (distanceTo(e) <= 50)
-                    {
-                        target = e;
-                        State = States.CHASING;
-                        break;
-                    }     
-                }
-                
-                // Randomly switch back to Idle otherwise
-                if (JavaTools.generator.nextInt(10000) == 102)
-                {
-                    State = States.IDLE;
-                }      
-                
-                break;
-            }
-        
             case CHASING:
             {
-                max_speed = 4.0;
+                max_speed = 7.0;
                 
                 if (target == null)   // No current target
                 {
-                    State = States.PATROLLING;
+                    State = States.IDLE;
                     break;
                 }
                 
@@ -86,12 +80,26 @@ public class Xacor extends ServerControlled
                     State = States.IDLE;
                 }
                 
-                navigateTo(target);                
+                navigateTo(target);     
+                
+                if (distanceTo(target) < 50)
+                {
+                    State = States.ATTACKING;
+                }
+                
                 break;
             }
             
             case ATTACKING:
             {
+                max_speed = 3.5;                
+                navigateTo(target);
+                
+                if (distanceTo(target) > 100)
+                {
+                    State = States.CHASING;
+                }
+                
                 break;
             }
             
@@ -123,17 +131,17 @@ public class Xacor extends ServerControlled
             
             if (target == e)
             {
-                force = 3.0;    // Attracted to target
+                force = 4.0;    // Attracted to target
             }
             else
             {
-                force = -2.5;  // Note negative - this repels 
+                force = -3.5;  // Note negative - this repels 
             } 
             
             // But don't get too close!
             if (distanceTo(e) < 30) 
             {
-                force = -3.5;
+                force = -4.0;
             }            
          
             double xdist = e.getXpos() - this.Xpos;
