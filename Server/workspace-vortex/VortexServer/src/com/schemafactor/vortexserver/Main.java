@@ -8,7 +8,8 @@ import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Asteroid;
 import com.schemafactor.vortexserver.entities.Entity;
-import com.schemafactor.vortexserver.entities.ServerControlled;
+import com.schemafactor.vortexserver.entities.Xacor;
+import com.schemafactor.vortexserver.entities.Xlors;
 import com.schemafactor.vortexserver.network.UDPListener;
 import com.schemafactor.vortexserver.universe.Universe;
 
@@ -37,7 +38,8 @@ public class Main
         JavaTools.printlnTime("Creating default entities...");
         for (int i=1; i<=100; i++)
         {
-            allEntities.add(new ServerControlled("Alien #" + i));
+            allEntities.add(new Xlors("Xlors #" + i, 8000, 8000, 1000));
+            allEntities.add(new Xacor("Xacor #" + i, 8000, 8000, 1000));
         }
         
         for (int i=1; i<=100; i++)

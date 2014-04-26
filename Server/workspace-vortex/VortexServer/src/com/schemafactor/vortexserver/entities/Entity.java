@@ -15,11 +15,13 @@ public abstract class Entity
    protected double Xpos = -1;      // These are pixels, and refers to the top-left corner of the object (sprite, etc.)
    protected double Ypos = -1;
    
-   protected double Xspeed = 0; 
-   protected double Yspeed = 0;
+   // Maximum speed
+   protected double max_speed = 0.0;    
+   protected double Xspeed = 0.0; 
+   protected double Yspeed = 0.0;
    
-   protected byte spriteBase  = 32;   
-   protected byte spriteNum   = 0;  // This is the offset from SPRITE_BASE, *not* the selected memory bank.  (Client handles this)
+   protected byte spriteBase  = 0;   
+   protected byte spriteNum   = 0;         // This is the offset from SPRITE_BASE, *not* the selected memory bank.  (Client handles this)
    protected byte spriteColor = Constants.COLOR_BLACK;
    
    protected Universe universe=null;
@@ -28,7 +30,7 @@ public abstract class Entity
    protected boolean removeMeFlag = false;
      
    /** Creates a new instance of Entity */
-   public Entity(String description, eTypes type, double startX, double startY)
+   public Entity(String description, eTypes type, int startX, int startY)
    {
        this.description = new String(description);
        this.myType = type;

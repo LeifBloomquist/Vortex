@@ -26,8 +26,9 @@ public class HumanPlayer extends Entity
    public HumanPlayer(DatagramPacket packet)
    {
        // Random starting positions for multiple players
-       super("Human Player from " + JavaTools.packetAddress(packet), Entity.eTypes.HUMAN_PLAYER, 20000+JavaTools.generator.nextInt(200), 10000+JavaTools.generator.nextInt(200));
+       super("Human Player from " + JavaTools.packetAddress(packet), Entity.eTypes.HUMAN_PLAYER, 8000+JavaTools.generator.nextInt(1000), 8000+JavaTools.generator.nextInt(1000));
        
+       // Customize       
        spriteBase=0;
        spriteNum=0;
        
@@ -112,11 +113,13 @@ public class HumanPlayer extends Entity
 
    @Override
    public void update()
-   {   
-       if (!announceReceived)  // Don't update if there's been no announce packet
+   {       
+/*
+       if (!announceReceived)  // Don't update if there's been no announce packet  
        {
            return;
        }
+*/
        
        // move();   // Don't call for for human players - Position will be controlled by client.       
        

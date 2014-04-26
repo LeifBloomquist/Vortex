@@ -33,7 +33,7 @@ init:
   sta $d020
   sta $d021
   
-  ;jsr music_init
+  jsr music_init
   jsr login
 
   lda #$02
@@ -44,7 +44,9 @@ init:
   jsr network_init_dhcp  
   jsr network_init_udp  
     
-  jsr irq_init   ; Needed for network
+  jsr irq_init   ; Needed for network, kills music
+
+  jsr sound_setup
  
   ; Wait for the first server packet
   kernal_print SERVERMESSAGE
@@ -74,6 +76,7 @@ loop:
   .include "irq.s"
   .include "network.s" 
   .include "music.s"
+  .include "sound.s"
   .include "login.s"  
   .include "util.s"
 

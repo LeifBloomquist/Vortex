@@ -7,7 +7,7 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 public class Asteroid extends Entity
 {    
-    private final int num_sprites=32; 
+    private int num_sprites=0; 
     
     /** Milliseconds */
     private int animtimer = 0;  
@@ -15,28 +15,28 @@ public class Asteroid extends Entity
     /** Creates a new instance of Asteroid */
     public Asteroid(String name)
     {
-       super(name, Entity.eTypes.ASTEROID,JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()), JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()));       
+       super(name, Entity.eTypes.ASTEROID,JavaTools.generator.nextInt(12000), JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()));       
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());
+  
+       // Customize       
+       if (JavaTools.generator.nextInt(10) < 3)
+       {
+           // Large Asteroid
+           spriteBase  = 96;
+           num_sprites = 8;
+       }
+       else
+       {
+           // Small Asteroid
+           spriteBase  = 112;
+           num_sprites = 32;
+       }
        
-       spriteBase = 112;
-       spriteNum  = (byte)JavaTools.generator.nextInt(num_sprites);
-    }
-       
-    /** Return Color */
-    @Override 
-    public byte getColor()
-    {
-       return Constants.COLOR_GREY2;
-    }
-   
-    /** Return Sprite# */
-    @Override 
-    public byte getSpriteNum()
-    {
-        return (byte)(spriteBase+spriteNum);
-    }      
+       spriteNum   = (byte)JavaTools.generator.nextInt(num_sprites);
+       spriteColor = Constants.COLOR_GREY2;       
+    }           
 
     @Override
     public void update() 

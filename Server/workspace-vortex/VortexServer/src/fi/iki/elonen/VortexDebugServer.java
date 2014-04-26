@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -217,7 +216,7 @@ public class VortexDebugServer extends NanoHTTPD
         }
         
         // Title block
-        gO.setColor(Color.CYAN);
+        gO.setColor(Color.WHITE);
         gO.setFont(C64font.deriveFont(60f));
         gO.drawString("Vortex Universe Map Generated " + JavaTools.Now(), 20, 100);       
         
@@ -226,26 +225,37 @@ public class VortexDebugServer extends NanoHTTPD
         gO.setFont(C64font.deriveFont(12f));
         for (Entity e : universe.getEntities())
         {
-            switch (e.getType())
+            switch (e.getColor())
             {
-                case HUMAN_PLAYER:
+                case Constants.COLOR_RED:
                     c = Color.RED;                    
                     break;
                     
-                case SERVER_CONTROLLED:
+                case Constants.COLOR_GREEN:
                     c = Color.GREEN;                    
                     break;
                     
-                case ASTEROID:
+                case Constants.COLOR_GREY1:
+                case Constants.COLOR_GREY2:
+                case Constants.COLOR_GREY3:
                     c = Color.LIGHT_GRAY;                    
                     break;
                 
-                case TORPEDO:
+                case Constants.COLOR_YELLOW:
                     c = Color.YELLOW;                    
                     break;
                     
-                case NONE:
-                    c = Color.MAGENTA;                    
+                case Constants.COLOR_BLACK:
+                    c = Color.DARK_GRAY;                    
+                    break;
+                    
+                case Constants.COLOR_CYAN:
+                    c = Color.CYAN;                    
+                    break;
+                    
+                case Constants.COLOR_LIGHTBLUE:
+                case Constants.COLOR_BLUE:
+                    c = Color.BLUE;                    
                     break;
                     
                 default:
@@ -253,9 +263,15 @@ public class VortexDebugServer extends NanoHTTPD
                     break;                
             }
         
+            // Override human players to red so easier to see on map
+            if (e.getType() == eTypes.HUMAN_PLAYER)
+            {
+                c = Color.RED;                    
+            }
+        
             gO.setColor(c);
             gO.fillOval((int)e.getXcell(), (int) e.getYcell(), 10, 10);
-            gO.drawString(e.getDescription(), (int)e.getXcell() + 15, (int) e.getYcell());                   
+            gO.drawString(e.getDescription(), (int) e.getXcell() + 15, (int) e.getYcell());                   
         }
         
         // Clean up graphics

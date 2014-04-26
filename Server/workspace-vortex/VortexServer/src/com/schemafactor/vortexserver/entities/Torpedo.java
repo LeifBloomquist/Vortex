@@ -18,13 +18,15 @@ public class Torpedo extends Entity
    /** Creates a new instance */
    public Torpedo(Entity shooter, double angle)
    {
-       super("Torpedo fired by " + shooter.getDescription(), Entity.eTypes.TORPEDO, shooter.Xpos, shooter.Ypos);
+       super("Torpedo fired by " + shooter.getDescription(), Entity.eTypes.TORPEDO, (int)shooter.Xpos, (int)shooter.Ypos);
        
-       // Determine overall pointing   
-       Xspeed =  7 * Math.cos(angle); 
-       Yspeed = -7 * Math.sin(angle);   // Negative here because our y-axis is inverted
+       // Determine overall pointing
+       max_speed   = 7;
+       Xspeed =  max_speed * Math.cos(angle); 
+       Yspeed = -max_speed * Math.sin(angle);   // Negative here because our y-axis is inverted
        move();
        
+       // Customize
        spriteBase=8;
        spriteNum=0;
        spriteColor = Constants.COLOR_YELLOW;       
