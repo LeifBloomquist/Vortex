@@ -61,7 +61,7 @@ public class Main
         s.scheduleAtFixedRate(ut, 0, Constants.TICK_TIME, TimeUnit.MILLISECONDS );      
         
         // Instantiate a UDP listener, and let it take over.
-        JavaTools.printlnTime("Creating UDP Listener...");
+        JavaTools.printlnTime("Creating UDP listener...");
         UDPListener udp = new UDPListener(3005);        
     }
 }

@@ -122,7 +122,12 @@ public abstract class Entity
    
    // Helper function to get distance to another Entity
    protected double distanceTo(Entity target)
-   {       
+   {   
+       if (target == null)
+       {
+           return Double.MAX_VALUE;
+       }
+       
        return Math.sqrt( Math.pow((this.Xpos - target.getXpos()), 2) + Math.pow((this.Ypos - target.getYpos()), 2)); 
    }
 

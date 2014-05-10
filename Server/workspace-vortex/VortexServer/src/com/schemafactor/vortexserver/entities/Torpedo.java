@@ -19,7 +19,6 @@ public class Torpedo extends Entity
    public Torpedo(Entity shooter, double angle)
    {
        super("Torpedo fired by " + shooter.getDescription(), Entity.eTypes.TORPEDO, (int)shooter.Xpos, (int)shooter.Ypos);
-       JavaTools.printlnTime( this.getDescription() + " :: angle="+angle );                
        
        // Determine overall pointing
        max_speed   = 7;

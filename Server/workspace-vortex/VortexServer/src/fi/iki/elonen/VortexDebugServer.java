@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -167,7 +168,10 @@ public class VortexDebugServer extends NanoHTTPD
         msg += "<table border=\"1\">" +
                "<tr><th>Entity Name</th><th>Location X</th><th>Location Y</th></tr>";
         
-        for (Entity e : universe.getEntities())
+     // Copy array to get around the dreaded Concurrent modification exception
+        Entity[] entitiesCopy = (Entity[]) universe.getEntities().toArray();
+        
+        for (Entity e : entitiesCopy)
         {
             msg += "<tr><td>" + e.getDescription() + "</td><td>" + e.getXpos() + "</td><td>" + e.getYpos() + "</td></tr>";
         }
@@ -211,8 +215,8 @@ public class VortexDebugServer extends NanoHTTPD
         {
             for (int y=0; y<universe.getYsize()/Constants.PIXELSPERCELL; y++)
             {
-                map_Image.setRGB(x, y, universe.getCellColor(x, y).getRGB() );                         
-            }            
+                map_Image.setRGB( x, y, universe.getCellColor(x, y).getRGB() );                         
+            }
         }
         
         // Title block
@@ -223,7 +227,11 @@ public class VortexDebugServer extends NanoHTTPD
         // Add entities
         Color c;
         gO.setFont(C64font.deriveFont(12f));
-        for (Entity e : universe.getEntities())
+        
+        // Copy array to get around the dreaded Concurrent modification exception
+        Entity[] entitiesCopy = (Entity[]) universe.getEntities().toArray();     
+        
+        for (Entity e : entitiesCopy)
         {
             switch (e.getColor())
             {
@@ -243,6 +251,10 @@ public class VortexDebugServer extends NanoHTTPD
                 
                 case Constants.COLOR_YELLOW:
                     c = Color.YELLOW;                    
+                    break;
+                    
+                case Constants.COLOR_WHITE:
+                    c = Color.WHITE;                    
                     break;
                     
                 case Constants.COLOR_BLACK:

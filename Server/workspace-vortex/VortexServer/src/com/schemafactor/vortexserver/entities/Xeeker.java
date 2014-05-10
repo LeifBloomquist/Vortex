@@ -78,13 +78,16 @@ public class Xeeker extends ServerControlled
                 {
                     target = null;       //  (this also releases this entity's reference to it, allowing it to be garbage collected).
                     State = States.IDLE;
-                }
+                }                
                 
-                navigateTo(target);     
-                
-                if (distanceTo(target) < 50)
+                if (target != null)   // Valid Target
                 {
-                    State = States.ATTACKING;
+                    navigateTo(target);     
+                
+                    if (distanceTo(target) < 50)
+                    {
+                        State = States.ATTACKING;
+                    }
                 }
                 
                 break;
