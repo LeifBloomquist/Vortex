@@ -168,8 +168,8 @@ public class VortexDebugServer extends NanoHTTPD
         msg += "<table border=\"1\">" +
                "<tr><th>Entity Name</th><th>Location X</th><th>Location Y</th></tr>";
         
-     // Copy array to get around the dreaded Concurrent modification exception
-        Entity[] entitiesCopy = (Entity[]) universe.getEntities().toArray();
+        // Copy list to get around the dreaded Concurrent modification exception  (shallow copy)
+        List<Entity> entitiesCopy = new ArrayList<Entity>(universe.getEntities());
         
         for (Entity e : entitiesCopy)
         {
@@ -228,8 +228,8 @@ public class VortexDebugServer extends NanoHTTPD
         Color c;
         gO.setFont(C64font.deriveFont(12f));
         
-        // Copy array to get around the dreaded Concurrent modification exception
-        Entity[] entitiesCopy = (Entity[]) universe.getEntities().toArray();     
+        // Copy list to get around the dreaded Concurrent modification exception  (shallow copy)
+        List<Entity> entitiesCopy = new ArrayList<Entity>(universe.getEntities());     
         
         for (Entity e : entitiesCopy)
         {

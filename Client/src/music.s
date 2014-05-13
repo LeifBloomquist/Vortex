@@ -45,9 +45,7 @@ irqmusic:
   sta $d019
 
   ; IRQ code starts here
-  inc $d020
   jsr $3003
-  dec $d020
    
   ; Exit the current interrupt - jump to regular handler so keyboard works.
   jmp $ea31

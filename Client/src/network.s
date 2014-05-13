@@ -128,7 +128,7 @@ sendannounce:
   sta SENDBUFFER+0      
   
   ; TODO: Player Ship Color
-  lda #$02  
+  lda #$06  
   sta SENDBUFFER+1
   
   ; Player name
@@ -316,7 +316,7 @@ SENDBUFFER:
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
   .byte "vORTEX 2 nETWORK iNITIALIZATION",13
-  .byte "fORWARD udp pORT 3000 TO YOUR c64",13,13
+  .byte CG_YEL, "fORWARD udp pORT 3000 TO YOUR c64", CG_LBL, 13,13
   .byte 0
 
 SERVERMESSAGE:

@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
@@ -79,7 +81,10 @@ public class UDPListener
         Universe universe = Universe.getInstance();        
                 
         // Determine player
-        for (Entity e : universe.getEntities())
+        // Copy list to get around the dreaded Concurrent modification exception  (shallow copy)
+        List<Entity> entitiesCopy = new ArrayList<Entity>(universe.getEntities());
+        
+        for (Entity e : entitiesCopy)
         {         
             if ( e.getType().equals(Entity.eTypes.HUMAN_PLAYER) )
             {

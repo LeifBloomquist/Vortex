@@ -53,7 +53,7 @@ public class Xeeker extends ServerControlled
                 Xspeed = 0;
                 Yspeed = 0;
 
-                // Staert chasing right away - Find a human player
+                // Start chasing right away - Find a human player
                 findNewTarget();
 
                 if (target != null)
@@ -84,7 +84,7 @@ public class Xeeker extends ServerControlled
                 {
                     navigateTo(target);     
                 
-                    if (distanceTo(target) < 50)
+                    if (distanceTo(target) < 70)
                     {
                         State = States.ATTACKING;
                     }
@@ -95,6 +95,12 @@ public class Xeeker extends ServerControlled
             
             case ATTACKING:
             {
+                if (target == null)   // No current target
+                {
+                    State = States.IDLE;
+                    break;
+                }
+                
                 max_speed = 3.5;                
                 navigateTo(target);
                 
@@ -142,7 +148,7 @@ public class Xeeker extends ServerControlled
             } 
             
             // But don't get too close!
-            if (distanceTo(e) < 30) 
+            if (distanceTo(e) < 50) 
             {
                 force = -4.0;
             }            

@@ -140,6 +140,7 @@ JOYDIRECTION:
    clc
    sta DIRECTION   
    adc #SPRITE_BASE
+   adc #SPRITE_PLAYER
    sta SPRITE_POINTERS+00
   
 ; ---------------------------------------------------------------------

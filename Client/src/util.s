@@ -44,6 +44,7 @@ FILTERED_INPUT:
   ;Zero characters received.
   lda #$00
   sta INPUT_Y
+  sta $CC       ;Flash cursor
 
 ;Wait for a character.
 INPUT_GET:

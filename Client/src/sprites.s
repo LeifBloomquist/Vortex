@@ -58,11 +58,11 @@ sprites_init:
   sty $d001
   
   ; Set default color (Player may override in future)
-  lda #$02
+  lda #$06
   sta $d027
   
   ; Set initial sprite 
-  lda #(SPRITE_BASE+$00) ;  Ship facing up
+  lda #(SPRITE_BASE+SPRITE_PLAYER) ;  Ship facing up 
   sta SPRITE_POINTERS+0  
   
   rts 
@@ -72,5 +72,7 @@ sprites_init:
 
 SPRITE_BASE = $30  ; pointing to $4C00  
 SPRITE_POINTERS = SCREEN_BASE+$03F8
+
+SPRITE_PLAYER = 48   ; Decimal!  ref. SpritePad.
 
 ; EOF!
