@@ -2,14 +2,15 @@ package com.schemafactor.vortexserver.entities;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.entities.Entity.eTypes;
 
 // Named by Andreas
 public class Xlors extends ServerControlled
 {  
     /** Creates a new instance of the Xlors */
-    public Xlors(String name, int startx, int starty, int range)
+    public Xlors(String name, int startx, int starty)
     {
-       super(name, startx, starty, range);
+       super(name, eTypes.XEEKER, startx, starty);
        
        // Customize
        max_speed   = 3.5;
@@ -27,11 +28,12 @@ public class Xlors extends ServerControlled
                 Xspeed = 0;
                 Yspeed = 0;
                 
-                // Always go on patrol
-                State = States.PATROLLING;
+                // Always go on patrol                
                 double angle  =  Math.toRadians(JavaTools.generator.nextInt(360));
                 Xspeed =  max_speed * Math.cos(angle); 
-                Yspeed = -max_speed * Math.sin(angle);   // Negative here because our y-axis is inverted      
+                Yspeed = -max_speed * Math.sin(angle);   // Negative here because our y-axis is inverted
+                State = States.PATROLLING;
+                break;
             }
                
             case PATROLLING:
@@ -40,6 +42,7 @@ public class Xlors extends ServerControlled
                 if (JavaTools.generator.nextInt(3000) == 200)
                 {
                     State = States.IDLE;
+                    break;
                 } 
                 break;
             }
@@ -51,6 +54,7 @@ public class Xlors extends ServerControlled
             
             case ATTACKING:
             {
+                break;
             }
             
             case RETREATING:

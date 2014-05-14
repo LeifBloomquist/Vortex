@@ -15,15 +15,23 @@ public class Torpedo extends Entity
 {        
    private int timeoutCounter=0;     // Counter, in milliseconds, for life of this object      
   
-   /** Creates a new instance */
-   public Torpedo(Entity shooter, double angle)
+   /** Creates a new instance when torpedo is fired from another entity*/
+   public Torpedo(Entity shooter)
    {
-       super("Torpedo fired by " + shooter.getDescription(), Entity.eTypes.TORPEDO, (int)shooter.Xpos, (int)shooter.Ypos);
+       super("Torpedo fired by " + shooter.getDescription(), eTypes.TORPEDO, (int)shooter.Xpos, (int)shooter.Ypos);
+       
+       // Match shooter's speed
+       Xspeed = shooter.getXspeed();
+       Xspeed = shooter.getYspeed();
+       
+       // Add in velocity
+       
+       double angle = shooter.getAngle();
        
        // Determine overall pointing
        max_speed   = 7;
-       Xspeed =  max_speed * Math.cos(angle); 
-       Yspeed = -max_speed * Math.sin(angle);   // Negative here because our y-axis is inverted
+       Xspeed +=  max_speed * Math.cos(angle); 
+       Yspeed += -max_speed * Math.sin(angle);   // Negative here because our y-axis is inverted
        move();
        
        // Customize

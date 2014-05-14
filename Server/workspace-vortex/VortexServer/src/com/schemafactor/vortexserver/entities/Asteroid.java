@@ -13,9 +13,9 @@ public class Asteroid extends Entity
     private int animtimer = 0;  
    
     /** Creates a new instance of Asteroid */
-    public Asteroid(String name)
+    public Asteroid(String name, int startx, int starty)
     {
-       super(name, Entity.eTypes.ASTEROID, JavaTools.generator.nextInt(12000), JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()));       
+       super(name, eTypes.ASTEROID, startx, starty);       
        
        Xspeed = -0.5 + (JavaTools.generator.nextDouble());
        Yspeed = -0.5 + (JavaTools.generator.nextDouble());

@@ -28,7 +28,7 @@ public class HumanPlayer extends Entity
    public HumanPlayer(DatagramPacket packet)
    {
        // Random starting positions for multiple players
-       super("Human Player from " + JavaTools.packetAddress(packet), Entity.eTypes.HUMAN_PLAYER, 8000+JavaTools.generator.nextInt(1000), 8000+JavaTools.generator.nextInt(1000));
+       super("Human Player from " + JavaTools.packetAddress(packet), eTypes.HUMAN_PLAYER, 10000+JavaTools.generator.nextInt(1000), 10000+JavaTools.generator.nextInt(1000));
        
        // Customize       
        spriteBase=48;
@@ -226,13 +226,23 @@ public class HumanPlayer extends Entity
    {
        // Look for a positive edge       
        if ((fireButton == true) && (lastFireState == false))
-       {
-           // TODO, this needs to be made cleaner.  For now, derive direction from sprite number.
-           double angle = 1.57079633 - (spriteNum/8d)*2d*Math.PI;
-           
-           fireTorpedo(angle);
+       {           
+           fireTorpedo();
        }      
       
        lastFireState = fireButton;              
+   }   
+  
+   /** 
+    * Return angle for human players.
+    * @return Current angle in radians
+    */
+   @Override
+   protected double getAngle() 
+   {
+       // TODO, this needs to be made cleaner.  For now, derive direction from sprite number.
+       double angle = (Math.PI/2d) - (spriteNum/8d)*2d*Math.PI;
+       return angle;
    }
+   
 }

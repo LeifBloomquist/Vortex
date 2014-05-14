@@ -39,15 +39,21 @@ public class Main
         JavaTools.printlnTime("Creating default entities...");
         for (int i=1; i<=50; i++)
         {
-            allEntities.add(new Xlors("Xlors #" + i, 8000, 8000, 1000));
-            allEntities.add(new Xacor("Xacor #" + i, 8000, 8000, 1000));
+            allEntities.add(new Xlors("Xlors #" + i, 9000+JavaTools.generator.nextInt(1000), 
+                                                     9000+JavaTools.generator.nextInt(3000) ));            
+                                                    
+            allEntities.add(new Xacor("Xacor #" + i, 9000+JavaTools.generator.nextInt(3000), 
+                                                     9000+JavaTools.generator.nextInt(3000) ));     
         }
         
-        allEntities.add(new Xeeker("The Xeeker", 10000, 10000, 2000));
+        allEntities.add(new Xeeker("The Xeeker", JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
+                                                 JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));    
         
-        for (int i=1; i<=100; i++)
+        for (int i=1; i<=1000; i++)
         {
-            allEntities.add(new Asteroid("Asteroid #" + i));
+            allEntities.add(new Asteroid("Asteroid #" + i, JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
+                                                           JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));           
+            
         }        
         
         // A mini http server to show stats through a browser
@@ -62,6 +68,7 @@ public class Main
         
         // Instantiate a UDP listener, and let it take over.
         JavaTools.printlnTime("Creating UDP listener...");
-        UDPListener udp = new UDPListener(3005);        
+        UDPListener udp = new UDPListener();
+        udp.start(3005);
     }
 }

@@ -275,12 +275,6 @@ public class VortexDebugServer extends NanoHTTPD
                     break;                
             }
         
-            // Override human players to red so easier to see on map
-            if (e.getType() == eTypes.HUMAN_PLAYER)
-            {
-                c = Color.RED;                    
-            }
-        
             gO.setColor(c);
             gO.fillOval((int)e.getXcell(), (int) e.getYcell(), 10, 10);
             gO.drawString(e.getDescription(), (int) e.getXcell() + 15, (int) e.getYcell());                   

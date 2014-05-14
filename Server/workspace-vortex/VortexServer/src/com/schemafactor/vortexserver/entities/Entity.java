@@ -8,7 +8,7 @@ import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class Entity 
 {    
-   public static enum eTypes {NONE, HUMAN_PLAYER, SERVER_CONTROLLED, ASTEROID, TORPEDO}
+   public static enum eTypes {NONE, HUMAN_PLAYER, XACOR, XEEKER, XLORS, ASTEROID, TORPEDO}
    protected eTypes myType = eTypes.NONE;
     
    protected String description;   
@@ -37,6 +37,7 @@ public abstract class Entity
        this.myType = type;
        Xpos = startX;
        Ypos = startY;
+       
        this.universe = Universe.getInstance();       
    }
    
@@ -136,13 +137,21 @@ public abstract class Entity
         return removeMeFlag;
     }   
     
-    protected void fireTorpedo(double angle) 
+    /** 
+     * @return Current angle in radians
+     */
+    protected double getAngle() 
     {
-        Torpedo t = new Torpedo(this, angle);        
+        double angle = Math.atan2(-Yspeed, Xspeed); // Negative here because our y-axis is inverted
+        return angle;
+    }
+    
+    protected void fireTorpedo() 
+    {
+        Torpedo t = new Torpedo(this);        
         
         try
         {
-            //universe.newEntities.put(t);            
             universe.newEntities.add(t);           
         }
         catch (Exception e)

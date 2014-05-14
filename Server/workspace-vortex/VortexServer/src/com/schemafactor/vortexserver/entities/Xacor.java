@@ -11,9 +11,9 @@ public class Xacor extends ServerControlled
     int firingDelay=0;
     
     /** Creates a new instance of Server Controlled */
-    public Xacor(String name, int startx, int starty, int range)
+    public Xacor(String name, int startx, int starty)
     {
-       super(name, startx, starty, range);
+       super(name, eTypes.XACOR, startx, starty);
        
        // Customize
        max_speed = 2.5;
@@ -34,14 +34,15 @@ public class Xacor extends ServerControlled
                 
                 // Randomly go on patrol
                 if (JavaTools.generator.nextInt(1000) <= 1)
-                {
-                    State = States.PATROLLING;
+                {                    
                     max_speed = 2.5;
                     
                     double speed = 0.5 + 0.5*JavaTools.generator.nextDouble();
                     double angle = Math.toRadians(JavaTools.generator.nextInt(360));
                     Xspeed =  max_speed * speed * Math.cos(angle); 
                     Yspeed = -max_speed * speed * Math.sin(angle);   // Negative here because our y-axis is inverted
+                    
+                    State = States.PATROLLING;
                     break;
                 } 
                 
@@ -57,8 +58,17 @@ public class Xacor extends ServerControlled
                 {
                     if (this == e) continue;   // Don't chase myself
                     
-                    if (distanceTo(e) <= 60)   // Close by
+                    if (distanceTo(e) <= 70)   // Close by
                     {
+                        // Ignore same species, asteroids, and torpedoes
+                        if ((e.getType() == myType) ||
+                            (e.getType() == eTypes.ASTEROID) ||
+                            (e.getType() == eTypes.TORPEDO))
+                        {
+                            continue;
+                        }                            
+                        
+                        // Other types are fair game
                         target = e;
                         State = States.CHASING;  
                         break;
@@ -92,12 +102,15 @@ public class Xacor extends ServerControlled
                     break;
                 }
                 
-                navigateTo(target);   
-                
-                if (distanceTo(target) < 50)
-                {                    
-                    State = States.ATTACKING;
-                    break;
+                if (target != null)   // Valid Target
+                {                
+                    navigateTo(target);   
+                    
+                    if (distanceTo(target) < 50)
+                    {                    
+                        State = States.ATTACKING;
+                        break;
+                    }
                 }
                 
                 break;
@@ -109,9 +122,8 @@ public class Xacor extends ServerControlled
                 if (firingDelay < 10000) firingDelay += Constants.TICK_TIME;
                 
                 if (firingDelay > 500)   // milliseconds 
-                {   
-                    double angle = Math.atan2(-Yspeed, Xspeed); // Negative here because our y-axis is inverted   
-                    fireTorpedo(angle);
+                {
+                    fireTorpedo();
                     firingDelay=0; // Reset
                     
                     State = States.CHASING;   

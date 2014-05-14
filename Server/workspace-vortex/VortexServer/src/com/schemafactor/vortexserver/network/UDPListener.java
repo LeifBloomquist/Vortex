@@ -27,7 +27,12 @@ import com.schemafactor.vortexserver.universe.Universe;
 public class UDPListener
 {    
     /** Creates a new instance of UDPListener */
-    public UDPListener(int port)
+    public UDPListener()
+    {
+        ;
+    }
+    
+    public void start(int port)
     {
         while (true)   // Always loop and try to recover in case of exceptions
         {  
@@ -57,8 +62,7 @@ public class UDPListener
             catch (IOException ex)
             {
                 JavaTools.printlnTime( "IO Exception: " + JavaTools.getStackTrace(ex));
-            }   
-            
+            }
             
             try
             {

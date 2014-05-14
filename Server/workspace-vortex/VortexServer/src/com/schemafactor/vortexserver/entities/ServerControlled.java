@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.entities.Entity.eTypes;
 import com.schemafactor.vortexserver.universe.Universe;
 
 public abstract class ServerControlled extends Entity
@@ -16,9 +17,9 @@ public abstract class ServerControlled extends Entity
     protected States State = States.IDLE;
        
     /** Creates a new instance of Server Controlled */
-    public ServerControlled(String name, int startx, int starty, int range)
+    public ServerControlled(String name, eTypes type, int startx, int starty)
     {
-       super(name, Entity.eTypes.SERVER_CONTROLLED, startx+JavaTools.generator.nextInt(range), starty+JavaTools.generator.nextInt(range));
+       super(name, type, startx, starty);
        
        Xspeed = 0;
        Yspeed = 0;       

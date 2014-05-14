@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
+import com.schemafactor.vortexserver.entities.ServerControlled.States;
 
 public class Xeeker extends ServerControlled
 {      
     /** Creates a new instance of Server Controlled */
-    public Xeeker(String name, int startx, int starty, int range)
+    public Xeeker(String name, int startx, int starty)
     {
-       super(name, startx, starty, range);
+       super(name, eTypes.XEEKER, startx, starty);
        
        // Customize
        max_speed = 7;
@@ -59,6 +60,7 @@ public class Xeeker extends ServerControlled
                 if (target != null)
                 {
                     State = States.CHASING;
+                    break;
                 }                
                 break;
             }
@@ -78,6 +80,7 @@ public class Xeeker extends ServerControlled
                 {
                     target = null;       //  (this also releases this entity's reference to it, allowing it to be garbage collected).
                     State = States.IDLE;
+                    break;
                 }                
                 
                 if (target != null)   // Valid Target
@@ -87,7 +90,15 @@ public class Xeeker extends ServerControlled
                     if (distanceTo(target) < 70)
                     {
                         State = States.ATTACKING;
+                        break;
                     }
+                }
+                
+                // Randomly chase other players
+                if (JavaTools.generator.nextInt(10000) == 7788)
+                {
+                    State = States.IDLE;
+                    break;
                 }
                 
                 break;
@@ -107,6 +118,7 @@ public class Xeeker extends ServerControlled
                 if (distanceTo(target) > 100)
                 {
                     State = States.CHASING;
+                    break;
                 }
                 
                 break;
