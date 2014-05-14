@@ -53,26 +53,23 @@ public class Xacor extends ServerControlled
             {
                 max_speed = 2.5;
                 
-                // If we spot a hostile entity, chase it                
-                for (Entity e : universe.getEntities())
+                // If we spot a hostile entity, chase it
+                List<Entity> allInRange = universe.getEntities(this, 70);                
+                
+                for (Entity e : allInRange)
                 {
-                    if (this == e) continue;   // Don't chase myself
-                    
-                    if (distanceTo(e) <= 70)   // Close by
+                    // Ignore same species, asteroids, and torpedoes
+                    if ((e.getType() == myType) ||
+                        (e.getType() == eTypes.ASTEROID) ||
+                        (e.getType() == eTypes.TORPEDO))
                     {
-                        // Ignore same species, asteroids, and torpedoes
-                        if ((e.getType() == myType) ||
-                            (e.getType() == eTypes.ASTEROID) ||
-                            (e.getType() == eTypes.TORPEDO))
-                        {
-                            continue;
-                        }                            
+                        continue;
+                    }                            
                         
-                        // Other types are fair game
-                        target = e;
-                        State = States.CHASING;  
-                        break;
-                    }     
+                    // Other types are fair game.  Just pick the first one.
+                    target = e;
+                    State = States.CHASING;
+                    break;   
                 }
                 
                 // Randomly switch back to Idle otherwise

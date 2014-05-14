@@ -39,11 +39,11 @@ public class Main
         JavaTools.printlnTime("Creating default entities...");
         for (int i=1; i<=50; i++)
         {
-            allEntities.add(new Xlors("Xlors #" + i, 9000+JavaTools.generator.nextInt(1000), 
-                                                     9000+JavaTools.generator.nextInt(3000) ));            
+            allEntities.add(new Xlors("Xlors #" + i, 9000+JavaTools.generator.nextInt(2000), 
+                                                     9000+JavaTools.generator.nextInt(2000) ));            
                                                     
-            allEntities.add(new Xacor("Xacor #" + i, 9000+JavaTools.generator.nextInt(3000), 
-                                                     9000+JavaTools.generator.nextInt(3000) ));     
+            allEntities.add(new Xacor("Xacor #" + i, 9000+JavaTools.generator.nextInt(2000), 
+                                                     9000+JavaTools.generator.nextInt(2000) ));     
         }
         
         allEntities.add(new Xeeker("The Xeeker", JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),

@@ -1,7 +1,5 @@
 package com.schemafactor.vortexserver.entities;
 
-import java.util.ArrayList;
-
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.universe.Universe;
