@@ -187,8 +187,8 @@ public class HumanPlayer extends Entity
            message[offset+1] = JavaTools.getHighByte(xrel);
            message[offset+2] = JavaTools.getLowByte(yrel);  
            message[offset+3] = JavaTools.getHighByte(yrel);  // Not used by C64
-           message[offset+4] = e.getXspeed();
-           message[offset+5] = e.getYspeed();
+           message[offset+4] = (byte)(e.getXspeed()*100d);
+           message[offset+5] = (byte)(e.getYspeed()*100d);
            message[offset+6] = e.getColor();
            message[offset+7] = e.getSpriteNum();
            message[offset+8] = 0;  // Spare 1
@@ -198,6 +198,8 @@ public class HumanPlayer extends Entity
        }
        
        // Sound effects
+       
+       
        // Messages
        
        // And now, the first 20 lines (=800 bytes) of the screen.       

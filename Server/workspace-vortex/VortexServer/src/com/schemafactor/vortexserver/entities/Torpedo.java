@@ -22,14 +22,11 @@ public class Torpedo extends Entity
        
        // Match shooter's speed
        Xspeed = shooter.getXspeed();
-       Xspeed = shooter.getYspeed();
+       Yspeed = shooter.getYspeed();
        
        // Add in velocity
-       
-       double angle = shooter.getAngle();
-       
-       // Determine overall pointing
-       max_speed   = 7;
+       max_speed   = 7d;
+       double angle = shooter.getAngle();       
        Xspeed +=  max_speed * Math.cos(angle); 
        Yspeed += -max_speed * Math.sin(angle);   // Negative here because our y-axis is inverted
        move();
@@ -49,8 +46,7 @@ public class Torpedo extends Entity
        {
            removeMeFlag = true;
        }       
-   }  
- 
+   }   
 
    @Override
    public void update()

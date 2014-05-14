@@ -88,15 +88,15 @@ public abstract class Entity
       return (byte) (Constants.PIXELSPERCELL - (Math.floor(xory) % Constants.PIXELSPERCELL) -1);
    }
    
-    /** Return X,Y speeds as bytes */
-   public byte getXspeed()
+   /** Return X,Y speeds */
+   public double getXspeed()
    {
-       return (byte)(Xspeed*100d);
+       return Xspeed;
    }
    
-   public byte getYspeed()
+   public double getYspeed()
    {
-       return (byte)(Yspeed*100d);
+       return Yspeed;
    }
 
    public String getDescription() 
