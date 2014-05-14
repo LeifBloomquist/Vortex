@@ -21,6 +21,8 @@ public class HumanPlayer extends Entity
    
    private boolean fireButton = false;
    private boolean lastFireState = false;
+   
+   private double speedscaling=5d;
   
    /** Creates a new instance of Human Player */
    public HumanPlayer(DatagramPacket packet)
@@ -67,7 +69,11 @@ public class HumanPlayer extends Entity
        
        if (timeoutCounter > 2000)   // Two seconds 
        {
-           removeMeFlag = true;
+           if (!removeMeFlag)
+           {
+               removeMeFlag = true;
+               JavaTools.printlnTime( "Player Timed Out: " + description );
+           }               
        }       
    }
    
@@ -79,31 +85,42 @@ public class HumanPlayer extends Entity
        switch (data[0])   // Packet type
        {
            case Constants.CLIENT_ANNOUNCE:
-               announceReceived = true;
-               spriteColor = Constants.COLOR_BLUE; // data[1];
+           {      
+               spriteColor = data[1];
                description = JavaTools.fromPETSCII(Arrays.copyOfRange(data, 2, data.length)) + " [" +JavaTools.packetAddress(packet) + "]";
-               JavaTools.printlnTime( "New Player Name: " + description);
+               
+               if (!announceReceived)
+               {
+                   JavaTools.printlnTime( "Player Joined: " + description );                   
+               }
+               
+               announceReceived = true;
+           }
            break;
            
            case Constants.CLIENT_UPDATE:
-           //Xpos       = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed
-           //Ypos       = (0xFF & data[3]) + (0xFF & data[4])*256;
-             Xspeed     = data[5]/5;
-             Yspeed     = data[6]/5;
+           {
+               //Xpos       = (0xFF & data[1]) + (0xFF & data[2])*256;  // 0xFF used to force to signed           
+               //Ypos       = (0xFF & data[3]) + (0xFF & data[4])*256;
+               
+             Xspeed     = data[5]/speedscaling;
+             Yspeed     = data[6]/speedscaling;
              spriteNum  = data[7];
              fireButton =(data[8] == 1);             
              
-             // Cheat a little and do the position math here.  Eventually, move to client.
+             // Cheat a little and do the position math here.  Eventually move to client?
              move();
              
              // Handle fire button
-             handleFireButton();
-             
-             break;
+             handleFireButton();           
+           }
+           break;
            
            default:
+           {
                JavaTools.printlnTime("Bad packet type " + data[0] + " from " + userIP.toString());
                return;
+           }
        }
                 
        // Reset timeout
@@ -113,14 +130,7 @@ public class HumanPlayer extends Entity
 
    @Override
    public void update()
-   {       
-/*
-       if (!announceReceived)  // Don't update if there's been no announce packet  
-       {
-           return;
-       }
-*/
-       
+   {              
        // move();   // Don't call for for human players - Position will be controlled by client.       
        
        // Send data packet to the client              

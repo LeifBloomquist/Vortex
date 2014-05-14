@@ -58,7 +58,7 @@ sprites_init:
   sty $d001
   
   ; Set default color (Player may override in future)
-  lda #$06
+  lda playerspritecolor
   sta $d027
   
   ; Set initial sprite 
@@ -74,5 +74,9 @@ SPRITE_BASE = $30  ; pointing to $4C00
 SPRITE_POINTERS = SCREEN_BASE+$03F8
 
 SPRITE_PLAYER = 48   ; Decimal!  ref. SpritePad.
+
+playerspritecolor:
+  .byte $06
+
 
 ; EOF!

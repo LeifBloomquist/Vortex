@@ -73,25 +73,33 @@ CHECKALLOWED:
   jmp CHECKALLOWED
 
 INPUTOK:
+  ;End reached?
+  lda INPUT_Y
+  cmp MAXCHARS
+  beq INPUT_GET  ;Yes, so don't allow character
+  
+  ; Store the character                        
   lda LASTCHAR          ;Get the char back
   ldy INPUT_Y
   sta GOTINPUT,y        ;Add it to string
   jsr $ffd2             ;Print it
 
-  inc INPUT_Y           ;Next character
-
-  ;End reached?
-  lda INPUT_Y
-  cmp MAXCHARS
-  beq INPUT_DONE
-
-  ;Not yet.
+  inc INPUT_Y           ;Next character  
   jmp INPUT_GET
 
 INPUT_DONE:
    ldy INPUT_Y
+   
+   ; Must enter at least one character.
+   bne INPUT_OK  
+   jmp INPUT_GET
+
+INPUT_OK:
    lda #$00
    sta GOTINPUT,y   ;Zero-terminate
+   
+   lda #$01
+   sta $CC  ; Turn cursor off again   
    rts
 
 ; Delete last character.
@@ -146,8 +154,5 @@ INPUT_Y:
 
 GOTINPUT:
   .res 40
-
   
 ; EOF!
-
-

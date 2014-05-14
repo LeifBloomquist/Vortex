@@ -127,8 +127,8 @@ sendannounce:
   lda #PACKET_ANNOUNCE
   sta SENDBUFFER+0      
   
-  ; TODO: Player Ship Color
-  lda #$06  
+  ; Player Ship Color
+  lda playerspritecolor
   sta SENDBUFFER+1
   
   ; Player name
