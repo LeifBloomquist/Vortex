@@ -122,7 +122,7 @@ public abstract class Entity
       }   
    
    // Helper function to get distance to another Entity
-   protected double distanceTo(Entity target)
+   public double distanceTo(Entity target)
    {   
        if (target == null)
        {
@@ -130,6 +130,18 @@ public abstract class Entity
        }
        
        return Math.sqrt( Math.pow((this.Xpos - target.getXpos()), 2) + Math.pow((this.Ypos - target.getYpos()), 2)); 
+   }
+   
+   // Helper function to get angle to another Entity
+   protected double angleTo(Entity target)
+   {          
+       double xdist = target.getXpos() - this.Xpos;
+       double ydist = target.getYpos() - this.Ypos;    
+       
+       // TODO: Wrapping handling needed here
+       
+       double angle2 = Math.atan2(-ydist, xdist); // Negative here because our y-axis is inverted
+       return angle2;
    }
 
     public boolean removeMe() 

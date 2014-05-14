@@ -85,7 +85,7 @@ public class Xeeker extends ServerControlled
                 
                 if (target != null)   // Valid Target
                 {
-                    navigateTo(target);     
+                    navigateTo(target, 10000.0, 4.0, 3.5, 100.0, 5.0);
                 
                     if (distanceTo(target) < 70)
                     {
@@ -113,7 +113,7 @@ public class Xeeker extends ServerControlled
                 }
                 
                 max_speed = 3.5;                
-                navigateTo(target);
+                navigateTo(target, 60.0, 4.0, 3.5, 50.0, 4.0);
                 
                 if (distanceTo(target) > 100)
                 {
@@ -132,50 +132,4 @@ public class Xeeker extends ServerControlled
         
         limitAndMove();
     }   
-
-    // Navigation.  Seek out the target and avoid all other entities.
-    private void navigateTo(Entity target)   
-    {        
-        for (Entity e : universe.getEntities())
-        {
-            if (this == e) continue;   // Don't worry about myself
-            
-            if (distanceTo(e) >= 60)   // Don't worry about entities too far away
-            {
-                if (target != e)       // Except the target
-                {
-                    continue;
-                }
-            }            
-                        
-            double force = 0;
-            
-            if (target == e)
-            {
-                force = 4.0;    // Attracted to target
-            }
-            else
-            {
-                force = -3.5;  // Note negative - this repels 
-            } 
-            
-            // But don't get too close!
-            if (distanceTo(e) < 50) 
-            {
-                force = -4.0;
-            }            
-         
-            double xdist = e.getXpos() - this.Xpos;
-            double ydist = e.getYpos() - this.Ypos;    
-            
-            // TODO: Wrapping handling needed here
-            
-            double angle  =  Math.atan2(-ydist, xdist); // Negative here because our y-axis is inverted    
-            double Xdelta =  force * Math.cos(angle); 
-            double Ydelta = -force * Math.sin(angle);   // Negative here because our y-axis is inverted      
-
-            Xspeed += 0.1*Xdelta;
-            Yspeed += 0.1*Ydelta;              
-        }
-    }
 }

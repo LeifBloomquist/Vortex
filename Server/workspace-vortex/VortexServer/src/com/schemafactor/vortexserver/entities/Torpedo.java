@@ -24,7 +24,7 @@ public class Torpedo extends Entity
        Xspeed = shooter.getXspeed();
        Yspeed = shooter.getYspeed();
        
-       // Add in velocity
+       // Add in velocity.  This doesn't seem quite right
        max_speed   = 7d;
        double angle = shooter.getAngle();       
        Xspeed +=  max_speed * Math.cos(angle); 

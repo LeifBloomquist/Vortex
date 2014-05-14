@@ -256,9 +256,26 @@ public class Universe
             {
                 allOfType.add(e);                        
             }
-        }
-        
+        }        
         
         return allOfType;
+    }
+    
+    /** Get a list of all entities within a certain radius, excluding the one who is doing the inquiry (who). */
+    public List<Entity> getEntities(Entity who, double range)
+    {
+        List<Entity> allInRange = new ArrayList<Entity>();
+        
+        for (Entity e : allEntities)
+        {
+            if (who == e) continue;
+            
+            if ((who.distanceTo(e) <= range)  && !(e.removeMe()))
+            {
+                allInRange.add(e);                        
+            }
+        }        
+        
+        return allInRange;
     }
 }

@@ -28,7 +28,7 @@ public class Xacor extends ServerControlled
         {
             case IDLE:
             {
-                max_speed = 2;
+                max_speed = 0;
                 Xspeed = 0;
                 Yspeed = 0;
                 
@@ -97,14 +97,14 @@ public class Xacor extends ServerControlled
                 
                 if (target.removeMe())   // Target is about to be removed
                 {
-                    target = null;       //  (this also releases this entity's reference to it, allowing it to be garbage collected).
+                    target = null;       // (this also releases this entity's reference to it, allowing it to be garbage collected).
                     State = States.IDLE;
                     break;
                 }
                 
                 if (target != null)   // Valid Target
                 {                
-                    navigateTo(target);   
+                    navigateTo(target, 80.0, 3.0, 2.5, 30.0, 3.5);
                     
                     if (distanceTo(target) < 50)
                     {                    
@@ -141,50 +141,4 @@ public class Xacor extends ServerControlled
        
         limitAndMove();
     }   
-
-    // Navigation.  Seek out the target and avoid all other entities.
-    private void navigateTo(Entity target)   
-    {    
-        for (Entity e : universe.getEntities())
-        {
-            if (this == e) continue;   // Don't worry about myself
-            
-            if (distanceTo(e) >= 60)   // Don't worry about entities too far away
-            {
-                if (target != e)       // Except the target
-                {
-                    continue;
-                }
-            }            
-                        
-            double force = 0;
-            
-            if (target == e)
-            {
-                force = 3.0;    // Attracted to target
-            }
-            else
-            {
-                force = -2.5;  // Note negative - this repels 
-            } 
-            
-            // But don't get too close!
-            if (distanceTo(e) < 30) 
-            {
-                force = -3.5;
-            }            
-         
-            double xdist = e.getXpos() - this.Xpos;
-            double ydist = e.getYpos() - this.Ypos;    
-            
-            // TODO: Wrapping handling needed here
-            
-            double angle  =  Math.atan2(-ydist, xdist); // Negative here because our y-axis is inverted    
-            double Xdelta =  force * Math.cos(angle); 
-            double Ydelta = -force * Math.sin(angle);   // Negative here because our y-axis is inverted      
-
-            Xspeed += 0.1*Xdelta;
-            Yspeed += 0.1*Ydelta;              
-        }
-    }
 }

@@ -10,7 +10,7 @@ public class Xlors extends ServerControlled
     /** Creates a new instance of the Xlors */
     public Xlors(String name, int startx, int starty)
     {
-       super(name, eTypes.XEEKER, startx, starty);
+       super(name, eTypes.XLORS, startx, starty);
        
        // Customize
        max_speed   = 3.5;

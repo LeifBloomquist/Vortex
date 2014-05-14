@@ -13,8 +13,7 @@ music_init:
   lda #$00
   jsr $3000
   
-  ; Interrupt setup
-
+  ; Interrupt setup    
   sei                           ; disable interrupts
 
   lda #$7f                      ; turn off the cia interrupts
