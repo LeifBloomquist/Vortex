@@ -28,11 +28,12 @@ public class HumanPlayer extends Entity
    public HumanPlayer(DatagramPacket packet)
    {
        // Random starting positions for multiple players
-       super("Human Player from " + JavaTools.packetAddress(packet), eTypes.HUMAN_PLAYER, 10000+JavaTools.generator.nextInt(1000), 10000+JavaTools.generator.nextInt(1000));
+       super("Human Player [" + JavaTools.packetAddress(packet)+"]", eTypes.HUMAN_PLAYER, 1000+JavaTools.generator.nextInt(1000), 1000+JavaTools.generator.nextInt(1000));
        
        // Customize       
        spriteBase=48;
        spriteNum=0;
+       spriteColor = Constants.COLOR_BLUE;   // Overridden by announce packet
        
        userIP = packet.getAddress();
        receiveUpdate(packet);

@@ -4,7 +4,7 @@ package com.schemafactor.vortexserver.common;
 public class Constants 
 {
     // Server version
-    public static final double VERSION        = 0.010;
+    public static final double VERSION        = 0.011;
     
     // Game-specific constants
     public static final int TICK_TIME         = 50; // milliseconds
@@ -13,7 +13,8 @@ public class Constants
     public static final int SCREEN_WIDTH      = 40;
     public static final int SCREEN_HEIGHT     = 25;
     public static final int SCREEN_SIZE       = SCREEN_WIDTH*SCREEN_HEIGHT;
-    public static final int PIXELSPERCELL     = 8;   
+    public static final int PIXELSPERCELL     = 8;
+    public static final int UNIVERSE_SIZE     = 50;  // In screens x/y.  Was 100.  
     
     // Position on screen
     public static final int PLAYER_XPOS       = 172;  // 24+(320/2)-(24/2)

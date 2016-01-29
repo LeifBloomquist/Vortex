@@ -33,28 +33,33 @@ public class Main
         
         // Create the universe.
         JavaTools.printlnTime("Creating game universe...");
-        Universe.getInstance().Create(100, allEntities);
+        Universe.getInstance().Create(Constants.UNIVERSE_SIZE, allEntities);
         
         // Add some entities.
         JavaTools.printlnTime("Creating default entities...");
-        for (int i=1; i<=50; i++)
+        
+        for (int i=1; i<=100; i++)
         {
-            allEntities.add(new Xlors("Xlors #" + i, 9000+JavaTools.generator.nextInt(2000), 
-                                                     9000+JavaTools.generator.nextInt(2000) ));            
+            allEntities.add(new Xlors("Xlors #" + i, 2000+JavaTools.generator.nextInt(2000), 
+                                                     2000+JavaTools.generator.nextInt(2000) ));            
                                                     
-            allEntities.add(new Xacor("Xacor #" + i, 9000+JavaTools.generator.nextInt(2000), 
-                                                     9000+JavaTools.generator.nextInt(2000) ));     
+            allEntities.add(new Xacor("Xacor #" + i, 2000+JavaTools.generator.nextInt(2000), 
+                                                     2000+JavaTools.generator.nextInt(2000) ));     
         }
+       
+        for (int i=1; i<=5; i++)
+        {
         
-        allEntities.add(new Xeeker("The Xeeker", JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
-                                                 JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));    
-        
-        for (int i=1; i<=1000; i++)
+	        allEntities.add(new Xeeker("Xeeker #" + i, JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
+	                                                   JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));  
+        }
+      
+        // Asteroids
+        for (int i=1; i<=500; i++)
         {
             allEntities.add(new Asteroid("Asteroid #" + i, JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
-                                                           JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));           
-            
-        }        
+                                                           JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));                    
+        }                
         
         // A mini http server to show stats through a browser
         JavaTools.printlnTime("Creating debug httpd server...");

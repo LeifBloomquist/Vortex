@@ -7,9 +7,7 @@ import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.ServerControlled.States;
 
 public class Xacor extends ServerControlled
-{   
-    int firingDelay=0;
-    
+{       
     /** Creates a new instance of Server Controlled */
     public Xacor(String name, int startx, int starty)
     {
@@ -18,7 +16,7 @@ public class Xacor extends ServerControlled
        // Customize
        max_speed = 2.5;
        spriteBase = 56;
-       spriteColor = Constants.COLOR_RED;
+       spriteColor = Constants.COLOR_YELLOW;
     }
     
     @Override

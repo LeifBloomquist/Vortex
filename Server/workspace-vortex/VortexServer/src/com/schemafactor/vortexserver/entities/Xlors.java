@@ -44,6 +44,9 @@ public class Xlors extends ServerControlled
                     State = States.IDLE;
                     break;
                 } 
+                
+                // Avoid objects - TODO
+                
                 break;
             }
         

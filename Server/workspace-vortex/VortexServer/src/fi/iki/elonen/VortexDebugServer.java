@@ -207,7 +207,10 @@ public class VortexDebugServer extends NanoHTTPD
     
     private InputStream generateMap()
     {
-        BufferedImage map_Image = new BufferedImage(100*40, 100*25, BufferedImage.TYPE_INT_RGB);        
+    	
+        BufferedImage map_Image = new BufferedImage(Constants.UNIVERSE_SIZE*Constants.SCREEN_WIDTH, 
+        		                                    Constants.UNIVERSE_SIZE*Constants.SCREEN_HEIGHT,
+        		                                    BufferedImage.TYPE_INT_RGB);        
         Graphics2D gO = map_Image.createGraphics();        
         
         // Plot the main map        
@@ -221,8 +224,9 @@ public class VortexDebugServer extends NanoHTTPD
         
         // Title block
         gO.setColor(Color.WHITE);
-        gO.setFont(C64font.deriveFont(60f));
-        gO.drawString("Vortex Universe Map Generated " + JavaTools.Now(), 20, 100);       
+        gO.setFont(C64font.deriveFont(40f));
+        gO.drawString("Vortex Universe Map", 20, 80);       
+        gO.drawString("Generated " + JavaTools.Now(), 20, 140);
         
         // Add entities
         Color c;
@@ -286,9 +290,12 @@ public class VortexDebugServer extends NanoHTTPD
         // Convert
     
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
+        try 
+        {
             ImageIO.write(map_Image, "png", baos);
-        } catch (IOException e) {           
+        } 
+        catch (IOException e) 
+        {           
             e.printStackTrace();
         }
         InputStream is = new ByteArrayInputStream(baos.toByteArray());

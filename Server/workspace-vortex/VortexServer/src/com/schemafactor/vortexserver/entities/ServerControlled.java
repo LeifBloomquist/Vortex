@@ -10,6 +10,10 @@ public abstract class ServerControlled extends Entity
     // States
     protected enum States {IDLE, PATROLLING, CHASING, ATTACKING, RETREATING};
     protected States State = States.IDLE;
+    protected States lastState = States.IDLE;
+    
+    // Firing delay counter
+    int firingDelay=0;
        
     /** Creates a new instance of Server Controlled */
     public ServerControlled(String name, eTypes type, int startx, int starty)

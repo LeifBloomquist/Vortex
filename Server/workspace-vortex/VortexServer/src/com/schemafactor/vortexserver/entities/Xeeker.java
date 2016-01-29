@@ -8,7 +8,7 @@ import com.schemafactor.vortexserver.entities.ServerControlled.States;
 
 public class Xeeker extends ServerControlled
 {      
-    /** Creates a new instance of Server Controlled */
+    /** Creates a new instance of Xeeker */
     public Xeeker(String name, int startx, int starty)
     {
        super(name, eTypes.XEEKER, startx, starty);
@@ -16,7 +16,7 @@ public class Xeeker extends ServerControlled
        // Customize
        max_speed = 7;
        spriteBase = 40;
-       spriteColor = Constants.COLOR_BLUE;
+       spriteColor = Constants.COLOR_RED;
     }
 
     private void findNewTarget()
@@ -45,7 +45,7 @@ public class Xeeker extends ServerControlled
     }
     
     @Override
-    public void update() 
+    public void update()  
     {
         switch (State)
         {
@@ -85,7 +85,7 @@ public class Xeeker extends ServerControlled
                 
                 if (target != null)   // Valid Target
                 {
-                    navigateTo(target, 10000.0, 4.0, 3.5, 100.0, 5.0);
+                    navigateTo(target, 100.0, 4.0, 3.5, 30.0, 5.0);
                 
                     if (distanceTo(target) < 70)
                     {
@@ -106,6 +106,17 @@ public class Xeeker extends ServerControlled
             
             case ATTACKING:
             {
+            	// Fire a torpedo!                
+                if (firingDelay < 10000) firingDelay += Constants.TICK_TIME;
+                
+                if (firingDelay > 200)   // milliseconds 
+                {
+                    fireTorpedo();
+                    firingDelay=0; // Reset
+                    // Note no change in state!  It will fire like crazy until out of range! (see below)
+                    break;   
+                }
+                
                 if (target == null)   // No current target
                 {
                     State = States.IDLE;
@@ -129,6 +140,13 @@ public class Xeeker extends ServerControlled
                 break;
             }
         }
+    	
+    	if (lastState != State)
+    	{
+    		JavaTools.printlnTime(this.description + " entered state: " + State.toString() );
+    	}
+    	
+    	lastState = State;
         
         limitAndMove();
     }   

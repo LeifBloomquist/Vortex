@@ -68,11 +68,10 @@ public class Universe
         Ysize = size*Constants.SCREEN_HEIGHT*Constants.PIXELSPERCELL;
         
         // Stars
-        
-        
+            
         int[] starchars = {2, 7, 10, 11};
         
-        for (int t=1; t<100000; t++)
+        for (int t=1; t<30000; t++)
         {
             int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH);
             int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT);            
@@ -83,9 +82,7 @@ public class Universe
         
         // Put some simple planetoids into the universe
         
-        
-        
-        for (int t=1; t < 5000; t++)
+        for (int t=1; t < 100; t++)
         {
             int randx=10+JavaTools.generator.nextInt((size*Constants.SCREEN_WIDTH )-20);
             int randy=10+JavaTools.generator.nextInt((size*Constants.SCREEN_HEIGHT)-20);            
@@ -121,20 +118,19 @@ public class Universe
         // Experiment - huge asteroid belt
         int[] rockchars = {145, 146, 147, 148, 154, 157};
         
-        for (int a=1; a < 100000; a++)
+        for (int a=1; a < 30000; a++)
         {
-            int orbit=500+JavaTools.generator.nextInt(20);
+            int orbit=300+JavaTools.generator.nextInt(20);
             double dir=2*Math.PI*JavaTools.generator.nextDouble();
             
             int diffx=(int) Math.round(orbit*Math.sin(dir));
             int diffy=(int) Math.round(orbit*Math.cos(dir));
             
-            universeMapCells[1000+diffx][1000+diffy].setAttributes(rockchars[JavaTools.generator.nextInt(rockchars.length)], Constants.COLOR_BROWN, Cell.Types.Destructable);    
-        }        
-        
+            universeMapCells[1000+diffx][600+diffy].setAttributes(rockchars[JavaTools.generator.nextInt(rockchars.length)], Constants.COLOR_BROWN, Cell.Types.Destructable);    
+        }                
         
         // Put some standalone asteroids into the universe
-        for (int t=1; t< 10000; t++)
+        for (int t=1; t< 1000; t++)
         {
             int randx=JavaTools.generator.nextInt(size*Constants.SCREEN_WIDTH-1);
             int randy=JavaTools.generator.nextInt(size*Constants.SCREEN_HEIGHT-1);
