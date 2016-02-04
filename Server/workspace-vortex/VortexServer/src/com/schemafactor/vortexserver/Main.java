@@ -15,6 +15,7 @@ import com.schemafactor.vortexserver.network.UDPListener;
 import com.schemafactor.vortexserver.universe.Universe;
 
 import fi.iki.elonen.VortexDebugServer;
+import sun.security.krb5.Config;
 
 public class Main 
 {
@@ -28,7 +29,7 @@ public class Main
         
         JavaTools.onlyOneInstance("vortexserver");
         
-        // ArrayList of all users.
+        // ArrayList of all entities.
         ArrayList<Entity> allEntities = new ArrayList<Entity>();               
         
         // Create the universe.
@@ -38,6 +39,14 @@ public class Main
         // Add some entities.
         JavaTools.printlnTime("Creating default entities...");
         
+        // Asteroids
+        for (int i=1; i<=Constants.ASTEROID_COUNT; i++)
+        {
+            allEntities.add(new Asteroid("Asteroid #" + i, JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
+                                                           JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));                    
+        }      
+        
+        // Alien factions
         for (int i=1; i<=100; i++)
         {
             allEntities.add(new Xlors("Xlors #" + i, 2000+JavaTools.generator.nextInt(2000), 
@@ -47,6 +56,7 @@ public class Main
                                                      2000+JavaTools.generator.nextInt(2000) ));     
         }
        
+        // Xeekers
         for (int i=1; i<=5; i++)
         {
         
@@ -54,12 +64,7 @@ public class Main
 	                                                   JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));  
         }
       
-        // Asteroids
-        for (int i=1; i<=500; i++)
-        {
-            allEntities.add(new Asteroid("Asteroid #" + i, JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
-                                                           JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));                    
-        }                
+                 
         
         // A mini http server to show stats through a browser
         JavaTools.printlnTime("Creating debug httpd server...");

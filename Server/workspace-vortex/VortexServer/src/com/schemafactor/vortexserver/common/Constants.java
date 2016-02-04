@@ -43,5 +43,8 @@ public class Constants
     public static final byte CLIENT_UPDATE    = 2;
     
     public static final byte PACKET_ANN_REPLY = (byte) 128;
-    public static final byte PACKET_UPDATE    = (byte) 129;    
+    public static final byte PACKET_UPDATE    = (byte) 129;
+
+    // Entity Counts and other game parameters
+	public static final int ASTEROID_COUNT = 200;    
 }
