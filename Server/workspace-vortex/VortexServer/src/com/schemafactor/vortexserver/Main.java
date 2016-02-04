@@ -13,9 +13,7 @@ import com.schemafactor.vortexserver.entities.Xeeker;
 import com.schemafactor.vortexserver.entities.Xlors;
 import com.schemafactor.vortexserver.network.UDPListener;
 import com.schemafactor.vortexserver.universe.Universe;
-
-import fi.iki.elonen.VortexDebugServer;
-import sun.security.krb5.Config;
+import com.schemafactor.vortexserver.webserver.VortexDebugServer;
 
 public class Main 
 {

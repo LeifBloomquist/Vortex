@@ -1,5 +1,7 @@
 package com.schemafactor.vortexserver.entities;
 
+import java.awt.Color;
+
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.universe.Universe;
@@ -107,17 +109,54 @@ public abstract class Entity
       return myType;
    }   
    
-   /** Return Color */
+   /** Return Color (C64 Colors) */
    public byte getColor()
    {
        return spriteColor;
    }
    
-    /** Return Sprite# */
-      public byte getSpriteNum()
-      {
+   /** Return Color (RGB Colors) */
+   public Color getRGBColor()
+   {
+	   switch (spriteColor)
+	   {
+	       case Constants.COLOR_RED:
+	           return Color.RED;                  
+        
+	       case Constants.COLOR_GREEN:
+	    	   return  Color.GREEN;                    
+	           
+	       case Constants.COLOR_GREY1:
+	       case Constants.COLOR_GREY2:
+	       case Constants.COLOR_GREY3:
+	    	   return Color.LIGHT_GRAY;  
+	       
+	       case Constants.COLOR_YELLOW:
+	           return Color.YELLOW;                    
+	           
+	       case Constants.COLOR_WHITE:
+	           return Color.WHITE;                    
+	           
+	       case Constants.COLOR_BLACK:
+	           return Color.DARK_GRAY;                    
+	           
+	       case Constants.COLOR_CYAN:
+	           return Color.CYAN;                    
+	           
+	       case Constants.COLOR_LIGHTBLUE:
+	       case Constants.COLOR_BLUE:
+	    	   return Color.BLUE;                    
+	           
+	       default:
+	    	   return Color.PINK;                    
+	   }
+   }
+	   
+   /** Return Sprite# */
+   public byte getSpriteNum()
+   {
       return (byte)(spriteBase+spriteNum); 
-      }   
+   }   
    
    // Helper function to get distance to another Entity
    public double distanceTo(Entity target)

@@ -1,6 +1,8 @@
 package com.schemafactor.vortexserver.common;
 
 
+import java.awt.Color;
+
 /* 
  * =====================================================================
  *
@@ -481,4 +483,14 @@ public abstract class JavaTools
     {
         return packet.getAddress().toString().substring(1);
     }
+    
+    public static String toHexString(Color colour) throws NullPointerException 
+    {
+	  String hexColour = Integer.toHexString(colour.getRGB() & 0xffffff);
+	  if (hexColour.length() < 6) 
+	  {
+	    hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+	  }
+	  return "#" + hexColour.toUpperCase();
+	}
 }

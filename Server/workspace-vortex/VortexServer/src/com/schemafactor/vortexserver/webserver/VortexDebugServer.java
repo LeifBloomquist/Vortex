@@ -1,4 +1,4 @@
-package fi.iki.elonen;
+package com.schemafactor.vortexserver.webserver;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,12 +17,17 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.google.gson.Gson;
 import com.schemafactor.vortexserver.common.Constants;
 import com.schemafactor.vortexserver.common.JavaTools;
 import com.schemafactor.vortexserver.entities.Entity;
 import com.schemafactor.vortexserver.entities.Entity.eTypes;
 import com.schemafactor.vortexserver.universe.Universe;
 
+import fi.iki.elonen.NanoHTTPD;
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Method;
+import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
 
 
@@ -33,6 +38,8 @@ public class VortexDebugServer extends NanoHTTPD
 {
     private Font C64font = null;
     private Universe universe = null;
+    
+    Gson gson = new Gson();
     
     public VortexDebugServer(int port) 
     {
@@ -94,7 +101,13 @@ public class VortexDebugServer extends NanoHTTPD
             
             case "/map.png":
                 InputStream mbuffer = generateMap();        
-                return new NanoHTTPD.Response(Status.OK, "image/png", mbuffer);               
+                return new NanoHTTPD.Response(Status.OK, "image/png", mbuffer);
+                
+            case "/entities.json":                        
+            	return new NanoHTTPD.Response( generateJSON() );
+            	
+            case "/livemap.html":                        
+            	return new NanoHTTPD.Response( getDisplayScript() );
                 
             default:
                 return new NanoHTTPD.Response("");  
@@ -103,13 +116,14 @@ public class VortexDebugServer extends NanoHTTPD
         msg += "</body></html>\n";
         return new NanoHTTPD.Response(msg);
     }
-    
-    private String getOptions()
+
+	private String getOptions()
     { 
         String msg = "<h2>Subpages:</h2>";
         msg += "<a href=\"memory\">memory+cpu</a> | " +
                "<a href=\"logs\">logs</a> | " +        
-               "<a href=\"map.png\">map</a> | " +  
+               "<a href=\"map.png\">map (png)</a> | " +  
+               "<a href=\"entities.json\">locations (JSON)</a> | " +
                "<a href=\"players\">players</a> | " +
                "<a href=\"entities\">all entities</a>";
                  
@@ -206,8 +220,7 @@ public class VortexDebugServer extends NanoHTTPD
     }
     
     private InputStream generateMap()
-    {
-    	
+    {    	
         BufferedImage map_Image = new BufferedImage(Constants.UNIVERSE_SIZE*Constants.SCREEN_WIDTH, 
         		                                    Constants.UNIVERSE_SIZE*Constants.SCREEN_HEIGHT,
         		                                    BufferedImage.TYPE_INT_RGB);        
@@ -229,7 +242,7 @@ public class VortexDebugServer extends NanoHTTPD
         gO.drawString("Generated " + JavaTools.Now(), 20, 140);
         
         // Add entities
-        Color c;
+       
         gO.setFont(C64font.deriveFont(12f));
         
         // Copy list to get around the dreaded Concurrent modification exception  (shallow copy)
@@ -237,51 +250,9 @@ public class VortexDebugServer extends NanoHTTPD
         
         for (Entity e : entitiesCopy)
         {
-            switch (e.getColor())
-            {
-                case Constants.COLOR_RED:
-                    c = Color.RED;                    
-                    break;
-                    
-                case Constants.COLOR_GREEN:
-                    c = Color.GREEN;                    
-                    break;
-                    
-                case Constants.COLOR_GREY1:
-                case Constants.COLOR_GREY2:
-                case Constants.COLOR_GREY3:
-                    c = Color.LIGHT_GRAY;                    
-                    break;
-                
-                case Constants.COLOR_YELLOW:
-                    c = Color.YELLOW;                    
-                    break;
-                    
-                case Constants.COLOR_WHITE:
-                    c = Color.WHITE;                    
-                    break;
-                    
-                case Constants.COLOR_BLACK:
-                    c = Color.DARK_GRAY;                    
-                    break;
-                    
-                case Constants.COLOR_CYAN:
-                    c = Color.CYAN;                    
-                    break;
-                    
-                case Constants.COLOR_LIGHTBLUE:
-                case Constants.COLOR_BLUE:
-                    c = Color.BLUE;                    
-                    break;
-                    
-                default:
-                    c = Color.PINK;                    
-                    break;                
-            }
-        
-            gO.setColor(c);
-            gO.fillOval((int)e.getXcell(), (int) e.getYcell(), 10, 10);
-            gO.drawString(e.getDescription(), (int) e.getXcell() + 15, (int) e.getYcell());                   
+            gO.setColor( e.getRGBColor() );
+            gO.fillOval( (int)e.getXcell(), (int) e.getYcell(), 10, 10);
+            gO.drawString( e.getDescription(), (int) e.getXcell() + 15, (int) e.getYcell() );                   
         }
         
         // Clean up graphics
@@ -301,4 +272,35 @@ public class VortexDebugServer extends NanoHTTPD
         InputStream is = new ByteArrayInputStream(baos.toByteArray());
         return is;
     }
+    
+    private String generateJSON()
+    { 
+    	// Copy list to get around the dreaded Concurrent modification exception  (shallow copy)
+        List<Entity> entitiesCopy = new ArrayList<Entity>(universe.getEntities());
+        
+        List<SimpleEntity> SimpleList = new ArrayList<SimpleEntity>();
+        
+        for (Entity e : entitiesCopy)
+        {
+        	SimpleList.add( new SimpleEntity(e) );
+        }
+        
+        String msg = gson.toJson(SimpleList);        
+
+        return msg;
+    }
+       
+    private String getDisplayScript() 
+    {
+    	try 
+    	{
+			String text = new String(Files.readAllBytes(Paths.get("livemap.html")), StandardCharsets.UTF_8);
+			return text;
+		}
+    	catch (IOException ex) 
+    	{			
+			return ex.getMessage();
+		}
+	}
+    
 }
