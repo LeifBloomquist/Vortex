@@ -60,13 +60,11 @@ public class Main
         
 	        allEntities.add(new Xeeker("Xeeker #" + i, JavaTools.generator.nextInt((int)Universe.getInstance().getXsize()),
 	                                                   JavaTools.generator.nextInt((int)Universe.getInstance().getYsize()) ));  
-        }
-      
-                 
+        }      
         
         // A mini http server to show stats through a browser
         JavaTools.printlnTime("Creating debug httpd server...");
-        VortexDebugServer vdbg = new VortexDebugServer(80);
+        VortexDebugServer vdbg = new VortexDebugServer(8000);
                 
         // Start the thread that updates everything at a fixed interval
         JavaTools.printlnTime("Creating update scheduler...");
