@@ -20,7 +20,7 @@ login:
   
 TITLEMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_YEL
-  .byte "vORTEX 2 vERSION 0.005", 13, 13
+  .byte "vORTEX 2 vERSION 0.006", 13, 13
   .byte CG_LBL, "cONCEPT+gAME cODE: ", CG_WHT, "lEIF bLOOMQUIST", 13, 13
   .byte CG_LBL, "nETWORKING cODE:   ", CG_WHT, "jONNO dOWNES", 13
   .byte CG_LBL, "                   ", CG_WHT, "pER oLOFSSON", 13, 13
@@ -37,7 +37,7 @@ MOTD:
   .byte 0
   
 LOGINPROMPT:  
-  .byte CG_RED, "lOGIN: ", CG_PNK
+  .byte CG_RED, "nAME: ", CG_PNK
   .byte 0
   
 ; EOF!

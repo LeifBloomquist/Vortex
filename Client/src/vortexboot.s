@@ -58,8 +58,8 @@ init:
 
 main: 
   ; Save bootloader version if needed
-  lda #10     ; decimal 1.0             
-  sta $cFFF
+  lda #11     ; decimal 1.1
+  sta $CFFF
 
   jmp $8000
 
@@ -156,7 +156,7 @@ saveax:
 ; Network Constants and Data  
   
 TFTP_SERVER_IP:
-  .byte 208,79,218,201    ; Vortex VPS  
+  .byte 45,114,227,35    ; Vortex VPS  
 
 ;c64 c/g 
 CG_BLK = 144
@@ -187,7 +187,7 @@ CG_UCS = 142 ;switch to uppercase
    
 NETWORKMESSAGE:
   .byte 147, CG_LCS, CG_DCS, CG_LBL
-  .byte "vORTEX 2 nETWORK bOOTLOADER 1.0",13
+  .byte "vORTEX 2 nETWORK bOOTLOADER 1.1",13
   .byte "fORWARD udp pORT 3000 TO YOUR c64",13,13
   .byte 0
 

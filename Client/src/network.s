@@ -304,7 +304,7 @@ copyscreen:
 ; Network Constants and Data  
   
 SERVER_IP:
-  .byte 208,79,218,201    ; Vortex VPS  
+  .byte 45,114,227,35    ; Vortex VPS
   
 SERVER_PORT = 3005
 SRC_PORT    = 3000  ; In theory, having these match makes NAT work on some routers
