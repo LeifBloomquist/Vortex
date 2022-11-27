@@ -9,8 +9,8 @@ tmp/
 *.bak
 *.swp
 *~.nib
-local.properties
-.settings/
+#local.properties
+#.settings/
 .loadpath
 
 # External tool builders
