@@ -143,7 +143,7 @@ public class Xeeker extends ServerControlled
     	
     	if (lastState != State)
     	{
-    		JavaTools.printlnTime(this.description + " entered state: " + State.toString() );
+    		// JavaTools.printlnTime(this.description + " entered state: " + State.toString() );
     	}
     	
     	lastState = State;

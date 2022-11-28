@@ -292,14 +292,16 @@ public class VortexDebugServer extends NanoHTTPD
        
     private String getDisplayScript() 
     {
-    	try 
+    	try
     	{
 			String text = new String(Files.readAllBytes(Paths.get("livemap.html")), StandardCharsets.UTF_8);
 			return text;
 		}
     	catch (IOException ex) 
-    	{			
-			return ex.getMessage();
+    	{	
+    		String extext = ex.toString() + " -- " + ex.getMessage();
+    		JavaTools.printlnTime("EXCEPTION in debug http server: " +  extext);
+			return extext;
 		}
 	}
     
