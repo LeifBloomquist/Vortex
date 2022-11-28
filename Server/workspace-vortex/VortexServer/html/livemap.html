@@ -26,15 +26,19 @@ window.setInterval(function ()
 
 function initCanvas()
 {
+  const date = new Date();
+  const dateString = date.toISOString();
+
   ctx.fillStyle = "#000000";
   ctx.fillRect(0,0,1600,1000);
-  
-  ctx.fillStyle = "#FFFFFF"; 
+
+  ctx.fillStyle = "#FFFFFF";
   ctx.font = "30px Arial";
-  ctx.fillText("Vortex Map Generated " + Date(),10,50);
-  
+  ctx.fillText("Vortex Map Generated " + dateString,10,50);
+
   ctx.font = "10px Arial";
 }
+
 
 function drawEntity(entity)
 {
